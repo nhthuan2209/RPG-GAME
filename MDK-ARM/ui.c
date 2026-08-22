@@ -241,6 +241,7 @@ void Ui_Battle_Page(void)
 	if(battle_player == 0 || battle_monster == 0)
 	{
 		return;
+		
 	}
 	Ui_Select_Action(select_action);
 	Ui_Move_Action(&select_action);
