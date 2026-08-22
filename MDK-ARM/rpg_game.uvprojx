@@ -10,7 +10,7 @@
       <TargetName>rpg_game</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6240000::V6.24::ARMCLANG</pCCUsed>
+      <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\hal</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -507,28 +507,33 @@
             <File>
               <FileName>button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\button.c</FilePath>
+              <FilePath>..\hal\button.c</FilePath>
+            </File>
+            <File>
+              <FileName>button.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\hal\button.h</FilePath>
             </File>
             <File>
               <FileName>led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\led.c</FilePath>
+              <FilePath>..\hal\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\hal\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>button_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\hal\button_config.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>common</GroupName>
           <Files>
-            <File>
-              <FileName>button.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\button.h</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\led.h</FilePath>
-            </File>
             <File>
               <FileName>definition.h</FileName>
               <FileType>5</FileType>

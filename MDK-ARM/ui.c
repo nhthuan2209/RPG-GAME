@@ -21,6 +21,41 @@ uint8_t select_action = 1;
 static Character *battle_player = 0;
 static Monster   *battle_monster = 0;
 
+typedef enum {
+	UI_PAGE_1 = 0,
+	UI_PAGE_2,
+	UI_PAGE_3,
+	UI_PAGE_MAX,
+} UI_PAGE;
+
+typedef void (*UI_PAGE_DISPLAY)(void);
+
+void UI_DisplayPage1(void){
+	// ...
+}
+
+void UI_DisplayPage2(void){
+	// ...
+}
+
+void UI_DisplayPage3(void){
+	// ...
+}
+
+UI_PAGE_DISPLAY ui_display_functions[UI_PAGE_MAX] = {
+	UI_DisplayPage1,
+	UI_DisplayPage2,
+	UI_DisplayPage3,
+};
+
+static UI_PAGE current_page = UI_PAGE_1;
+
+void UI_Main(void)
+{
+	UI_PAGE_DISPLAY display_function = ui_display_functions[current_page];
+	display_function();
+}
+
 
 uint8_t Read_Card()
 {
@@ -38,12 +73,15 @@ uint8_t Read_Card()
 	return 0;
 }
 
+#define LCD_WRITE_MENU(x, y, text) 		ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
+#define LCD_WRITE_OPTION(x, y, text) 	ST7789_WriteString(x, y, text, FONT_OPTION_FUNCTION, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
+
 void Menu_Game(void)
 {
-	ST7789_WriteString(85, 20, "RFID GAME", FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
-	ST7789_WriteString(85, 60, "CAMPAIGN", FONT_OPTION_FUNCTION, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
-	ST7789_WriteString(85, 100, "ENDLESS", FONT_OPTION_FUNCTION, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
-	ST7789_WriteString(85, 140, "SETTING", FONT_OPTION_FUNCTION, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
+	LCD_WRITE_MENU  (85, 20, "RFID GAME");
+	LCD_WRITE_OPTION(85, 60, "CAMPAIGN");
+	LCD_WRITE_OPTION(85, 100, "ENDLESS");
+	LCD_WRITE_OPTION(85, 140, "SETTING");
 }
 void Waiting_Display(void)
 {
@@ -52,11 +90,11 @@ void Waiting_Display(void)
 	ST7789_WriteString(50, 100, "  YOUR CARD", FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 	ST7789_WriteString(110, 140, "RFID", FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 }
-void Check_Card(void)
+void UI_Check_Card(user_id)
 {
 	if(game_page == 0)
 	{
-		if(Read_Card())
+		if(Read_Card() == user_id)
 		{
 			game_page = 1;
 			ST7789_Fill_Color(BLACK);

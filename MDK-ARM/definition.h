@@ -19,14 +19,7 @@
 #define BACKGROUND_MENU_GAME_COLOR			BLACK
 #define FONT_OPTION_FUNCTION						Font_11x18
 #define FONT_STATS											Font_7x10
-#define BUTTON_UP_PORT									GPIOA
-#define BUTTON_UP_PIN										GPIO_PIN_11
-#define BUTTON_DOWN_PORT								GPIOA
-#define BUTTON_DOWN_PIN									GPIO_PIN_10
-#define BUTTON_SELECT_PORT							GPIOA
-#define BUTTON_SELECT_PIN								GPIO_PIN_15
-#define BUTTON_BACK_PORT								GPIOB
-#define BUTTON_BACK_PIN									GPIO_PIN_3 
+
 
 
 
