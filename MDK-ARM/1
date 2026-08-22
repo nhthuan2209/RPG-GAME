@@ -1,0 +1,18 @@
+#ifndef _UI_H_
+#define _UI_H_
+
+#include "stdint.h"
+
+
+extern uint8_t uid[4];
+extern uint8_t card;
+extern uint8_t game_page;
+extern int8_t  current_player;
+
+uint8_t Read_Card(void);
+
+void Menu_Game(void);
+void Waiting_Display(void);
+void Check_Card(void);
+
+#endif // _UI_H_
