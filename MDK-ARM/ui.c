@@ -132,27 +132,27 @@ void Ui_Deselect_Action(uint8_t deselect_action)
 	}	
 }
 
-void Ui_Move_Action(uint8_t *sl_mode)
+void Ui_Move_Action(uint8_t *sl_action)
 {
 	if(Button_Down())
 	{
 		HAL_Delay(100);
-		Ui_Deselect_Mode(*sl_mode);
-		if (*sl_mode < 3)
+		Ui_Deselect_Action(*sl_action);
+		if (*sl_action < 3)
 		{
-			(*sl_mode)++;
+			(*sl_action)++;
 		}
-		Ui_Select_Mode(*sl_mode);
+		Ui_Select_Action(*sl_action);
 	}
 	if(Button_Up())
 	{
 		HAL_Delay(100);
-		Ui_Deselect_Mode(*sl_mode);
-		if (*sl_mode > 1)
+		Ui_Deselect_Action(*sl_action);
+		if (*sl_action > 1)
 		{
-			(*sl_mode)--;
+			(*sl_action)--;
 		}
-		Ui_Select_Mode(*sl_mode);
+		Ui_Select_Action(*sl_action);
 	}
 }
 
