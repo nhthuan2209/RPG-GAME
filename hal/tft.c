@@ -138,3 +138,27 @@ void Ui_Deselect_Action(uint8_t deselect_action)
 			break;
 	}	
 }
+
+void Ui_Campaign_Map_Page()
+{
+	TFT_WRITE_MENU(10, 10, "CAMPAIGN");
+	TFT_WRITE_LINE(40, 70, 40, 120);
+	TFT_WRITE_OPTION(10, 120, "Forest");
+	TFT_WRITE_LINE(50, 60, 90, 60);
+	TFT_WRITE_CIRCLE(40, 60, 10);
+	
+	TFT_WRITE_LINE(110, 60, 150, 60);
+	TFT_WRITE_CIRCLE(100, 60, 10);
+	
+	TFT_WRITE_LINE(160, 70, 160, 110);
+	TFT_WRITE_CIRCLE(160, 60, 10);
+	
+	TFT_WRITE_LINE(170, 120, 210, 120);
+	TFT_WRITE_CIRCLE(160, 120, 10);
+	
+	TFT_WRITE_LINE(220, 70, 220, 110);
+	TFT_WRITE_CIRCLE(220, 120, 10);
+
+	TFT_WRITE_OPTION(200, 65, "Boss");
+	
+}

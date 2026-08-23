@@ -11,7 +11,6 @@
 #include "tft.h"
 
 uint8_t card = 0;
-uint8_t game_page = 0;
 int8_t current_player = -1;
 uint8_t select_mode = 1;
 uint8_t select_action = 1;
@@ -20,50 +19,25 @@ static Character *battle_player = 0;
 static Monster   *battle_monster = 0;
 
 typedef enum {
-	UI_PAGE_1 = 0,
-	UI_PAGE_2,
-	UI_PAGE_3,
-	UI_PAGE_MAX,
-} UI_PAGE;
+	UI_PAGE_WAITING = 0,
+	UI_PAGE_MENU,
+	UI_PAGE_BATTLE,
+	UI_PAGE_ENDLESS,
+	UI_PAGE_SETTING,
+} UiPage;
 
-typedef void (*UI_PAGE_DISPLAY)(void);
-
-void UI_DisplayPage1(void){
-	// ...
-}
-
-void UI_DisplayPage2(void){
-	// ...
-}
-
-void UI_DisplayPage3(void){
-	// ...
-}
-
-UI_PAGE_DISPLAY ui_display_functions[UI_PAGE_MAX] = {
-	UI_DisplayPage1,
-	UI_DisplayPage2,
-	UI_DisplayPage3,
-};
-
-static UI_PAGE current_page = UI_PAGE_1;
-
-void UI_Main(void)
-{
-	UI_PAGE_DISPLAY display_function = ui_display_functions[current_page];
-	display_function();
-}
+UiPage ui_page = UI_PAGE_WAITING;
 
 void Ui_PollWaitingScreen(void)
 {
-	if(game_page == 0)
+	if (ui_page == UI_PAGE_WAITING)
 	{
 		uint8_t uid[RFID_UID_LEN];
  
 		if (Rfid_TryReadUid(uid)) {
 			current_player = User_FindUid(uid);
 			if (current_player >= 0) {
-				game_page = 1;
+				ui_page = UI_PAGE_MENU;
 				RESET_DISPLAY;
 				Menu_Game();
 			}
@@ -96,7 +70,6 @@ void Ui_Move_Action(uint8_t *sl_action)
 }
 
 #define UI_WRITE_STAT(x, y, text) 			ST7789_WriteString(x, y, text, FONT_STATS, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
-
 
 void Ui_Player_Stats(Character *player)
 {
@@ -135,7 +108,6 @@ void Ui_Update_Stats(Character *player, Monster *monster)
 	Ui_Monster_Stats(monster);
 }
 
-
 void Ui_Battle_Page(void)
 {
 	if(battle_player == 0 || battle_monster == 0)
@@ -172,34 +144,8 @@ void Ui_Battle_Page(void)
 	}
 }
 
-#define UI_WRITE_MENU(x, y, text)					ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
-#define UI_WRITE_OPTION(x, y, text)				ST7789_WriteString(x, y, text, FONT_OPTION_FUNCTION, LETTER_MODE_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
-#define UI_WRITE_LINE(x1, y1, x2, y2)			ST7789_DrawLine(x1, y1, x2, y2, WHITE)
-#define UI_WRITE_CIRCLE(x, y, r)					ST7789_DrawCircle(x, y, r, WHITE)
-
-void Ui_Campaign_Page()
+void Ui_Display_Battle_Stat(void)
 {
-	UI_WRITE_MENU(10, 10, "CAMPAIGN");
-	UI_WRITE_LINE(40, 70, 40, 120);
-	UI_WRITE_OPTION(10, 120, "Forest");
-	UI_WRITE_LINE(50, 60, 90, 60);
-	UI_WRITE_CIRCLE(40, 60, 10);
-	
-	UI_WRITE_LINE(110, 60, 150, 60);
-	UI_WRITE_CIRCLE(100, 60, 10);
-	
-	UI_WRITE_LINE(160, 70, 160, 110);
-	UI_WRITE_CIRCLE(160, 60, 10);
-	
-	UI_WRITE_LINE(170, 120, 210, 120);
-	UI_WRITE_CIRCLE(160, 120, 10);
-	
-	UI_WRITE_LINE(220, 70, 220, 110);
-	UI_WRITE_CIRCLE(220, 120, 10);
-	
-	UI_WRITE_OPTION(200, 65, "Boss");
-	
-	HAL_Delay(100);
 	ST7789_Fill_Color(BLACK);
 	Ui_Monster_Appearance();
 	Ui_Player_Appearance();
@@ -208,9 +154,8 @@ void Ui_Campaign_Page()
 	if(battle_player != 0 && battle_monster != 0)
 	{
 		Ui_Update_Stats(battle_player, battle_monster);
-	}
+	}	
 }
-
 
 void Ui_Confirm_Mode(uint8_t mode)
 {
@@ -220,20 +165,21 @@ void Ui_Confirm_Mode(uint8_t mode)
 		{
 			case 1:
 				RESET_DISPLAY;
-				game_page = 2;
+				Ui_Campaign_Map_Page();
+				ui_page = UI_PAGE_BATTLE;
 				battle_player = &character_list[current_player];
 				battle_monster = &monster_list[campaign[current_state].monster_id];
 				Battle_Start(battle_player, battle_monster);
-				Ui_Campaign_Page();
+				Ui_Display_Battle_Stat();
 				break;
 			case 2:
 				RESET_DISPLAY;
-				game_page = 3;
+				ui_page = UI_PAGE_ENDLESS;
 				Ui_Endless_Page();
 				break;
 			case 3:
 				RESET_DISPLAY;
-				game_page = 4;
+				ui_page = UI_PAGE_SETTING;
 				Ui_Setting_Page();
 				break;
 		}

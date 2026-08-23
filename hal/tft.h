@@ -23,7 +23,7 @@ void Ui_Select_Mode(uint8_t select_mode);
 void Ui_Deselect_Mode(uint8_t deselect_mode);
 void Ui_Select_Action(uint8_t select_action);
 void Ui_Deselect_Action(uint8_t deselect_action);
-
+void Ui_Campaign_Map_Page();
 
 
 #endif // _TFT_H_
