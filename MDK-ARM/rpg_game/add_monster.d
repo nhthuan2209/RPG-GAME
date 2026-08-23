@@ -1,1 +1,2 @@
-rpg_game/add_monster.o: add_monster.c add_monster.h
+rpg_game/add_monster.o: ..\service\add_monster.c \
+  ..\Core\Inc\add_monster.h

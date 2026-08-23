@@ -1,4 +1,5 @@
-rpg_game/ui.o: ui.c ..\Core\Inc\rc522.h \
+rpg_game/ui.o: ..\service\ui.c ..\Core\Inc\user.h \
+  ..\Core\Inc\definition.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
@@ -18,7 +19,7 @@ rpg_game/ui.o: ui.c ..\Core\Inc\rc522.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h user.h \
-  ..\Core\Inc\st7789.h ..\Core\Inc\fonts.h ..\Core\Inc\main.h \
-  definition.h ..\Core\Inc\ui.h button.h character.h add_monster.h \
-  battle.h campaign.h
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h \
+  ..\Core\Inc\st7789.h ..\Core\Inc\fonts.h ..\hal\button.h \
+  ..\Core\Inc\character.h ..\Core\Inc\add_monster.h ..\Core\Inc\battle.h \
+  ..\common\campaign.h ..\hal\rfid.h ..\hal\tft.h

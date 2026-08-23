@@ -22,8 +22,8 @@ typedef struct
 }Battle;
 
 void Battle_Start(Character *player, Monster *monster);
-void Battle_Player_Attack();
-void Battle_Monster_Attack();
+void Battle_Attack_Monster();
+void Battle_Attack_Player();
 void Battle_Update(void);
 BattleState Battle_GetState(void);
 

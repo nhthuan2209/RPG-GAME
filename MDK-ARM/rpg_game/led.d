@@ -1,1 +1,1 @@
-rpg_game/led.o: led.c
+rpg_game/led.o: ..\hal\led.c

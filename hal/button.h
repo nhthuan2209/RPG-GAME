@@ -13,5 +13,9 @@ typedef struct {
 } ButtonState;
 
 ButtonState HAL_ReadButtons(void);
+bool Button_Up(void);
+bool Button_Down(void);
+bool Button_Select(void);
+bool Button_Back(void);
 
 #endif // _BUTTON_H_

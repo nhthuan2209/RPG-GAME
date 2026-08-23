@@ -1,1 +1,1 @@
-rpg_game/campaign.o: campaign.c campaign.h
+rpg_game/campaign.o: ..\service\campaign.c ..\common\campaign.h

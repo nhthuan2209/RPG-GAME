@@ -9,7 +9,7 @@ void Battle_Start(Character *player, Monster *monster)
 	current_battle.state = BATTLE_PLAYER_TURN;
 }
 
-void Battle_Player_Attack()
+void Battle_Attack_Monster()
 {
 	int16_t dmg;
 	dmg = current_battle.player->attack - current_battle.monster->defense;
@@ -24,7 +24,7 @@ void Battle_Player_Attack()
 		current_battle.state = BATTLE_MONSTER_TURN;
 	}
 }
-void Battle_Monster_Attack()
+void Battle_Attack_Player()
 {
 	int16_t dmg;
 	dmg = current_battle.monster->attack - current_battle.player->defense;
@@ -44,7 +44,7 @@ void Battle_Update(void)
 {
     if(current_battle.state == BATTLE_MONSTER_TURN)
     {
-        Battle_Monster_Attack();
+        Battle_Attack_Player();
     }
 }
 

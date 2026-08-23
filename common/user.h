@@ -11,5 +11,5 @@ typedef struct
 	uint8_t character_id;
 }Card;
 
-int8_t Find_Uid(uint8_t *uid);
+int8_t User_FindUid(uint8_t *uid);
 #endif // _USER_H_

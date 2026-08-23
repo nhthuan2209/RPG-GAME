@@ -1,4 +1,5 @@
-rpg_game/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
+rpg_game/tft.o: ..\hal\tft.c ..\hal\tft.h ..\Core\Inc\st7789.h \
+  ..\Core\Inc\fonts.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
@@ -18,8 +19,4 @@ rpg_game/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h \
-  ..\Core\Inc\st7789.h ..\Core\Inc\fonts.h ..\Core\Inc\rc522.h \
-  ..\Core\Inc\definition.h ..\hal\button.h ..\Core\Inc\user.h \
-  ..\Core\Inc\ui.h ..\Core\Inc\battle.h ..\Core\Inc\character.h \
-  ..\Core\Inc\add_monster.h
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h

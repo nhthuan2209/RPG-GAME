@@ -1,4 +1,4 @@
-rpg_game/user.o: user.c user.h ..\Core\Inc\main.h \
+rpg_game/user.o: ..\app\user.c ..\Core\Inc\user.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \

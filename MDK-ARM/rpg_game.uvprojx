@@ -10,7 +10,7 @@
       <TargetName>rpg_game</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
+      <pCCUsed>6240000::V6.24::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -134,11 +134,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4107</DriverSelection>
+            <DriverSelection>4101</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\hal</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\hal;..\common;..\service;..\app</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -529,60 +529,85 @@
               <FileType>5</FileType>
               <FilePath>..\hal\button_config.h</FilePath>
             </File>
+            <File>
+              <FileName>tft.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\hal\tft.c</FilePath>
+            </File>
+            <File>
+              <FileName>tft.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\hal\tft.h</FilePath>
+            </File>
+            <File>
+              <FileName>rfid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\hal\rfid.c</FilePath>
+            </File>
+            <File>
+              <FileName>rfid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\hal\rfid.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>common</GroupName>
           <Files>
             <File>
-              <FileName>definition.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\definition.h</FilePath>
-            </File>
-            <File>
-              <FileName>user.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\user.h</FilePath>
-            </File>
-            <File>
-              <FileName>ui.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\ui.h</FilePath>
-            </File>
-            <File>
-              <FileName>character.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\character.h</FilePath>
-            </File>
-            <File>
               <FileName>add_monster.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\add_monster.h</FilePath>
+              <FilePath>..\common\add_monster.h</FilePath>
             </File>
             <File>
               <FileName>battle.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\battle.h</FilePath>
+              <FilePath>..\common\battle.h</FilePath>
             </File>
             <File>
               <FileName>campaign.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\campaign.h</FilePath>
+              <FilePath>..\common\campaign.h</FilePath>
+            </File>
+            <File>
+              <FileName>character.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\character.h</FilePath>
+            </File>
+            <File>
+              <FileName>definition.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\definition.h</FilePath>
+            </File>
+            <File>
+              <FileName>user.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\user.h</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>services</GroupName>
+          <GroupName>service</GroupName>
           <Files>
+            <File>
+              <FileName>add_monster.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\service\add_monster.c</FilePath>
+            </File>
+            <File>
+              <FileName>campaign.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\service\campaign.c</FilePath>
+            </File>
+            <File>
+              <FileName>character.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\service\character.c</FilePath>
+            </File>
             <File>
               <FileName>ui.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\ui.c</FilePath>
-            </File>
-            <File>
-              <FileName>user.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\user.c</FilePath>
+              <FilePath>..\service\ui.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -590,24 +615,14 @@
           <GroupName>app</GroupName>
           <Files>
             <File>
-              <FileName>character.c</FileName>
+              <FileName>user.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\character.c</FilePath>
-            </File>
-            <File>
-              <FileName>add_monster.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\add_monster.c</FilePath>
+              <FilePath>..\app\user.c</FilePath>
             </File>
             <File>
               <FileName>battle.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\battle.c</FilePath>
-            </File>
-            <File>
-              <FileName>campaign.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\campaign.c</FilePath>
+              <FilePath>..\app\battle.c</FilePath>
             </File>
           </Files>
         </Group>
