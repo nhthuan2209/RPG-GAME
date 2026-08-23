@@ -52,7 +52,6 @@ SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
 /* USER CODE BEGIN PV */
-uint8_t uid[4];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -112,14 +111,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-		Check_Card();
-		if (game_page == 1)
+		Ui_PollWaitingScreen();
+		if (ui_page == UI_PAGE_MENU)
 		{
 			Ui_Select_Mode(select_mode);
 			Ui_Confirm_Mode(select_mode);
 			Ui_Move_Mode(&select_mode);
 		}
-		else if (game_page == 2)
+		else if (ui_page == UI_PAGE_BATTLE)
 		{
 			Ui_Battle_Page();
 		}
