@@ -95,6 +95,47 @@ void Ui_Move_Action(uint8_t *sl_action)
 	}
 }
 
+#define UI_WRITE_STAT(x, y, text) 			ST7789_WriteString(x, y, text, FONT_STATS, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
+
+
+void Ui_Player_Stats(Character *player)
+{
+	char save[20];
+	
+	sprintf(save, "%3d", player->level);
+	UI_WRITE_STAT(40, 20, save);
+	
+	sprintf(save, "%3d/%3d", player->hp, player->max_hp);
+	UI_WRITE_STAT(35, 130, save);
+	
+	sprintf(save, "%3d", player->attack);
+	UI_WRITE_STAT(35, 140, save);
+	
+	sprintf(save, "%5d", player->exp);
+	UI_WRITE_STAT(30, 150, save);
+}
+
+void Ui_Monster_Stats(Monster *monster)
+{
+	char save[20];
+	
+	sprintf(save, "%3d/%3d", monster->hp, monster->max_hp);
+	UI_WRITE_STAT(260, 130, save);
+	
+	sprintf(save, "%3d", monster->attack);
+	UI_WRITE_STAT(270, 140, save);
+	
+	sprintf(save, "%5d", monster->exp_reward);
+	UI_WRITE_STAT(270, 150, save);
+}
+
+void Ui_Update_Stats(Character *player, Monster *monster)
+{
+	Ui_Player_Stats(player);
+	Ui_Monster_Stats(monster);
+}
+
+
 void Ui_Battle_Page(void)
 {
 	if(battle_player == 0 || battle_monster == 0)
@@ -131,49 +172,10 @@ void Ui_Battle_Page(void)
 	}
 }
 
-#define UI_WRITE_STAT(x, y, text) 			ST7789_WriteString(x, y, text, FONT_STATS, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
-
-void Ui_Player_Stats(Character *player)
-{
-	char save[20];
-	
-	sprintf(save, "%3d", player->level);
-	UI_WRITE_STAT(40, 20, save);
-	
-	sprintf(save, "%3d/%3d", player->hp, player->max_hp);
-	UI_WRITE_STAT(35, 130, save);
-	
-	sprintf(save, "%3d", player->attack);
-	UI_WRITE_STAT(35, 140, save);
-	
-	sprintf(save, "%5d", player->exp);
-	UI_WRITE_STAT(30, 150, save);
-}
-
-void Ui_Monster_Stats(Monster *monster)
-{
-	char save[20];
-	
-	sprintf(save, "%3d/%3d", monster->hp, monster->max_hp);
-	UI_WRITE_STAT(260, 130, save);
-	
-	sprintf(save, "%3d", monster->attack);
-	UI_WRITE_STAT(270, 140, save);
-	
-	sprintf(save, "%5d", monster->exp_reward);
-	UI_WRITE_STAT(270, 150, save);
-}
-
 #define UI_WRITE_MENU(x, y, text)					ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
 #define UI_WRITE_OPTION(x, y, text)				ST7789_WriteString(x, y, text, FONT_OPTION_FUNCTION, LETTER_MODE_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
 #define UI_WRITE_LINE(x1, y1, x2, y2)			ST7789_DrawLine(x1, y1, x2, y2, WHITE)
 #define UI_WRITE_CIRCLE(x, y, r)					ST7789_DrawCircle(x, y, r, WHITE)
-
-void Ui_Update_Stats(Character *player, Monster *monster)
-{
-	Ui_Player_Stats(player);
-	Ui_Monster_Stats(monster);
-}
 
 void Ui_Campaign_Page()
 {
