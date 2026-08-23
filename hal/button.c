@@ -20,17 +20,28 @@ static ButtonInfo button_info[BUTTON_COUNT] = {
 ButtonState HAL_ReadButtons(void)
 {
 	ButtonState button_state;
-	memset(&button_state, sizeof(button_state), 0);
+	memset(&button_state, 0, sizeof(button_state));
 	
 	for (size_t i = 0; i < BUTTON_COUNT; i++) {
 
 		if (HAL_GPIO_ReadPin(button_info[i].port, button_info[i].pin) == GPIO_PIN_RESET) {
 			button_info[i].active_time++;
 			if (button_info[i].active_time >= BUTTON_DEBOUNCE_TICKS) {
-				button_state.up 		= true;
-				button_state.down 	= true;
-				button_state.select = true;
-				button_state.back 	= true;
+				switch(i)
+				{
+					case 0:
+						button_state.up 		= true;
+						break;
+					case 1:
+						button_state.down 	= true;
+						break;
+					case 2:
+						button_state.select = true;
+						break;
+					case 3:
+						button_state.back 	= true;
+						break;
+				}
 			}
 		}
 		else {
