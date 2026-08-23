@@ -102,19 +102,72 @@ void Ui_Update_Stats(Character *player, Monster *monster)
 	Ui_Monster_Stats(monster);
 }
 
+static void Ui_Show_Campaign()
+{
+	Ui_Campaign_Map_Page();
+	ui_page = UI_PAGE_BATTLE;
+	battle_player = &character_list[current_player];
+	battle_monster = &monster_list[campaign[current_state].monster_id];
+	Battle_Start(battle_player, battle_monster);
+	Ui_Display_Battle_Stat();	
+}
+
+
+#define UI_WRITE_RESULT(x, y, text) 			ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
+
+static void Ui_Battle_End(uint8_t win)
+{
+	battle_player = 0;
+	battle_monster = 0;
+	
+	RESET_DISPLAY;
+	
+	if(win)
+	{
+		UI_WRITE_RESULT(90, 100, "YOU WIN");
+		HAL_Delay(2000);
+		if (current_state >= campaign_state_count - 1)
+		{
+			RESET_DISPLAY;
+			UI_WRITE_RESULT(90, 100, "CAMPAIGN CLEAR!");
+			HAL_Delay(2000);
+
+			Campaign_Reset();
+			RESET_DISPLAY;
+			ui_page = UI_PAGE_MENU;
+			Menu_Game();
+			return;			
+		}
+		Campaign_NextStage();
+		RESET_DISPLAY;
+		Ui_Show_Campaign();		
+	}
+	else
+	{
+		UI_WRITE_RESULT(90, 100, "YOU LOSE");
+		HAL_Delay(2000);
+
+		Campaign_Reset();
+		RESET_DISPLAY;
+		ui_page = UI_PAGE_MENU;
+		Menu_Game();
+	}
+}
+
 void Ui_Battle_Page(void)
 {
 	if(battle_player == 0 || battle_monster == 0)
 	{
 		return;
-		
+	}
+	if(Battle_GetState() == BATTLE_VICTORY || Battle_GetState() == BATTLE_DEFEAT)
+	{
+		return;
 	}
 	Ui_Select_Action(select_action);
 	Ui_Move_Action(&select_action);
 	if(Button_Select())
-	{
-		HAL_Delay(100);
-		
+	{		
 		if(select_action == 1)
 		{
 			Battle_Attack_Monster();
@@ -122,17 +175,17 @@ void Ui_Battle_Page(void)
 	 
 			if(Battle_GetState() == BATTLE_VICTORY)
 			{
-				ST7789_WriteString(90, 200, "YOU WIN!", FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
+				Ui_Battle_End(1);
 				return;
 			}
- 
-			HAL_Delay(400);
+			HAL_Delay(1000);
 			Battle_Attack_Player();
 			Ui_Update_Stats(battle_player, battle_monster);
-	 
+			
 			if(Battle_GetState() == BATTLE_DEFEAT)
 			{
-				ST7789_WriteString(90, 200, "YOU LOSE!", FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
+				Ui_Battle_End(0);
+				return;
 			}
 		}
 	}
@@ -159,12 +212,7 @@ void Ui_Confirm_Mode(uint8_t mode)
 		{
 			case 1:
 				RESET_DISPLAY;
-				Ui_Campaign_Map_Page();
-				ui_page = UI_PAGE_BATTLE;
-				battle_player = &character_list[current_player];
-				battle_monster = &monster_list[campaign[current_state].monster_id];
-				Battle_Start(battle_player, battle_monster);
-				Ui_Display_Battle_Stat();
+				Ui_Show_Campaign();
 				break;
 			case 2:
 				RESET_DISPLAY;

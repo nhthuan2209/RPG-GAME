@@ -28,5 +28,6 @@ void Ui_Endless_Page(void);
 void Ui_Setting_Page(void);
 void Ui_Confirm_Mode(uint8_t mode);
 void Ui_Move_Mode(uint8_t *sl_mode);
+static void Ui_Battle_End(uint8_t win);
 void Ui_Battle_Page(void);
 #endif // _UI_H_
