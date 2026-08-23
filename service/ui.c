@@ -1,3 +1,5 @@
+#include "ui.h"
+
 #include "stdio.h"
 
 #include "user.h"
@@ -17,14 +19,6 @@ uint8_t select_action = 1;
 
 static Character *battle_player = 0;
 static Monster   *battle_monster = 0;
-
-typedef enum {
-	UI_PAGE_WAITING = 0,
-	UI_PAGE_MENU,
-	UI_PAGE_BATTLE,
-	UI_PAGE_ENDLESS,
-	UI_PAGE_SETTING,
-} UiPage;
 
 UiPage ui_page = UI_PAGE_WAITING;
 
