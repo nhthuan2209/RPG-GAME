@@ -2,6 +2,7 @@
 #define _UI_H_
 
 #include "stdint.h"
+#include "character.h"
 
 typedef enum {
 	UI_PAGE_WAITING = 0,
@@ -25,13 +26,13 @@ void Ui_Select_Mode(uint8_t select_mode);
 void Ui_Deselect_Mode(uint8_t deselect_mode);
 void Ui_Display_Battle_Stat(void);
 void Ui_Endless_Map_Page(void);
-void Ui_Setting_Page(void);
 void Ui_Confirm_Mode(uint8_t mode);
 void Ui_Move_Mode(uint8_t *sl_mode);
 static void Ui_Battle_End(uint8_t win);
 void Ui_Battle_Page(void);
 static void Ui_Show_Campaign();
 static void Ui_Show_Endless();
+void Ui_Show_Setting(Character *player);
 void Ui_Back_MenuGame();
 
 #endif // _UI_H_

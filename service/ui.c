@@ -134,6 +134,32 @@ static void Ui_Show_Endless()
 	Ui_Display_Battle_Stat();		
 }
 
+void Ui_Show_Setting(Character *player)
+{
+	char save[20];
+	
+	UI_WRITE_ANNOUNCEMENT(10, 10, "CHARACTER");
+
+	sprintf(save, "Name: %s", player->name);
+	UI_WRITE_STAT(10, 35, save);
+	
+	sprintf(save, "Health: %d/%d", player->hp, player->max_hp);
+	UI_WRITE_STAT(10, 55, save);
+	
+	sprintf(save, "Strength: %d", player->attack);
+	UI_WRITE_STAT(10, 75, save);
+	
+	sprintf(save, "Defense: %d", player->defense);
+	UI_WRITE_STAT(10, 95, save);
+	
+	sprintf(save, "Experience: %d", player->exp);
+	UI_WRITE_STAT(10, 115, save);
+	
+	sprintf(save, "Level: %d", player->level);
+	UI_WRITE_STAT(10, 135, save);
+}
+
+
 #define UI_WRITE_RESULT(x, y, text) 							ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
 static void Ui_Battle_End(uint8_t win)
@@ -305,13 +331,12 @@ void Ui_Confirm_Mode(uint8_t mode)
 			case 2:
 				RESET_DISPLAY;
 				Ui_Endless_Map_Page();
-				map_endless = 0;
 				Ui_Show_Endless();
 				break;
 			case 3:
 				RESET_DISPLAY;
 				ui_page = UI_PAGE_SETTING;
-				Ui_Setting_Page();
+				Ui_Show_Setting(&character_list[current_player]);
 				break;
 		}
 	}

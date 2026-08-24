@@ -92,10 +92,6 @@ void Ui_Endless_Map_Page()
 	TFT_WRITE_OPTION(10, 140, "This is infinite loop mode");
 }
 
-void Ui_Setting_Page()
-{
-	TFT_WRITE_MENU(50,50, "Red");
-}
 void Ui_Select_Mode(uint8_t select_mode)
 {
 	switch(select_mode)
