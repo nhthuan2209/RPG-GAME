@@ -24,7 +24,7 @@ void Ui_PollWaitingScreen(void);
 void Ui_Select_Mode(uint8_t select_mode);
 void Ui_Deselect_Mode(uint8_t deselect_mode);
 void Ui_Display_Battle_Stat(void);
-void Ui_Endless_Page(void);
+void Ui_Endless_Map_Page(void);
 void Ui_Setting_Page(void);
 void Ui_Confirm_Mode(uint8_t mode);
 void Ui_Move_Mode(uint8_t *sl_mode);

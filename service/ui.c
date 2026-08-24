@@ -264,7 +264,7 @@ void Ui_Confirm_Mode(uint8_t mode)
 			case 2:
 				RESET_DISPLAY;
 				ui_page = UI_PAGE_ENDLESS;
-				Ui_Endless_Page();
+				Ui_Endless_Map_Page();
 				break;
 			case 3:
 				RESET_DISPLAY;
@@ -307,5 +307,4 @@ void Ui_Back_MenuGame()
 		ui_page = UI_PAGE_MENU;
 		Menu_Game();
 	}
-
 }

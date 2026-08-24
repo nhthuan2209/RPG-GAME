@@ -66,9 +66,30 @@ void Ui_Stats_Appearance()
 	TFT_WRITE_STAT(250, 150, "EXP: ");
 }
 
-void Ui_Endless_Page()
+void Ui_Endless_Map_Page()
 {
-	TFT_WRITE_MENU(50,50, "Red");
+	TFT_WRITE_MENU(10, 10, "ENDLESS");
+	TFT_WRITE_LINE(40, 70, 40, 100);
+	TFT_WRITE_OPTION(23, 100, "You");
+	
+	TFT_WRITE_LINE(50, 60, 90, 60);
+	TFT_WRITE_CIRCLE(40, 60, 10);
+	
+	TFT_WRITE_LINE(110, 60, 150, 60);
+	TFT_WRITE_CIRCLE(100, 60, 10);
+	
+	TFT_WRITE_LINE(170, 60, 210, 60);
+	TFT_WRITE_CIRCLE(160, 60, 10);
+	
+	TFT_WRITE_CIRCLE(220, 60, 10);
+	
+	TFT_WRITE_LINE(220, 70, 220, 110);
+	TFT_WRITE_CIRCLE(220, 120, 10);
+
+	TFT_WRITE_LINE(230, 120, 260, 120);
+	TFT_WRITE_OPTION(260, 113, "Boss");
+	
+	TFT_WRITE_OPTION(10, 140, "This is infinite loop mode");
 }
 
 void Ui_Setting_Page()

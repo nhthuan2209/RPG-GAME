@@ -17,7 +17,7 @@ void Ui_Action();
 void Ui_Monster_Appearance();
 void Ui_Player_Appearance();
 void Ui_Stats_Appearance();
-void Ui_Endless_Page();
+void Ui_Endless_Map_Page();
 void Ui_Setting_Page();
 void Ui_Select_Mode(uint8_t select_mode);
 void Ui_Deselect_Mode(uint8_t deselect_mode);
