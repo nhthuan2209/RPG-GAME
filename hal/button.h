@@ -11,10 +11,10 @@ typedef struct {
     bool back;
 } ButtonState;
 
-ButtonState HAL_ReadButtons(void);
-bool Button_Up(void);
-bool Button_Down(void);
-bool Button_Select(void);
-bool Button_Back(void);
+void HAL_ScanButtons(void);
+bool HAL_Button_Up(void);
+bool HAL_Button_Down(void);
+bool HAL_Button_Select(void);
+bool HAL_Button_Back(void);
 
 #endif // _BUTTON_H_

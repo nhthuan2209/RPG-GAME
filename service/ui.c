@@ -29,8 +29,7 @@ void Ui_PollWaitingScreen(void)
 	if (ui_page == UI_PAGE_WAITING)
 	{
 		uint8_t uid[RFID_UID_LEN];
- 
-		if (Rfid_TryReadUid(uid)) {
+		if (Rfid_TryReadUid(uid, RFID_UID_LEN)) {
 			current_player = User_FindUid(uid);
 			if (current_player >= 0) {
 				ui_page = UI_PAGE_MENU;

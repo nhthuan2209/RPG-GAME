@@ -17,11 +17,10 @@ static ButtonInfo button_info[BUTTON_COUNT] = {
 	{.port=BUTTON_BACK_PORT, 	 .pin=BUTTON_BACK_PIN, 		.active_time = 0},
 };
 
-ButtonState HAL_ReadButtons(void)
+static ButtonState button_state;
+
+void HAL_ScanButtons(void)
 {
-	ButtonState button_state;
-	memset(&button_state, 0, sizeof(button_state));
-	
 	for (size_t i = 0; i < BUTTON_COUNT; i++) {
 
 		if (HAL_GPIO_ReadPin(button_info[i].port, button_info[i].pin) == GPIO_PIN_RESET) {
@@ -48,25 +47,24 @@ ButtonState HAL_ReadButtons(void)
 			button_info[i].active_time = 0;
 		}
 	}
-	return button_state;
 }
 
-bool Button_Up(void)
+bool HAL_ButtonUp(void)
 {
-	return HAL_ReadButtons().up;
+	return button_state.up;
 }
  
-bool Button_Down(void)
+bool HAL_ButtonDown(void)
 {
-	return HAL_ReadButtons().down;
+	return button_state.down;
 }
  
-bool Button_Select(void)
+bool HAL_ButtonSelect(void)
 {
-	return HAL_ReadButtons().select;
+	return button_state.select;
 }
  
-bool Button_Back(void)
+bool HAL_ButtonBack(void)
 {
-	return HAL_ReadButtons().back;
+	return button_state.back;
 }

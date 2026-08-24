@@ -5,7 +5,7 @@
 
 typedef struct
 {
-    char name[20];
+    char* name;
 
     int32_t max_hp;
     int32_t hp;
