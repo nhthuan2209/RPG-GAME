@@ -18,10 +18,12 @@ typedef struct
     Monster *monster;
 
     BattleState state;
+		uint16_t player_defending;
 
 }Battle;
 
 void Battle_Start(Character *player, Monster *monster);
+void Battle_Defending(void);
 void Battle_Attack_Monster();
 void Battle_Attack_Player();
 void Battle_Update(void);

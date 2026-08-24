@@ -154,6 +154,8 @@ static void Ui_Battle_End(uint8_t win)
 	}
 }
 
+static uint8_t select_locked = 0;
+
 void Ui_Battle_Page(void)
 {
 	if(battle_player == 0 || battle_monster == 0)
@@ -166,9 +168,14 @@ void Ui_Battle_Page(void)
 	}
 	Ui_Select_Action(select_action);
 	Ui_Move_Action(&select_action);
-	if(Button_Select())
-	{		
-		if(select_action == 1)
+	if(!Button_Select())
+	{
+		select_locked = 0;   
+	}
+	else if(!select_locked)
+	{
+		select_locked = 1;
+		if (select_action == 1)
 		{
 			Battle_Attack_Monster();
 			Ui_Update_Stats(battle_player, battle_monster);
@@ -187,6 +194,25 @@ void Ui_Battle_Page(void)
 				Ui_Battle_End(0);
 				return;
 			}
+		}
+		else if (select_action == 2)
+		{
+			Battle_Defending();
+			Ui_Update_Stats(battle_player, battle_monster);
+			
+			HAL_Delay(400);
+      Battle_Attack_Player();        
+      Ui_Update_Stats(battle_player, battle_monster);
+			if(Battle_GetState() == BATTLE_DEFEAT)
+			{
+				Ui_Battle_End(0);
+				return;
+			}
+		}
+		else if (select_action == 3)
+		{
+			
+		
 		}
 	}
 }
