@@ -7,8 +7,8 @@ typedef struct
 {
     char name[20];
 
-    int16_t max_hp;
-    int16_t hp;
+    int32_t max_hp;
+    int32_t hp;
 
     int16_t attack;
     int16_t defense;

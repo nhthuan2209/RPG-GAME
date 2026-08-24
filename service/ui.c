@@ -129,7 +129,7 @@ static void Ui_Battle_End(uint8_t win)
 		if (current_state >= campaign_state_count - 1)
 		{
 			RESET_DISPLAY;
-			UI_WRITE_RESULT(90, 100, "CAMPAIGN CLEAR!");
+			UI_WRITE_RESULT(75, 100, "CAMPAIGN CLEAR!");
 			HAL_Delay(2000);
 
 			Campaign_Reset();
@@ -196,6 +196,7 @@ void Ui_Battle_Page(void)
 	 
 			if(Battle_GetState() == BATTLE_VICTORY)
 			{
+				Character_Gain_Exp(battle_player, battle_monster->exp_reward);
 				Ui_Battle_End(1);
 				return;
 			}
