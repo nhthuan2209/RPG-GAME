@@ -154,7 +154,21 @@ static void Ui_Battle_End(uint8_t win)
 	}
 }
 
+void Ui_Display_Battle_Stat(void)
+{
+	ST7789_Fill_Color(BLACK);
+	Ui_Monster_Appearance();
+	Ui_Player_Appearance();
+	Ui_Stats_Appearance();
+	Ui_Action();
+	if(battle_player != 0 && battle_monster != 0)
+	{
+		Ui_Update_Stats(battle_player, battle_monster);
+	}	
+}
+
 static uint8_t select_locked = 0;
+#define UI_WRITE_ANNOUNCEMENT(x, y, text)					ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MODE_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
 void Ui_Battle_Page(void)
 {
@@ -211,23 +225,29 @@ void Ui_Battle_Page(void)
 		}
 		else if (select_action == 3)
 		{
-			
-		
+			if(Battle_Count_HealPotion() == 0)
+			{
+				UI_WRITE_ANNOUNCEMENT(30, 70, "OUT OF POTION");
+				HAL_Delay(550);
+				RESET_DISPLAY;
+				Ui_Display_Battle_Stat();			
+			}
+			else
+			{
+				Battle_Heal();
+				Ui_Update_Stats(battle_player, battle_monster);
+				
+				HAL_Delay(400);
+				Battle_Attack_Player();        
+				Ui_Update_Stats(battle_player, battle_monster);
+				if(Battle_GetState() == BATTLE_DEFEAT)
+				{
+					Ui_Battle_End(0);
+					return;
+				}			
+			}
 		}
 	}
-}
-
-void Ui_Display_Battle_Stat(void)
-{
-	ST7789_Fill_Color(BLACK);
-	Ui_Monster_Appearance();
-	Ui_Player_Appearance();
-	Ui_Stats_Appearance();
-	Ui_Action();
-	if(battle_player != 0 && battle_monster != 0)
-	{
-		Ui_Update_Stats(battle_player, battle_monster);
-	}	
 }
 
 void Ui_Confirm_Mode(uint8_t mode)

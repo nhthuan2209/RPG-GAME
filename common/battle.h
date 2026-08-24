@@ -5,6 +5,8 @@
 #include "character.h"
 #include "add_monster.h"
 
+#define BATTLE_MAX_POTION_HEAL 		5
+
 typedef enum{
 	BATTLE_PLAYER_TURN,
 	BATTLE_MONSTER_TURN,
@@ -19,6 +21,7 @@ typedef struct
 
     BattleState state;
 		uint16_t player_defending;
+		uint16_t player_usedheal;
 
 }Battle;
 
@@ -27,6 +30,8 @@ void Battle_Defending(void);
 void Battle_Attack_Monster();
 void Battle_Attack_Player();
 void Battle_Update(void);
+void Battle_Heal(void);
+uint8_t Battle_Count_HealPotion();
 BattleState Battle_GetState(void);
 
 

@@ -29,7 +29,7 @@ void Ui_Action()
 {
 	TFT_WRITE_OPTION(100, 40, "[ATTACK]");
 	TFT_WRITE_OPTION(100, 70, "[DEFENSE]");
-	TFT_WRITE_OPTION(100, 100, "[RUN]");
+	TFT_WRITE_OPTION(100, 100, "[HEAL]");
 }
 
 void Ui_Monster_Appearance()
@@ -118,7 +118,7 @@ void Ui_Select_Action(uint8_t select_action)
 			TFT_WRITE_SELECT(100, 70, "[DEFENSE]");
 			break;
 		case 3:
-			TFT_WRITE_SELECT(100, 100, "[RUN]");
+			TFT_WRITE_SELECT(100, 100, "[HEAL]");
 			break;
 	}	
 }
@@ -134,7 +134,7 @@ void Ui_Deselect_Action(uint8_t deselect_action)
 			TFT_WRITE_DESELECT(100, 70, "[DEFENSE]");
 			break;
 		case 3:
-			TFT_WRITE_DESELECT(100, 100, "[RUN]");
+			TFT_WRITE_DESELECT(100, 100, "[HEAL]");
 			break;
 	}	
 }
