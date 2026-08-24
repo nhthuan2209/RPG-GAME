@@ -17,6 +17,8 @@ int8_t current_player = -1;
 uint8_t select_mode = 1;
 uint8_t select_action = 1;
 
+static uint32_t map_endless = 0; 
+static uint8_t battle_mode = 0;
 static Character *battle_player = 0;
 static Monster   *battle_monster = 0;
 
@@ -106,14 +108,33 @@ static void Ui_Show_Campaign()
 {
 	Ui_Campaign_Map_Page();
 	ui_page = UI_PAGE_BATTLE;
+	battle_mode = 0;
 	battle_player = &character_list[current_player];
 	battle_monster = &monster_list[campaign[current_state].monster_id];
 	Battle_Start(battle_player, battle_monster);
 	Ui_Display_Battle_Stat();	
 }
 
+#define UI_WRITE_ANNOUNCEMENT(x, y, text)					ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
-#define UI_WRITE_RESULT(x, y, text) 			ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
+static void Ui_Show_Endless()
+{
+	char announe_nextmap[20];
+	
+	HAL_Delay(800);
+	sprintf(announe_nextmap, "MAP:%d", map_endless + 1);
+	UI_WRITE_ANNOUNCEMENT(100, 80, announe_nextmap);
+	
+	RESET_DISPLAY;
+	ui_page = UI_PAGE_BATTLE;
+	battle_mode = 1;
+	battle_player = &character_list[current_player];
+	battle_monster = &monster_list[map_endless % monster_count];
+	Battle_Start(battle_player, battle_monster);
+	Ui_Display_Battle_Stat();		
+}
+
+#define UI_WRITE_RESULT(x, y, text) 							ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
 static void Ui_Battle_End(uint8_t win)
 {
@@ -126,6 +147,14 @@ static void Ui_Battle_End(uint8_t win)
 	{
 		UI_WRITE_RESULT(90, 100, "YOU WIN");
 		HAL_Delay(2000);
+		if(battle_mode == 1)
+		{
+			map_endless++;
+			RESET_DISPLAY;
+			Ui_Show_Endless();
+			return;
+		}
+		
 		if (current_state >= campaign_state_count - 1)
 		{
 			RESET_DISPLAY;
@@ -146,7 +175,21 @@ static void Ui_Battle_End(uint8_t win)
 	{
 		UI_WRITE_RESULT(90, 100, "YOU LOSE");
 		HAL_Delay(2000);
-
+	
+		if(battle_mode == 1)
+		{
+			char result[20];
+			RESET_DISPLAY;
+			sprintf(result, "Reached:%d map", map_endless + 1);
+			UI_WRITE_RESULT(70, 90, result);
+			
+			HAL_Delay(2000);
+			map_endless = 0;
+			RESET_DISPLAY;
+			ui_page = UI_PAGE_MENU;
+			Menu_Game();
+			return;			
+		}
 		Campaign_Reset();
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
@@ -168,8 +211,6 @@ void Ui_Display_Battle_Stat(void)
 }
 
 static uint8_t select_locked = 0;
-#define UI_WRITE_ANNOUNCEMENT(x, y, text)					ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MODE_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
-
 void Ui_Battle_Page(void)
 {
 	if(battle_player == 0 || battle_monster == 0)
@@ -263,8 +304,9 @@ void Ui_Confirm_Mode(uint8_t mode)
 				break;
 			case 2:
 				RESET_DISPLAY;
-				ui_page = UI_PAGE_ENDLESS;
 				Ui_Endless_Map_Page();
+				map_endless = 0;
+				Ui_Show_Endless();
 				break;
 			case 3:
 				RESET_DISPLAY;

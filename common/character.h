@@ -23,7 +23,7 @@ typedef struct
 extern Character character_list[];
 extern uint8_t character_count;
 
-void Character_Up_Level(Character *player);
+static void Character_Up_Level(Character *player);
 void Character_Gain_Exp(Character *player, int16_t exp);
 
 #endif // _CHARACTER_H_

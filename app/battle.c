@@ -9,6 +9,7 @@ void Battle_Start(Character *player, Monster *monster)
 	current_battle.state = BATTLE_PLAYER_TURN;
 	current_battle.player_defending = 0;
 	current_battle.player_usedheal = 0;
+	monster->hp = monster->max_hp;
 }
 
 void Battle_Defending()
