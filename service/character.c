@@ -6,6 +6,12 @@ Character character_list[] =
 	{"Wizard", 60, 60, 40, 2, 1, 0}
 };
 
+Character character_list_default[] =
+{
+	{"Warrior", 100, 100, 20, 5, 1, 0},
+	{"Wizard", 60, 60, 40, 2, 1, 0}
+};
+
 uint8_t character_count = sizeof(character_list) / sizeof(character_list[0]);
 
 static void Character_Up_Level(Character *player)
@@ -30,4 +36,18 @@ void Character_Gain_Exp(Character *player, int16_t exp)
 		player->exp = player->exp - EXP_UP_LEVEL;
 		Character_Up_Level(player);
 	}
+}
+
+void Character_Reset(Character *player)
+{
+    uint8_t i;
+
+    for (i = 0; i < character_count; i++)
+    {
+        if (player == &character_list[i])
+        {
+            character_list[i] = character_list_default[i];
+            return;
+        }
+    }
 }

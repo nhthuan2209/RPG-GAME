@@ -157,8 +157,49 @@ void Ui_Show_Setting(Character *player)
 	
 	sprintf(save, "Level: %d", player->level);
 	UI_WRITE_STAT(10, 135, save);
+	
+	UI_WRITE_ANNOUNCEMENT(120, 70, "PRESS SELECT");
+	UI_WRITE_ANNOUNCEMENT(145, 100, "TO RESET");
 }
 
+static uint8_t setting_confirm = 0;
+static uint32_t setting_confirm_wait = 0;
+
+void Ui_Reset_Stat()
+{
+	if (setting_confirm && HAL_GetTick() >= setting_confirm_wait)
+	{
+		setting_confirm = 0;
+	}
+	if (!Button_Select())
+	{
+		return;
+	}
+	if(setting_confirm == 0)
+	{
+		RESET_DISPLAY;
+		UI_WRITE_ANNOUNCEMENT(40, 60, "PRESS AGAIN TO");
+		UI_WRITE_ANNOUNCEMENT(40, 85, " RESET STATS");
+		HAL_Delay(1000);
+		RESET_DISPLAY;
+		Ui_Show_Setting(&character_list[current_player]);
+		
+    setting_confirm = 1;
+    setting_confirm_wait = 3000 + HAL_GetTick();		
+	}
+	else
+	{
+		setting_confirm = 0;
+		Character_Reset(&character_list[current_player]);
+	
+		RESET_DISPLAY;
+		UI_WRITE_ANNOUNCEMENT(70, 70, "RESET COMPLETE");
+		HAL_Delay(1000);
+		RESET_DISPLAY;
+		ui_page = UI_PAGE_MENU;
+		Menu_Game();	
+	}
+}
 
 #define UI_WRITE_RESULT(x, y, text) 							ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 

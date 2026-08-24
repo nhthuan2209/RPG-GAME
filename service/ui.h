@@ -33,6 +33,7 @@ void Ui_Battle_Page(void);
 static void Ui_Show_Campaign();
 static void Ui_Show_Endless();
 void Ui_Show_Setting(Character *player);
+void Ui_Reset_Stat();
 void Ui_Back_MenuGame();
 
 #endif // _UI_H_
