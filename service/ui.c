@@ -299,3 +299,13 @@ void Ui_Move_Mode(uint8_t *sl_mode)
 	}
 }
 
+void Ui_Back_MenuGame()
+{
+	if(Button_Back())
+	{
+		RESET_DISPLAY;
+		ui_page = UI_PAGE_MENU;
+		Menu_Game();
+	}
+
+}

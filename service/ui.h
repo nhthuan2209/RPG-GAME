@@ -31,4 +31,6 @@ void Ui_Move_Mode(uint8_t *sl_mode);
 static void Ui_Battle_End(uint8_t win);
 void Ui_Battle_Page(void);
 static void Ui_Show_Campaign();
+void Ui_Back_MenuGame();
+
 #endif // _UI_H_

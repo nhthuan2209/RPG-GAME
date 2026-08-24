@@ -122,6 +122,10 @@ int main(void)
 		{
 			Ui_Battle_Page();
 		}
+		if (ui_page != UI_PAGE_WAITING)
+		{
+			Ui_Back_MenuGame();
+		}
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
