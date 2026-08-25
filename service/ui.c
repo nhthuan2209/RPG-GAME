@@ -41,7 +41,7 @@ void UI_HandleWaitingForRfidCard(void)
 				endless_players[current_player] = player_list[current_player];
 				ui_page = UI_PAGE_MENU;
 				RESET_DISPLAY;
-				LCD_Menu_Game();
+				LCD_Draw_Menu_Game();
 			}
 		}
 	}
@@ -112,7 +112,7 @@ void UI_Update_Stats(Player *player, Monster *monster)
 
 static void UI_Show_Campaign(void)
 {
-	LCD_Campaign_Map_Page();
+	LCD_Draw_Campaign_Map();
 	ui_page = UI_PAGE_BATTLE;
 	battle_mode = 0;
 	battle_player = &campaign_players[current_player];
@@ -220,7 +220,7 @@ void UI_Reset_Stat(void)
 		HAL_Delay(1000);
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
-		LCD_Menu_Game();
+		LCD_Draw_Menu_Game();
 	}
 }
 
@@ -254,7 +254,7 @@ static void UI_Battle_End(uint8_t win)
 			Campaign_Reset();
 			RESET_DISPLAY;
 			ui_page = UI_PAGE_MENU;
-			LCD_Menu_Game();
+			LCD_Draw_Menu_Game();
 			return;			
 		}
 		Campaign_NextStage();
@@ -277,22 +277,22 @@ static void UI_Battle_End(uint8_t win)
 			map_endless = 0;
 			RESET_DISPLAY;
 			ui_page = UI_PAGE_MENU;
-			LCD_Menu_Game();
+			LCD_Draw_Menu_Game();
 			return;			
 		}
 		Campaign_Reset();
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
-		LCD_Menu_Game();
+		LCD_Draw_Menu_Game();
 	}
 }
 
 void UI_Display_Battle_Stat(void)
 {
 	ST7789_Fill_Color(BLACK);
-	LCD_Monster_Appearance();
-	LCD_Player_Appearance();
-	LCD_Stats_Appearance();
+	LCD_Draw_Monster_Appearance();
+	LCD_Draw_Player_Appearance();
+	LCD_Draw_Stats();
 	LCD_Action();
 	if(battle_player != 0 && battle_monster != 0)
 	{
@@ -322,6 +322,7 @@ void UI_Battle_Page(void)
 		select_locked = 1;
 		if (select_action == 1)
 		{
+			LCD_AttackEffect(1);
 			Battle_Attack_Monster();
 			UI_Update_Stats(battle_player, battle_monster);
 	 
@@ -332,6 +333,7 @@ void UI_Battle_Page(void)
 				return;
 			}
 			HAL_Delay(1000);
+			LCD_AttackEffect(0);
 			Battle_Attack_Player();
 			UI_Update_Stats(battle_player, battle_monster);
 			
@@ -347,6 +349,7 @@ void UI_Battle_Page(void)
 			UI_Update_Stats(battle_player, battle_monster);
 			
 			HAL_Delay(400);
+			LCD_AttackEffect(0);
 			Battle_Attack_Player();
 			UI_Update_Stats(battle_player, battle_monster);
 			if(Battle_GetState() == BATTLE_DEFEAT)
@@ -370,6 +373,7 @@ void UI_Battle_Page(void)
 				UI_Update_Stats(battle_player, battle_monster);
 				
 				HAL_Delay(400);
+				LCD_AttackEffect(0);
 				Battle_Attack_Player();        
 				UI_Update_Stats(battle_player, battle_monster);
 				if(Battle_GetState() == BATTLE_DEFEAT)
@@ -394,7 +398,7 @@ void UI_Confirm_Mode(uint8_t mode)
 				break;
 			case 2:
 				RESET_DISPLAY;
-				LCD_Endless_Map_Page();
+				LCD_Draw_Endless_Map();
 				UI_Show_Endless();
 				break;
 			case 3:
@@ -436,6 +440,6 @@ void UI_Back_MenuGame(void)
 	{
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
-		LCD_Menu_Game();
+		LCD_Draw_Menu_Game();
 	}
 }

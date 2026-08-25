@@ -9,7 +9,7 @@
 #define LCD_WRITE_SELECT(x, y, text)		ST7789_WriteString(x, y, text, FONT_OPTION_FUNCTION, LETTER_MODE_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 #define LCD_WRITE_DESELECT(x, y, text)		ST7789_WriteString(x, y, text, FONT_OPTION_FUNCTION, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
-void LCD_Menu_Game(void)
+void LCD_Draw_Menu_Game(void)
 {
 	LCD_WRITE_MENU  (85, 20, "RFID GAME");
 	LCD_WRITE_OPTION(85, 60, "CAMPAIGN");
@@ -17,7 +17,7 @@ void LCD_Menu_Game(void)
 	LCD_WRITE_OPTION(85, 140, "SETTING");
 }
 
-void LCD_Waiting_Display(void)
+void LCD_Draw_Waiting_Display(void)
 {
 	LCD_WRITE_MENU(85, 20, "RFID GAME");
 	LCD_WRITE_MENU(50, 60, " PLEASE SCAN");
@@ -32,7 +32,7 @@ void LCD_Action(void)
 	LCD_WRITE_OPTION(100, 100, "[HEAL]");
 }
 
-void LCD_Monster_Appearance(void)
+void LCD_Draw_Monster_Appearance(void)
 {
 	LCD_WRITE_CIRCLE(250, 50, 10);
 	LCD_WRITE_LINE(250, 60, 250, 90);
@@ -42,7 +42,7 @@ void LCD_Monster_Appearance(void)
 	LCD_WRITE_LINE(250, 75, 270, 75);
 }
 
-void LCD_Player_Appearance(void)
+void LCD_Draw_Player_Appearance(void)
 {
 	LCD_WRITE_CIRCLE(30, 50, 10);
 	LCD_WRITE_LINE(30, 60, 30, 90);
@@ -52,7 +52,51 @@ void LCD_Player_Appearance(void)
 	LCD_WRITE_LINE(30, 75, 50, 75);
 }
 
-void LCD_Stats_Appearance(void)
+static void LCD_RedrawCombat(uint8_t player)
+{
+	if (player)
+	{
+		ST7789_Fill(0, 30, 65, 119, BLACK);
+		LCD_Draw_Player_Appearance();
+	}
+	else
+	{
+		ST7789_Fill(215, 30, 305, 119, BLACK);
+		LCD_Draw_Monster_Appearance();
+	}
+}
+
+static void LCD_DrawHit(uint16_t x, uint16_t y, uint16_t radius, uint16_t color)
+{
+	ST7789_DrawCircle(x, y, radius, color);
+}
+
+void LCD_AttackEffect(uint8_t attacker_is_player)
+{
+	uint16_t target_x;
+	uint16_t color;
+	uint8_t frame;
+
+	if (attacker_is_player)
+	{
+		target_x = 250;
+		color = YELLOW;
+	}
+	else
+	{
+		target_x = 30;
+		color = RED;
+	}
+
+	for (frame = 0; frame < 3; frame++)
+	{
+		uint16_t radius = 10 + frame * 7;
+		LCD_DrawHit(target_x, 75, radius, color);
+		HAL_Delay(70);
+	}
+}
+
+void LCD_Draw_Stats(void)
 {
 	LCD_WRITE_LINE(10, 120, 320, 120);
 	LCD_WRITE_STAT(10, 130, "HP: ");
@@ -66,7 +110,7 @@ void LCD_Stats_Appearance(void)
 	LCD_WRITE_STAT(250, 150, "EXP: ");
 }
 
-void LCD_Endless_Map_Page(void)
+void LCD_Draw_Endless_Map(void)
 {
 	LCD_WRITE_MENU(10, 10, "ENDLESS");
 	LCD_WRITE_OPTION(28, 42, "START");
@@ -153,7 +197,7 @@ void LCD_Deselect_Action(uint8_t deselect_action)
 	}	
 }
 
-void LCD_Campaign_Map_Page(void)
+void LCD_Draw_Campaign_Map(void)
 {
 	LCD_WRITE_MENU(10, 10, "CAMPAIGN");
 	LCD_WRITE_LINE(40, 70, 40, 120);
