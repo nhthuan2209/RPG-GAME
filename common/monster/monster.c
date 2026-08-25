@@ -1,4 +1,4 @@
-#include "add_monster.h"
+#include "monster.h"
 
 Monster monster_list[] =
 {
@@ -6,7 +6,7 @@ Monster monster_list[] =
     {"Goblin", 80, 80, 15, 5, 35},
     {"Wolf", 100, 100, 20, 8, 50},
     {"Dragon", 300, 300, 40, 15, 100},
-		{"Lord", 500, 500, 60, 25, 300}
+	{"Lord", 500, 500, 60, 25, 300}
 };
 
 uint8_t monster_count =

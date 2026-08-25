@@ -1,7 +1,7 @@
 #ifndef _BUTTON_CONFIG_H_
 #define _BUTTON_CONFIG_H_
 
-#include <stm32f1xx_hal_gpio.h>
+#include "main.h"
 
 #define BUTTON_UP_PORT									GPIOA
 #define BUTTON_UP_PIN										GPIO_PIN_11

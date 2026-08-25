@@ -21,12 +21,14 @@
 "rpg_game\system_stm32f1xx.o"
 "rpg_game\button.o"
 "rpg_game\led.o"
-"rpg_game\ui.o"
-"rpg_game\user.o"
-"rpg_game\character.o"
+"rpg_game\tft.o"
+"rpg_game\rfid.o"
 "rpg_game\add_monster.o"
-"rpg_game\battle.o"
 "rpg_game\campaign.o"
+"rpg_game\character.o"
+"rpg_game\ui.o"
+"rpg_game\battle.o"
+"rpg_game\user.o"
 --strict --scatter "rpg_game\rpg_game.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

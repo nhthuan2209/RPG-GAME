@@ -22,9 +22,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "st7789.h"
+#include "lcd.h"
 #include "rc522.h"
 #include "fonts.h"
-#include "string.h"
+#include <string.h>
 #include "definition.h"
 #include "button.h"
 #include "user.h"
@@ -103,7 +104,7 @@ int main(void)
 	RESET_DISPLAY;
 	ST7789_Init();
 	MFRC522_Init();
-	Waiting_Display();
+  LCD_Waiting_Display();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,20 +112,24 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-		Ui_PollWaitingScreen();
+    UI_HandleWaitingForRfidCard();
 		if (ui_page == UI_PAGE_MENU)
 		{
-			Ui_Select_Mode(select_mode);
-			Ui_Confirm_Mode(select_mode);
-			Ui_Move_Mode(&select_mode);
+      LCD_Select_Mode(select_mode);
+      UI_Confirm_Mode(select_mode);
+      UI_Move_Mode(&select_mode);
 		}
 		else if (ui_page == UI_PAGE_BATTLE)
 		{
-			Ui_Battle_Page();
+      UI_Battle_Page();
 		}
 		if (ui_page != UI_PAGE_WAITING)
 		{
-			Ui_Back_MenuGame();
+      UI_Back_MenuGame();
+		}
+		if (ui_page == UI_PAGE_SETTING)
+		{
+      UI_Reset_Stat();
 		}
     /* USER CODE BEGIN 3 */
   }

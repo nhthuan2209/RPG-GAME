@@ -2,7 +2,7 @@
 
 static Battle current_battle;
 
-void Battle_Start(Character *player, Monster *monster)
+void Battle_Start(Player *player, Monster *monster)
 {
 	current_battle.player = player;
 	current_battle.monster = monster;

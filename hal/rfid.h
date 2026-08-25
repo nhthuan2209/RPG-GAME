@@ -6,6 +6,6 @@
 
 #define RFID_UID_LEN					5
 
-bool Rfid_TryReadUid(uint8_t uid_out[RFID_UID_LEN]);
+bool Rfid_TryReadUid(uint8_t* uid_out, size_t out_len);
 
 #endif // _RFID_H_

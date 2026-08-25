@@ -1,1 +1,1 @@
-rpg_game/character.o: ..\service\character.c ..\Core\Inc\character.h
+rpg_game/character.o: ..\service\character.c ..\common\character.h

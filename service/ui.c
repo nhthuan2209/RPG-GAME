@@ -5,12 +5,12 @@
 #include "user.h"
 #include "definition.h"
 #include "button.h"
-#include "character.h"
-#include "add_monster.h"
+#include "player.h"
+#include "monster.h"
 #include "battle.h"
 #include "campaign.h"
 #include "rfid.h"
-#include "tft.h"
+#include "lcd.h"
 
 uint8_t card = 0;
 int8_t current_player = -1;
@@ -19,12 +19,12 @@ uint8_t select_action = 1;
 
 static uint32_t map_endless = 0; 
 static uint8_t battle_mode = 0;
-static Character *battle_player = 0;
+static Player *battle_player = 0;
 static Monster   *battle_monster = 0;
 
 UiPage ui_page = UI_PAGE_WAITING;
 
-void Ui_PollWaitingScreen(void)
+void UI_HandleWaitingForRfidCard(void)
 {
 	if (ui_page == UI_PAGE_WAITING)
 	{
@@ -35,39 +35,39 @@ void Ui_PollWaitingScreen(void)
 			if (current_player >= 0) {
 				ui_page = UI_PAGE_MENU;
 				RESET_DISPLAY;
-				Menu_Game();
+				LCD_Menu_Game();
 			}
 		}
 	}
 }
 
-void Ui_Move_Action(uint8_t *sl_action)
+void UI_Move_Action(uint8_t *sl_action)
 {
 	if(Button_Down())
 	{
 		HAL_Delay(100);
-		Ui_Deselect_Action(*sl_action);
+		LCD_Deselect_Action(*sl_action);
 		if (*sl_action < 3)
 		{
 			(*sl_action)++;
 		}
-		Ui_Select_Action(*sl_action);
+		LCD_Select_Action(*sl_action);
 	}
 	if(Button_Up())
 	{
 		HAL_Delay(100);
-		Ui_Deselect_Action(*sl_action);
+		LCD_Deselect_Action(*sl_action);
 		if (*sl_action > 1)
 		{
 			(*sl_action)--;
 		}
-		Ui_Select_Action(*sl_action);
+		LCD_Select_Action(*sl_action);
 	}
 }
 
 #define UI_WRITE_STAT(x, y, text) 			ST7789_WriteString(x, y, text, FONT_STATS, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
 
-void Ui_Player_Stats(Character *player)
+void UI_Player_Stats(Player *player)
 {
 	char save[20];
 	
@@ -84,7 +84,7 @@ void Ui_Player_Stats(Character *player)
 	UI_WRITE_STAT(30, 150, save);
 }
 
-void Ui_Monster_Stats(Monster *monster)
+void UI_Monster_Stats(Monster *monster)
 {
 	char save[20];
 	
@@ -98,26 +98,26 @@ void Ui_Monster_Stats(Monster *monster)
 	UI_WRITE_STAT(270, 150, save);
 }
 
-void Ui_Update_Stats(Character *player, Monster *monster)
+void UI_Update_Stats(Player *player, Monster *monster)
 {
-	Ui_Player_Stats(player);
-	Ui_Monster_Stats(monster);
+	UI_Player_Stats(player);
+	UI_Monster_Stats(monster);
 }
 
-static void Ui_Show_Campaign()
+static void UI_Show_Campaign(void)
 {
-	Ui_Campaign_Map_Page();
+	LCD_Campaign_Map_Page();
 	ui_page = UI_PAGE_BATTLE;
 	battle_mode = 0;
-	battle_player = &character_list[current_player];
+	battle_player = &player_list[current_player];
 	battle_monster = &monster_list[campaign[current_state].monster_id];
 	Battle_Start(battle_player, battle_monster);
-	Ui_Display_Battle_Stat();	
+	UI_Display_Battle_Stat();
 }
 
 #define UI_WRITE_ANNOUNCEMENT(x, y, text)					ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
-static void Ui_Show_Endless()
+static void UI_Show_Endless(void)
 {
 	char announe_nextmap[20];
 	
@@ -128,13 +128,13 @@ static void Ui_Show_Endless()
 	RESET_DISPLAY;
 	ui_page = UI_PAGE_BATTLE;
 	battle_mode = 1;
-	battle_player = &character_list[current_player];
+	battle_player = &player_list[current_player];
 	battle_monster = &monster_list[map_endless % monster_count];
 	Battle_Start(battle_player, battle_monster);
-	Ui_Display_Battle_Stat();		
+	UI_Display_Battle_Stat();
 }
 
-void Ui_Show_Setting(Character *player)
+void UI_Show_Setting(Player *player)
 {
 	char save[20];
 	
@@ -165,7 +165,7 @@ void Ui_Show_Setting(Character *player)
 static uint8_t setting_confirm = 0;
 static uint32_t setting_confirm_wait = 0;
 
-void Ui_Reset_Stat()
+void UI_Reset_Stat(void)
 {
 	if (setting_confirm && HAL_GetTick() >= setting_confirm_wait)
 	{
@@ -182,7 +182,7 @@ void Ui_Reset_Stat()
 		UI_WRITE_ANNOUNCEMENT(40, 85, " RESET STATS");
 		HAL_Delay(1000);
 		RESET_DISPLAY;
-		Ui_Show_Setting(&character_list[current_player]);
+		UI_Show_Setting(&player_list[current_player]);
 		
     setting_confirm = 1;
     setting_confirm_wait = 3000 + HAL_GetTick();		
@@ -190,20 +190,20 @@ void Ui_Reset_Stat()
 	else
 	{
 		setting_confirm = 0;
-		Character_Reset(&character_list[current_player]);
+		Player_Reset(&player_list[current_player]);
 	
 		RESET_DISPLAY;
 		UI_WRITE_ANNOUNCEMENT(70, 70, "RESET COMPLETE");
 		HAL_Delay(1000);
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
-		Menu_Game();	
+		LCD_Menu_Game();
 	}
 }
 
 #define UI_WRITE_RESULT(x, y, text) 							ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
-static void Ui_Battle_End(uint8_t win)
+static void UI_Battle_End(uint8_t win)
 {
 	battle_player = 0;
 	battle_monster = 0;
@@ -218,7 +218,7 @@ static void Ui_Battle_End(uint8_t win)
 		{
 			map_endless++;
 			RESET_DISPLAY;
-			Ui_Show_Endless();
+			UI_Show_Endless();
 			return;
 		}
 		
@@ -231,12 +231,12 @@ static void Ui_Battle_End(uint8_t win)
 			Campaign_Reset();
 			RESET_DISPLAY;
 			ui_page = UI_PAGE_MENU;
-			Menu_Game();
+			LCD_Menu_Game();
 			return;			
 		}
 		Campaign_NextStage();
 		RESET_DISPLAY;
-		Ui_Show_Campaign();		
+		UI_Show_Campaign();
 	}
 	else
 	{
@@ -254,31 +254,31 @@ static void Ui_Battle_End(uint8_t win)
 			map_endless = 0;
 			RESET_DISPLAY;
 			ui_page = UI_PAGE_MENU;
-			Menu_Game();
+			LCD_Menu_Game();
 			return;			
 		}
 		Campaign_Reset();
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
-		Menu_Game();
+		LCD_Menu_Game();
 	}
 }
 
-void Ui_Display_Battle_Stat(void)
+void UI_Display_Battle_Stat(void)
 {
 	ST7789_Fill_Color(BLACK);
-	Ui_Monster_Appearance();
-	Ui_Player_Appearance();
-	Ui_Stats_Appearance();
-	Ui_Action();
+	LCD_Monster_Appearance();
+	LCD_Player_Appearance();
+	LCD_Stats_Appearance();
+	LCD_Action();
 	if(battle_player != 0 && battle_monster != 0)
 	{
-		Ui_Update_Stats(battle_player, battle_monster);
+		UI_Update_Stats(battle_player, battle_monster);
 	}	
 }
 
 static uint8_t select_locked = 0;
-void Ui_Battle_Page(void)
+void UI_Battle_Page(void)
 {
 	if(battle_player == 0 || battle_monster == 0)
 	{
@@ -288,8 +288,8 @@ void Ui_Battle_Page(void)
 	{
 		return;
 	}
-	Ui_Select_Action(select_action);
-	Ui_Move_Action(&select_action);
+	LCD_Select_Action(select_action);
+	UI_Move_Action(&select_action);
 	if(!Button_Select())
 	{
 		select_locked = 0;   
@@ -300,35 +300,35 @@ void Ui_Battle_Page(void)
 		if (select_action == 1)
 		{
 			Battle_Attack_Monster();
-			Ui_Update_Stats(battle_player, battle_monster);
+			UI_Update_Stats(battle_player, battle_monster);
 	 
 			if(Battle_GetState() == BATTLE_VICTORY)
 			{
-				Character_Gain_Exp(battle_player, battle_monster->exp_reward);
-				Ui_Battle_End(1);
+				Player_GainExp(battle_player, battle_monster->exp_reward);
+				UI_Battle_End(1);
 				return;
 			}
 			HAL_Delay(1000);
 			Battle_Attack_Player();
-			Ui_Update_Stats(battle_player, battle_monster);
+			UI_Update_Stats(battle_player, battle_monster);
 			
 			if(Battle_GetState() == BATTLE_DEFEAT)
 			{
-				Ui_Battle_End(0);
+				UI_Battle_End(0);
 				return;
 			}
 		}
 		else if (select_action == 2)
 		{
 			Battle_Defending();
-			Ui_Update_Stats(battle_player, battle_monster);
+			UI_Update_Stats(battle_player, battle_monster);
 			
 			HAL_Delay(400);
       Battle_Attack_Player();        
-      Ui_Update_Stats(battle_player, battle_monster);
+	UI_Update_Stats(battle_player, battle_monster);
 			if(Battle_GetState() == BATTLE_DEFEAT)
 			{
-				Ui_Battle_End(0);
+				UI_Battle_End(0);
 				return;
 			}
 		}
@@ -339,19 +339,19 @@ void Ui_Battle_Page(void)
 				UI_WRITE_ANNOUNCEMENT(30, 70, "OUT OF POTION");
 				HAL_Delay(550);
 				RESET_DISPLAY;
-				Ui_Display_Battle_Stat();			
+				UI_Display_Battle_Stat();
 			}
 			else
 			{
 				Battle_Heal();
-				Ui_Update_Stats(battle_player, battle_monster);
+				UI_Update_Stats(battle_player, battle_monster);
 				
 				HAL_Delay(400);
 				Battle_Attack_Player();        
-				Ui_Update_Stats(battle_player, battle_monster);
+				UI_Update_Stats(battle_player, battle_monster);
 				if(Battle_GetState() == BATTLE_DEFEAT)
 				{
-					Ui_Battle_End(0);
+					UI_Battle_End(0);
 					return;
 				}			
 			}
@@ -359,7 +359,7 @@ void Ui_Battle_Page(void)
 	}
 }
 
-void Ui_Confirm_Mode(uint8_t mode)
+void UI_Confirm_Mode(uint8_t mode)
 {
 	if(Button_Select())
 	{
@@ -367,52 +367,52 @@ void Ui_Confirm_Mode(uint8_t mode)
 		{
 			case 1:
 				RESET_DISPLAY;
-				Ui_Show_Campaign();
+				UI_Show_Campaign();
 				break;
 			case 2:
 				RESET_DISPLAY;
-				Ui_Endless_Map_Page();
-				Ui_Show_Endless();
+				LCD_Endless_Map_Page();
+				UI_Show_Endless();
 				break;
 			case 3:
 				RESET_DISPLAY;
 				ui_page = UI_PAGE_SETTING;
-				Ui_Show_Setting(&character_list[current_player]);
+				UI_Show_Setting(&player_list[current_player]);
 				break;
 		}
 	}
 }
 
-void Ui_Move_Mode(uint8_t *sl_mode)
+void UI_Move_Mode(uint8_t *sl_mode)
 {
 	if(Button_Down())
 	{
 		HAL_Delay(100);
-		Ui_Deselect_Mode(*sl_mode);
+		LCD_Deselect_Mode(*sl_mode);
 		if (*sl_mode < 3)
 		{
 			(*sl_mode)++;
 		}
-		Ui_Select_Mode(*sl_mode);
+		LCD_Select_Mode(*sl_mode);
 	}
 	if(Button_Up())
 	{
 		HAL_Delay(100);
-		Ui_Deselect_Mode(*sl_mode);
+		LCD_Deselect_Mode(*sl_mode);
 		if (*sl_mode > 1)
 		{
 			(*sl_mode)--;
 		}
-		Ui_Select_Mode(*sl_mode);
+		LCD_Select_Mode(*sl_mode);
 	}
 }
 
-void Ui_Back_MenuGame()
+void UI_Back_MenuGame(void)
 {
 	if(Button_Back())
 	{
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
-		Menu_Game();
+		LCD_Menu_Game();
 	}
 }
