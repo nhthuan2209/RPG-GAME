@@ -20,7 +20,7 @@ uint8_t select_action = 1;
 static uint32_t map_endless = 0; 
 static uint8_t battle_mode = 0;
 static Player *battle_player = 0;
-static Monster   *battle_monster = 0;
+static Monster *battle_monster = 0;
 
 UiPage ui_page = UI_PAGE_WAITING;
 
@@ -30,7 +30,7 @@ void UI_HandleWaitingForRfidCard(void)
 	{
 		uint8_t uid[RFID_UID_LEN];
  
-		if (Rfid_TryReadUid(uid)) {
+		if (Rfid_TryReadUid(uid, RFID_UID_LEN)) {
 			current_player = User_FindUid(uid);
 			if (current_player >= 0) {
 				ui_page = UI_PAGE_MENU;
@@ -167,9 +167,13 @@ static uint32_t setting_confirm_wait = 0;
 
 void UI_Reset_Stat(void)
 {
-	if (setting_confirm && HAL_GetTick() >= setting_confirm_wait)
+	uint32_t now = HAL_GetTick();
+
+	if (setting_confirm && (int32_t)(now - setting_confirm_wait) >= 0)
 	{
 		setting_confirm = 0;
+		RESET_DISPLAY;
+		UI_Show_Setting(&player_list[current_player]);
 	}
 	if (!Button_Select())
 	{
@@ -180,12 +184,8 @@ void UI_Reset_Stat(void)
 		RESET_DISPLAY;
 		UI_WRITE_ANNOUNCEMENT(40, 60, "PRESS AGAIN TO");
 		UI_WRITE_ANNOUNCEMENT(40, 85, " RESET STATS");
-		HAL_Delay(1000);
-		RESET_DISPLAY;
-		UI_Show_Setting(&player_list[current_player]);
-		
-    setting_confirm = 1;
-    setting_confirm_wait = 3000 + HAL_GetTick();		
+		setting_confirm_wait = now + 3000;
+		setting_confirm = 1;
 	}
 	else
 	{
@@ -324,8 +324,8 @@ void UI_Battle_Page(void)
 			UI_Update_Stats(battle_player, battle_monster);
 			
 			HAL_Delay(400);
-      Battle_Attack_Player();        
-	UI_Update_Stats(battle_player, battle_monster);
+			Battle_Attack_Player();
+			UI_Update_Stats(battle_player, battle_monster);
 			if(Battle_GetState() == BATTLE_DEFEAT)
 			{
 				UI_Battle_End(0);

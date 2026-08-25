@@ -16,7 +16,7 @@ typedef enum{
 
 typedef struct
 {
-	Player *player;
+		Player *player;
     Monster *monster;
 
     BattleState state;
