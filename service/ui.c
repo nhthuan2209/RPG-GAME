@@ -128,8 +128,10 @@ static void UI_Show_Endless(void)
 	char announe_nextmap[20];
 	
 	HAL_Delay(800);
+	RESET_DISPLAY;
 	sprintf(announe_nextmap, "MAP:%d", map_endless + 1);
 	UI_WRITE_ANNOUNCEMENT(100, 80, announe_nextmap);
+	HAL_Delay(500);
 	
 	RESET_DISPLAY;
 	ui_page = UI_PAGE_BATTLE;
@@ -214,7 +216,7 @@ void UI_Reset_Stat(void)
 		endless_players[current_player] = player_list[current_player];
 	
 		RESET_DISPLAY;
-		UI_WRITE_ANNOUNCEMENT(70, 70, "RESET COMPLETE");
+		UI_WRITE_ANNOUNCEMENT(48, 70, "RESET COMPLETE");
 		HAL_Delay(1000);
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;
@@ -233,7 +235,7 @@ static void UI_Battle_End(uint8_t win)
 	
 	if(win)
 	{
-		UI_WRITE_RESULT(90, 100, "YOU WIN");
+		UI_WRITE_RESULT(104, 75, "YOU WIN");
 		HAL_Delay(2000);
 		if(battle_mode == 1)
 		{
@@ -246,7 +248,7 @@ static void UI_Battle_End(uint8_t win)
 		if (current_state >= campaign_state_count - 1)
 		{
 			RESET_DISPLAY;
-			UI_WRITE_RESULT(75, 100, "CAMPAIGN CLEAR!");
+			UI_WRITE_RESULT(40, 75, "CAMPAIGN CLEAR!");
 			HAL_Delay(2000);
 
 			Campaign_Reset();
@@ -261,7 +263,7 @@ static void UI_Battle_End(uint8_t win)
 	}
 	else
 	{
-		UI_WRITE_RESULT(90, 100, "YOU LOSE");
+		UI_WRITE_RESULT(96, 75, "YOU LOSE");
 		HAL_Delay(2000);
 	
 		if(battle_mode == 1)
@@ -269,7 +271,7 @@ static void UI_Battle_End(uint8_t win)
 			char result[20];
 			RESET_DISPLAY;
 			sprintf(result, "Reached:%d map", map_endless + 1);
-			UI_WRITE_RESULT(70, 90, result);
+			UI_WRITE_RESULT(56, 75, result);
 			
 			HAL_Delay(2000);
 			map_endless = 0;
@@ -357,7 +359,7 @@ void UI_Battle_Page(void)
 		{
 			if(Battle_Count_HealPotion() == 0)
 			{
-				UI_WRITE_ANNOUNCEMENT(30, 70, "OUT OF POTION");
+				UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF POTION");
 				HAL_Delay(550);
 				RESET_DISPLAY;
 				UI_Display_Battle_Stat();
