@@ -23,7 +23,7 @@ void UI_Display_Battle_Stat(void);
 void UI_Confirm_Mode(uint8_t mode);
 void UI_Move_Mode(uint8_t *sl_mode);
 void UI_Battle_Page(void);
-void UI_Show_Setting(Player *player);
+void UI_Show_Setting(Player *campaign_player, Player *endless_player);
 void UI_Reset_Stat(void);
 void UI_Back_MenuGame(void);
 

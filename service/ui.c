@@ -140,32 +140,45 @@ static void UI_Show_Endless(void)
 	UI_Display_Battle_Stat();
 }
 
-void UI_Show_Setting(Player *player)
+void UI_Show_Setting(Player *campaign_player, Player *endless_player)
 {
-	char save[20];
+	char save[32];
 	
-	UI_WRITE_ANNOUNCEMENT(10, 10, "CHARACTER");
+	UI_WRITE_ANNOUNCEMENT(10, 10, "CAMPAIGN");
+	UI_WRITE_ANNOUNCEMENT(180, 10, "ENDLESS");
 
-	sprintf(save, "Name: %s", player->name);
+	sprintf(save, "Name: %s", campaign_player->name);
 	UI_WRITE_STAT(10, 35, save);
+	sprintf(save, "Name: %s", endless_player->name);
+	UI_WRITE_STAT(170, 35, save);
 	
-	sprintf(save, "Health: %d/%d", player->hp, player->max_hp);
+	sprintf(save, "HP:%d/%d", campaign_player->hp, campaign_player->max_hp);
 	UI_WRITE_STAT(10, 55, save);
+	sprintf(save, "HP:%d/%d", endless_player->hp, endless_player->max_hp);
+	UI_WRITE_STAT(170, 55, save);
 	
-	sprintf(save, "Strength: %d", player->attack);
+	sprintf(save, "ATK:%d", campaign_player->attack);
 	UI_WRITE_STAT(10, 75, save);
+	sprintf(save, "ATK:%d", endless_player->attack);
+	UI_WRITE_STAT(170, 75, save);
 	
-	sprintf(save, "Defense: %d", player->defense);
+	sprintf(save, "DEF:%d", campaign_player->defense);
 	UI_WRITE_STAT(10, 95, save);
+	sprintf(save, "DEF:%d", endless_player->defense);
+	UI_WRITE_STAT(170, 95, save);
 	
-	sprintf(save, "Experience: %d", player->exp);
+	sprintf(save, "EXP:%d", campaign_player->exp);
 	UI_WRITE_STAT(10, 115, save);
+	sprintf(save, "EXP:%d", endless_player->exp);
+	UI_WRITE_STAT(170, 115, save);
 	
-	sprintf(save, "Level: %d", player->level);
+	sprintf(save, "LV:%d", campaign_player->level);
 	UI_WRITE_STAT(10, 135, save);
+	sprintf(save, "LV:%d", endless_player->level);
+	UI_WRITE_STAT(170, 135, save);
 	
-	UI_WRITE_ANNOUNCEMENT(120, 70, "PRESS SELECT");
-	UI_WRITE_ANNOUNCEMENT(145, 100, "TO RESET");
+	UI_WRITE_STAT(10, 155, "SELECT:RESET");
+	UI_WRITE_STAT(170, 155, "BACK:EXIT");
 }
 
 static uint8_t setting_confirm = 0;
@@ -179,7 +192,7 @@ void UI_Reset_Stat(void)
 	{
 		setting_confirm = 0;
 		RESET_DISPLAY;
-		UI_Show_Setting(&player_list[current_player]);
+		UI_Show_Setting(&campaign_players[current_player], &endless_players[current_player]);
 	}
 	if (!Button_Select())
 	{
@@ -385,7 +398,7 @@ void UI_Confirm_Mode(uint8_t mode)
 			case 3:
 				RESET_DISPLAY;
 				ui_page = UI_PAGE_SETTING;
-				UI_Show_Setting(&player_list[current_player]);
+				UI_Show_Setting(&campaign_players[current_player], &endless_players[current_player]);
 				break;
 		}
 	}
