@@ -17,8 +17,12 @@ int8_t current_player = -1;
 uint8_t select_mode = 1;
 uint8_t select_action = 1;
 
+#define PLAYER_MODE_COUNT 2
+
 static uint32_t map_endless = 0; 
 static uint8_t battle_mode = 0;
+static Player campaign_players[PLAYER_MODE_COUNT];
+static Player endless_players[PLAYER_MODE_COUNT];
 static Player *battle_player = 0;
 static Monster *battle_monster = 0;
 
@@ -33,6 +37,8 @@ void UI_HandleWaitingForRfidCard(void)
 		if (Rfid_TryReadUid(uid, RFID_UID_LEN)) {
 			current_player = User_FindUid(uid);
 			if (current_player >= 0) {
+				campaign_players[current_player] = player_list[current_player];
+				endless_players[current_player] = player_list[current_player];
 				ui_page = UI_PAGE_MENU;
 				RESET_DISPLAY;
 				LCD_Menu_Game();
@@ -109,7 +115,7 @@ static void UI_Show_Campaign(void)
 	LCD_Campaign_Map_Page();
 	ui_page = UI_PAGE_BATTLE;
 	battle_mode = 0;
-	battle_player = &player_list[current_player];
+	battle_player = &campaign_players[current_player];
 	battle_monster = &monster_list[campaign[current_state].monster_id];
 	Battle_Start(battle_player, battle_monster);
 	UI_Display_Battle_Stat();
@@ -128,7 +134,7 @@ static void UI_Show_Endless(void)
 	RESET_DISPLAY;
 	ui_page = UI_PAGE_BATTLE;
 	battle_mode = 1;
-	battle_player = &player_list[current_player];
+	battle_player = &endless_players[current_player];
 	battle_monster = &monster_list[map_endless % monster_count];
 	Battle_Start(battle_player, battle_monster);
 	UI_Display_Battle_Stat();
@@ -191,6 +197,8 @@ void UI_Reset_Stat(void)
 	{
 		setting_confirm = 0;
 		Player_Reset(&player_list[current_player]);
+		campaign_players[current_player] = player_list[current_player];
+		endless_players[current_player] = player_list[current_player];
 	
 		RESET_DISPLAY;
 		UI_WRITE_ANNOUNCEMENT(70, 70, "RESET COMPLETE");
