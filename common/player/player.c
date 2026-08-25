@@ -2,14 +2,14 @@
 
 Player player_list[] =
 {
-	{"Warrior", 100, 100, 20, 5, 1, 0},
-	{"Wizard", 60, 60, 40, 2, 1, 0}
+	{"Warrior", 90, 90, 18, 5, 1, 0},
+	{"Wizard", 60, 60, 32, 2, 1, 0}
 };
 
 Player player_list_default[] =
 {
-	{"Warrior", 100, 100, 20, 5, 1, 0},
-	{"Wizard", 60, 60, 40, 2, 1, 0}
+	{"Warrior", 90, 90, 18, 5, 1, 0},
+	{"Wizard", 60, 60, 32, 2, 1, 0}
 };
 
 uint8_t player_count = sizeof(player_list_default) / sizeof(player_list_default[0]);
