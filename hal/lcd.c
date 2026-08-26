@@ -26,6 +26,37 @@ void LCD_DrawSkillMenu(void)
 	LCD_WRITE_OPTION(105, 126, "BACK");
 }
 
+void LCD_DrawBattleSkillMenu(void)
+{
+	LCD_WRITE_MENU(105, 8, "SKILLS");
+	LCD_WRITE_OPTION(98, 60, "FREEZE");
+	LCD_WRITE_OPTION(98, 100, "COUNTER");
+}
+
+void LCD_SelectBattleSkill(uint8_t select_skill)
+{
+	if (select_skill == 1)
+	{
+		LCD_WRITE_SELECT(98, 60, "FREEZE");
+	}
+	else if (select_skill == 2)
+	{
+		LCD_WRITE_SELECT(98, 100, "COUNTER");
+	}
+}
+
+void LCD_DeselectBattleSkill(uint8_t deselect_skill)
+{
+	if (deselect_skill == 1)
+	{
+		LCD_WRITE_DESELECT(98, 60, "FREEZE");
+	}
+	else if (deselect_skill == 2)
+	{
+		LCD_WRITE_DESELECT(98, 100, "COUNTER");
+	}
+}
+
 void LCD_SelectSkill(uint8_t select_skill)
 {
 	switch(select_skill)
@@ -68,9 +99,10 @@ void LCD_DrawWaitingDisplay(void)
 
 void LCD_Action(void)
 {
-	LCD_WRITE_OPTION(100, 40, "[ATTACK]");
-	LCD_WRITE_OPTION(100, 70, "[DEFENSE]");
-	LCD_WRITE_OPTION(100, 100, "[HEAL]");
+	LCD_WRITE_OPTION(100, 25, "[ATTACK]");
+	LCD_WRITE_OPTION(100, 50, "[DEFENSE]");
+	LCD_WRITE_OPTION(100, 75, "[SKILL]");
+	LCD_WRITE_OPTION(100, 100, "[POTION]");
 }
 
 void LCD_DrawMonsterAppearance(void)
@@ -245,13 +277,16 @@ void LCD_SelectAction(uint8_t select_action)
 	switch(select_action)
 	{
 		case 1:
-			LCD_WRITE_SELECT(100, 40, "[ATTACK]");
+			LCD_WRITE_SELECT(100, 25, "[ATTACK]");
 			break;
 		case 2:
-			LCD_WRITE_SELECT(100, 70, "[DEFENSE]");
+			LCD_WRITE_SELECT(100, 50, "[DEFENSE]");
 			break;
 		case 3:
-			LCD_WRITE_SELECT(100, 100, "[HEAL]");
+			LCD_WRITE_SELECT(100, 75, "[SKILL]");
+			break;
+		case 4:
+			LCD_WRITE_SELECT(100, 100, "[POTION]");
 			break;
 	}	
 }
@@ -261,13 +296,16 @@ void LCD_DeselectAction(uint8_t deselect_action)
 	switch(deselect_action)
 	{
 		case 1:
-			LCD_WRITE_DESELECT(100, 40, "[ATTACK]");
+			LCD_WRITE_DESELECT(100, 25, "[ATTACK]");
 			break;
 		case 2:
-			LCD_WRITE_DESELECT(100, 70, "[DEFENSE]");
+			LCD_WRITE_DESELECT(100, 50, "[DEFENSE]");
 			break;
 		case 3:
-			LCD_WRITE_DESELECT(100, 100, "[HEAL]");
+			LCD_WRITE_DESELECT(100, 75, "[SKILL]");
+			break;
+		case 4:
+			LCD_WRITE_DESELECT(100, 100, "[POTION]");
 			break;
 	}	
 }

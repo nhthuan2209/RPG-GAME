@@ -12,6 +12,7 @@ typedef enum {
 	UI_PAGE_SETTING,
 	UI_PAGE_GAME_OVER,
 	UI_PAGE_SKILLS,
+	UI_PAGE_BATTLE_SKILLS,
 } UiPage;
 
 extern uint8_t uid[4];
@@ -29,8 +30,12 @@ void UI_MoveMode(uint8_t *sl_mode);
 void UI_MoveOption(uint8_t *sl_option);
 void UI_BattlePage(void);
 void UI_GameOverPage(void);
-void UI_MoveSkill(uint8_t *sl_skill);
-void UI_ConfirmSkill(uint8_t skill);
+void UI_MoveSkillMenu(uint8_t *sl_skill);
+void UI_MoveBattleSkill(uint8_t *sl_skill);
+void UI_ConfirmSkillMenu(uint8_t skill);
+void UI_ConfirmBattleSkill(uint8_t skill);
+uint8_t UI_BackSkillMenu(void);
+uint8_t UI_BackBattleSkillMenu(void);
 void UI_ShowSetting(Player *campaign_player, Player *endless_player);
 void UI_ResetStat(void);
 void UI_BackMenuGame(void);

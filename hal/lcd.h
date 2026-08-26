@@ -13,6 +13,9 @@
 
 void LCD_DrawMenuGame(void);
 void LCD_DrawSkillMenu(void);
+void LCD_DrawBattleSkillMenu(void);
+void LCD_SelectBattleSkill(uint8_t select_skill);
+void LCD_DeselectBattleSkill(uint8_t deselect_skill);
 void LCD_SelectSkill(uint8_t select_skill);
 void LCD_DeselectSkill(uint8_t deselect_skill);
 void LCD_DrawWaitingDisplay(void);

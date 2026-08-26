@@ -16,6 +16,7 @@ uint8_t card = 0;
 int8_t current_player = -1;
 uint8_t select_mode = 1;
 uint8_t select_skill = 1;
+uint8_t active_skill = 0;
 uint8_t select_action = 1;
 
 #define PLAYER_MODE_COUNT 2
@@ -55,7 +56,7 @@ void UI_MoveAction(uint8_t *sl_action)
 	{
 		HAL_Delay(100);
 		LCD_DeselectAction(*sl_action);
-		if (*sl_action < 3)
+		if (*sl_action < 4)
 		{
 			(*sl_action)++;
 		}
@@ -382,6 +383,14 @@ void UI_BattlePage(void)
 		}
 		else if (select_action == 3)
 		{
+			RESET_DISPLAY;
+			ui_page = UI_PAGE_BATTLE_SKILLS;
+			select_skill = 1;
+			LCD_DrawBattleSkillMenu();
+			LCD_SelectBattleSkill(select_skill);
+		}
+		else if (select_action == 4)
+		{
 			if(Battle_Count_HealPotion() == 0)
 			{
 				UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF POTION");
@@ -462,7 +471,7 @@ void UI_MoveMode(uint8_t *sl_mode)
 	}
 }
 
-void UI_MoveSkill(uint8_t *sl_skill)
+void UI_MoveSkillMenu(uint8_t *sl_skill)
 {
 	if(HAL_Buttondown())
 	{
@@ -486,13 +495,38 @@ void UI_MoveSkill(uint8_t *sl_skill)
 	}
 }
 
-void UI_ConfirmSkill(uint8_t skill)
+void UI_MoveBattleSkill(uint8_t *sl_skill)
+{
+	if(HAL_Buttondown())
+	{
+		HAL_Delay(100);
+		LCD_DeselectBattleSkill(*sl_skill);
+		if (*sl_skill < 2)
+		{
+			(*sl_skill)++;
+		}
+		LCD_SelectBattleSkill(*sl_skill);
+	}
+	if(HAL_Buttonup())
+	{
+		HAL_Delay(100);
+		LCD_DeselectBattleSkill(*sl_skill);
+		if (*sl_skill > 1)
+		{
+			(*sl_skill)--;
+		}
+		LCD_SelectBattleSkill(*sl_skill);
+	}
+}
+
+void UI_ConfirmSkillMenu(uint8_t skill)
 {
 	if(HAL_Buttonselect())
 	{
 		switch(skill)
 		{
 			case 1:
+				active_skill = 1;
 				RESET_DISPLAY;
 				UI_WRITE_ANNOUNCEMENT(90, 70, "FREEZE SET");
 				HAL_Delay(700);
@@ -501,6 +535,7 @@ void UI_ConfirmSkill(uint8_t skill)
 				LCD_SelectSkill(select_skill);
 				break;
 			case 2:
+				active_skill = 2;
 				RESET_DISPLAY;
 				UI_WRITE_ANNOUNCEMENT(78, 70, "COUNTER SET");
 				HAL_Delay(700);
@@ -515,6 +550,61 @@ void UI_ConfirmSkill(uint8_t skill)
 				break;
 		}
 	}
+}
+
+void UI_ConfirmBattleSkill(uint8_t skill)
+{
+	if(HAL_Buttonselect())
+	{
+		switch(skill)
+		{
+			case 1:
+				active_skill = 1;
+				RESET_DISPLAY;
+				UI_WRITE_ANNOUNCEMENT(90, 70, "FREEZE READY");
+				HAL_Delay(700);
+				RESET_DISPLAY;
+				ui_page = UI_PAGE_BATTLE;
+				UI_DisplayBattleStat();
+				LCD_SelectAction(select_action);
+				break;
+			case 2:
+				active_skill = 2;
+				RESET_DISPLAY;
+				UI_WRITE_ANNOUNCEMENT(78, 70, "COUNTER READY");
+				HAL_Delay(700);
+				RESET_DISPLAY;
+				ui_page = UI_PAGE_BATTLE;
+				UI_DisplayBattleStat();
+				LCD_SelectAction(select_action);
+				break;
+		}
+	}
+}
+
+uint8_t UI_BackSkillMenu(void)
+{
+	if(HAL_Buttonback())
+	{
+		RESET_DISPLAY;
+		ui_page = UI_PAGE_MENU;
+		LCD_DrawMenuGame();
+		return 1;
+	}
+	return 0;
+}
+
+uint8_t UI_BackBattleSkillMenu(void)
+{
+	if(HAL_Buttonback())
+	{
+		RESET_DISPLAY;
+		ui_page = UI_PAGE_BATTLE;
+		UI_DisplayBattleStat();
+		LCD_SelectAction(select_action);
+		return 1;
+	}
+	return 0;
 }
 
 
