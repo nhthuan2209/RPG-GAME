@@ -10,6 +10,7 @@ typedef enum {
 	UI_PAGE_BATTLE,
 	UI_PAGE_ENDLESS,
 	UI_PAGE_SETTING,
+	UI_PAGE_GAME_OVER,
 } UiPage;
 
 extern uint8_t uid[4];
@@ -19,12 +20,14 @@ extern int8_t  current_player;
 extern uint8_t select_mode;
 
 void UI_HandleWaitingForRfidCard(void);
-void UI_Display_Battle_Stat(void);
-void UI_Confirm_Mode(uint8_t mode);
-void UI_Move_Mode(uint8_t *sl_mode);
-void UI_Battle_Page(void);
-void UI_Show_Setting(Player *campaign_player, Player *endless_player);
-void UI_Reset_Stat(void);
-void UI_Back_MenuGame(void);
+void UI_DisplayBattleStat(void);
+void UI_ConfirmMode(uint8_t mode);
+void UI_MoveMode(uint8_t *sl_mode);
+void UI_MoveOption(uint8_t *sl_option);
+void UI_BattlePage(void);
+void UI_GameOverPage(void);
+void UI_ShowSetting(Player *campaign_player, Player *endless_player);
+void UI_ResetStat(void);
+void UI_BackMenuGame(void);
 
 #endif // _UI_H_

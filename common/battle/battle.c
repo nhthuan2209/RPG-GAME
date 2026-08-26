@@ -1,4 +1,5 @@
 #include "battle.h"
+#include <stdlib.h>
 
 static Battle current_battle;
 
@@ -37,6 +38,14 @@ uint8_t Battle_Count_HealPotion()
 void Battle_Attack_Monster()
 {
 	int16_t dmg = current_battle.player->attack - current_battle.monster->defense;
+	if (dmg < 1)
+	{
+		dmg = 1;
+	}
+	if ((rand() % 100) < BATTLE_CRIT_CHANCE_PERCENT)
+	{
+		dmg = dmg * BATTLE_CRIT_DAMAGE;
+	}
 	current_battle.monster->hp = current_battle.monster->hp - dmg;
 	if(current_battle.monster->hp <= 0)
 	{
@@ -51,6 +60,10 @@ void Battle_Attack_Monster()
 void Battle_Attack_Player()
 {
 	int16_t dmg = current_battle.monster->attack - current_battle.player->defense;
+	if (dmg < 1)
+	{
+		dmg = 1;
+	}
 	if(current_battle.player_defending)
 	{
 		dmg = dmg / 2;

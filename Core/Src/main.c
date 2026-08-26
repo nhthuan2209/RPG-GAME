@@ -104,7 +104,7 @@ int main(void)
 	RESET_DISPLAY;
 	ST7789_Init();
 	MFRC522_Init();
-  LCD_Draw_Waiting_Display();
+  LCD_DrawWaitingDisplay();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,21 +115,25 @@ int main(void)
     UI_HandleWaitingForRfidCard();
 		if (ui_page == UI_PAGE_MENU)
 		{
-      LCD_Select_Mode(select_mode);
-      UI_Confirm_Mode(select_mode);
-      UI_Move_Mode(&select_mode);
+      LCD_SelectMode(select_mode);
+      UI_ConfirmMode(select_mode);
+      UI_MoveMode(&select_mode);
 		}
 		else if (ui_page == UI_PAGE_BATTLE)
 		{
-      UI_Battle_Page();
+      UI_BattlePage();
 		}
+    else if (ui_page == UI_PAGE_GAME_OVER)
+    {
+      UI_GameOverPage();
+    }
 		if (ui_page != UI_PAGE_WAITING)
 		{
-      UI_Back_MenuGame();
+      UI_BackMenuGame();
 		}
 		if (ui_page == UI_PAGE_SETTING)
 		{
-      UI_Reset_Stat();
+      UI_ResetStat();
 		}
     /* USER CODE BEGIN 3 */
   }

@@ -6,6 +6,8 @@
 #include "monster.h"
 
 #define BATTLE_MAX_POTION_HEAL 		5
+#define BATTLE_CRIT_CHANCE_PERCENT 	20
+#define BATTLE_CRIT_DAMAGE		 	2
 
 typedef enum{
 	BATTLE_PLAYER_TURN,

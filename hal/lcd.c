@@ -9,7 +9,7 @@
 #define LCD_WRITE_SELECT(x, y, text)		ST7789_WriteString(x, y, text, FONT_OPTION_FUNCTION, LETTER_MODE_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 #define LCD_WRITE_DESELECT(x, y, text)		ST7789_WriteString(x, y, text, FONT_OPTION_FUNCTION, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
 
-void LCD_Draw_Menu_Game(void)
+void LCD_DrawMenuGame(void)
 {
 	LCD_WRITE_MENU  (85, 20, "RFID GAME");
 	LCD_WRITE_OPTION(85, 60, "CAMPAIGN");
@@ -17,7 +17,7 @@ void LCD_Draw_Menu_Game(void)
 	LCD_WRITE_OPTION(85, 140, "SETTING");
 }
 
-void LCD_Draw_Waiting_Display(void)
+void LCD_DrawWaitingDisplay(void)
 {
 	LCD_WRITE_MENU(85, 20, "RFID GAME");
 	LCD_WRITE_MENU(50, 60, " PLEASE SCAN");
@@ -32,7 +32,7 @@ void LCD_Action(void)
 	LCD_WRITE_OPTION(100, 100, "[HEAL]");
 }
 
-void LCD_Draw_Monster_Appearance(void)
+void LCD_DrawMonsterAppearance(void)
 {
 	LCD_WRITE_CIRCLE(250, 50, 10);
 	LCD_WRITE_LINE(250, 60, 250, 90);
@@ -42,7 +42,7 @@ void LCD_Draw_Monster_Appearance(void)
 	LCD_WRITE_LINE(250, 75, 270, 75);
 }
 
-void LCD_Draw_Player_Appearance(void)
+void LCD_DrawPlayerAppearance(void)
 {
 	LCD_WRITE_CIRCLE(30, 50, 10);
 	LCD_WRITE_LINE(30, 60, 30, 90);
@@ -57,12 +57,12 @@ static void LCD_RedrawCombat(uint8_t player)
 	if (player)
 	{
 		ST7789_Fill(0, 30, 65, 119, BLACK);
-		LCD_Draw_Player_Appearance();
+		LCD_DrawPlayerAppearance();
 	}
 	else
 	{
 		ST7789_Fill(215, 30, 305, 119, BLACK);
-		LCD_Draw_Monster_Appearance();
+		LCD_DrawMonsterAppearance();
 	}
 }
 
@@ -98,7 +98,7 @@ void LCD_AttackEffect(uint8_t attacker_is_player)
 	LCD_RedrawCombat(!attacker_is_player);
 }
 
-void LCD_Draw_Stats(void)
+void LCD_DrawStats(void)
 {
 	LCD_WRITE_LINE(10, 120, 320, 120);
 	LCD_WRITE_STAT(10, 130, "HP: ");
@@ -112,7 +112,7 @@ void LCD_Draw_Stats(void)
 	LCD_WRITE_STAT(250, 150, "EXP: ");
 }
 
-void LCD_Draw_HealthBar(uint16_t x, uint16_t y, uint16_t width, int32_t hp, int32_t max_hp, uint16_t color)
+void LCD_DrawHealthBar(uint16_t x, uint16_t y, uint16_t width, int32_t hp, int32_t max_hp, uint16_t color)
 {
 	uint16_t health_bar = 0;
 
@@ -138,7 +138,7 @@ void LCD_Draw_HealthBar(uint16_t x, uint16_t y, uint16_t width, int32_t hp, int3
 	}
 }
 
-void LCD_Draw_Endless_Map(void)
+void LCD_DrawEndlessMap(void)
 {
 	LCD_WRITE_MENU(10, 10, "ENDLESS");
 	LCD_WRITE_OPTION(28, 42, "START");
@@ -161,7 +161,7 @@ void LCD_Draw_Endless_Map(void)
 	LCD_WRITE_OPTION(115, 125, "LOOP FOREVER");
 }
 
-void LCD_Select_Mode(uint8_t select_mode)
+void LCD_SelectMode(uint8_t select_mode)
 {
 	switch(select_mode)
 	{
@@ -177,7 +177,7 @@ void LCD_Select_Mode(uint8_t select_mode)
 	}
 }
 
-void LCD_Deselect_Mode(uint8_t deselect_mode)
+void LCD_DeselectMode(uint8_t deselect_mode)
 {
 	switch(deselect_mode)
 	{
@@ -193,7 +193,7 @@ void LCD_Deselect_Mode(uint8_t deselect_mode)
 	}
 }
 
-void LCD_Select_Action(uint8_t select_action)
+void LCD_SelectAction(uint8_t select_action)
 {
 	switch(select_action)
 	{
@@ -209,7 +209,7 @@ void LCD_Select_Action(uint8_t select_action)
 	}	
 }
 
-void LCD_Deselect_Action(uint8_t deselect_action)
+void LCD_DeselectAction(uint8_t deselect_action)
 {
 	switch(deselect_action)
 	{
@@ -225,7 +225,45 @@ void LCD_Deselect_Action(uint8_t deselect_action)
 	}	
 }
 
-void LCD_Draw_Campaign_Map(void)
+void LCD_DrawEndPage(void)
+{
+	LCD_WRITE_MENU(10, 10, "GAME OVER");
+	LCD_WRITE_MENU(10, 40, "YOU DIED");
+	LCD_WRITE_MENU(10, 70, "BETTER LUCK NEXT TIME");
+	LCD_WRITE_MENU(10, 100, "THANK YOU FOR PLAYING");
+	LCD_WRITE_MENU(10, 130, "TRY AGAIN");
+	LCD_WRITE_OPTION(10, 160, "YES");
+	LCD_WRITE_OPTION(105, 160, "NO");
+}
+
+
+void LCD_SelectOption(uint8_t select_option)
+{
+	switch(select_option)
+	{
+		case 1:
+			LCD_WRITE_SELECT(10, 160, "YES");
+			break;
+		case 2:
+			LCD_WRITE_SELECT(105, 160, "NO");
+			break;
+	}	
+}
+
+void LCD_DeselectOption(uint8_t deselect_option)
+{
+	switch(deselect_option)
+	{
+		case 1:
+			LCD_WRITE_DESELECT(10, 160, "YES");
+			break;
+		case 2:
+			LCD_WRITE_DESELECT(105, 160, "NO");
+			break;
+	}	
+}
+
+void LCD_DrawCampaignMap(void)
 {
 	LCD_WRITE_MENU(10, 10, "CAMPAIGN");
 	LCD_WRITE_LINE(40, 70, 40, 120);

@@ -11,20 +11,23 @@
 #define FONT_OPTION_FUNCTION					Font_11x18
 #define FONT_STATS								Font_7x10
 
-void LCD_Draw_Menu_Game(void);
-void LCD_Draw_Waiting_Display(void);
+void LCD_DrawMenuGame(void);
+void LCD_DrawWaitingDisplay(void);
 void LCD_Action(void);
-void LCD_Draw_Monster_Appearance(void);
-void LCD_Draw_Player_Appearance(void);
+void LCD_DrawMonsterAppearance(void);
+void LCD_DrawPlayerAppearance(void);
 void LCD_AttackEffect(uint8_t player_attacks);
-void LCD_Draw_Stats(void);
-void LCD_Draw_HealthBar(uint16_t x, uint16_t y, uint16_t width, int32_t hp, int32_t max_hp, uint16_t color);
-void LCD_Draw_Endless_Map(void);
-void LCD_Select_Mode(uint8_t select_mode);
-void LCD_Deselect_Mode(uint8_t deselect_mode);
-void LCD_Select_Action(uint8_t select_action);
-void LCD_Deselect_Action(uint8_t deselect_action);
-void LCD_Draw_Campaign_Map(void);
+void LCD_DrawStats(void);
+void LCD_DrawHealthBar(uint16_t x, uint16_t y, uint16_t width, int32_t hp, int32_t max_hp, uint16_t color);
+void LCD_DrawEndlessMap(void);
+void LCD_SelectMode(uint8_t select_mode);
+void LCD_DeselectMode(uint8_t deselect_mode);
+void LCD_SelectAction(uint8_t select_action);
+void LCD_DeselectAction(uint8_t deselect_action);
+void LCD_DrawEndPage(void);
+void LCD_SelectOption(uint8_t select_option);
+void LCD_DeselectOption(uint8_t deselect_option);
+void LCD_DrawCampaignMap(void);
 
 
 #endif // _LCD_H_
