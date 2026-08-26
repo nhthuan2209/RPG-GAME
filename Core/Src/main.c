@@ -127,7 +127,7 @@ int main(void)
     {
       UI_GameOverPage();
     }
-		if (ui_page != UI_PAGE_WAITING)
+    if (ui_page != UI_PAGE_WAITING && ui_page != UI_PAGE_GAME_OVER)
 		{
       UI_BackMenuGame();
 		}

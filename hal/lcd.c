@@ -227,13 +227,12 @@ void LCD_DeselectAction(uint8_t deselect_action)
 
 void LCD_DrawEndPage(void)
 {
-	LCD_WRITE_MENU(10, 10, "GAME OVER");
-	LCD_WRITE_MENU(10, 40, "YOU DIED");
-	LCD_WRITE_MENU(10, 70, "BETTER LUCK NEXT TIME");
-	LCD_WRITE_MENU(10, 100, "THANK YOU FOR PLAYING");
-	LCD_WRITE_MENU(10, 130, "TRY AGAIN");
-	LCD_WRITE_OPTION(10, 160, "YES");
-	LCD_WRITE_OPTION(105, 160, "NO");
+	LCD_WRITE_MENU(88, 8, "GAME OVER");
+	LCD_WRITE_OPTION(104, 43, "YOU DIED");
+	LCD_WRITE_OPTION(99, 68, "BETTER LUCK");
+	LCD_WRITE_OPTION(110, 91, "NEXT TIME");
+	LCD_WRITE_OPTION(70, 132, "YES");
+	LCD_WRITE_OPTION(210, 132, "NO");
 }
 
 
@@ -242,10 +241,10 @@ void LCD_SelectOption(uint8_t select_option)
 	switch(select_option)
 	{
 		case 1:
-			LCD_WRITE_SELECT(10, 160, "YES");
+			LCD_WRITE_SELECT(70, 132, "YES");
 			break;
 		case 2:
-			LCD_WRITE_SELECT(105, 160, "NO");
+			LCD_WRITE_SELECT(210, 132, "NO");
 			break;
 	}	
 }
@@ -255,10 +254,10 @@ void LCD_DeselectOption(uint8_t deselect_option)
 	switch(deselect_option)
 	{
 		case 1:
-			LCD_WRITE_DESELECT(10, 160, "YES");
+			LCD_WRITE_DESELECT(70, 132, "YES");
 			break;
 		case 2:
-			LCD_WRITE_DESELECT(105, 160, "NO");
+			LCD_WRITE_DESELECT(210, 132, "NO");
 			break;
 	}	
 }
