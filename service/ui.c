@@ -15,6 +15,7 @@
 uint8_t card = 0;
 int8_t current_player = -1;
 uint8_t select_mode = 1;
+uint8_t select_skill = 1;
 uint8_t select_action = 1;
 
 #define PLAYER_MODE_COUNT 2
@@ -424,6 +425,12 @@ void UI_ConfirmMode(uint8_t mode)
 				break;
 			case 3:
 				RESET_DISPLAY;
+				ui_page = UI_PAGE_SKILLS;
+				LCD_DrawSkillMenu();
+				LCD_SelectSkill(select_skill);
+				break;
+			case 4:
+				RESET_DISPLAY;
 				ui_page = UI_PAGE_SETTING;
 				UI_ShowSetting(&campaign_players[current_player], &endless_players[current_player]);
 				break;
@@ -437,7 +444,7 @@ void UI_MoveMode(uint8_t *sl_mode)
 	{
 		HAL_Delay(100);
 		LCD_DeselectMode(*sl_mode);
-		if (*sl_mode < 3)
+		if (*sl_mode < 4)
 		{
 			(*sl_mode)++;
 		}
@@ -452,6 +459,61 @@ void UI_MoveMode(uint8_t *sl_mode)
 			(*sl_mode)--;
 		}
 		LCD_SelectMode(*sl_mode);
+	}
+}
+
+void UI_MoveSkill(uint8_t *sl_skill)
+{
+	if(HAL_Buttondown())
+	{
+		HAL_Delay(100);
+		LCD_DeselectSkill(*sl_skill);
+		if (*sl_skill < 3)
+		{
+			(*sl_skill)++;
+		}
+		LCD_SelectSkill(*sl_skill);
+	}
+	if(HAL_Buttonup())
+	{
+		HAL_Delay(100);
+		LCD_DeselectSkill(*sl_skill);
+		if (*sl_skill > 1)
+		{
+			(*sl_skill)--;
+		}
+		LCD_SelectSkill(*sl_skill);
+	}
+}
+
+void UI_ConfirmSkill(uint8_t skill)
+{
+	if(HAL_Buttonselect())
+	{
+		switch(skill)
+		{
+			case 1:
+				RESET_DISPLAY;
+				UI_WRITE_ANNOUNCEMENT(90, 70, "FREEZE SET");
+				HAL_Delay(700);
+				RESET_DISPLAY;
+				LCD_DrawSkillMenu();
+				LCD_SelectSkill(select_skill);
+				break;
+			case 2:
+				RESET_DISPLAY;
+				UI_WRITE_ANNOUNCEMENT(78, 70, "COUNTER SET");
+				HAL_Delay(700);
+				RESET_DISPLAY;
+				LCD_DrawSkillMenu();
+				LCD_SelectSkill(select_skill);
+				break;
+			case 3:
+				RESET_DISPLAY;
+				ui_page = UI_PAGE_MENU;
+				LCD_DrawMenuGame();
+				break;
+		}
 	}
 }
 

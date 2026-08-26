@@ -11,10 +11,51 @@
 
 void LCD_DrawMenuGame(void)
 {
-	LCD_WRITE_MENU  (85, 20, "RFID GAME");
-	LCD_WRITE_OPTION(85, 60, "CAMPAIGN");
-	LCD_WRITE_OPTION(85, 100, "ENDLESS");
-	LCD_WRITE_OPTION(85, 140, "SETTING");
+	LCD_WRITE_MENU  (88, 8, "RFID GAME");
+	LCD_WRITE_OPTION(78, 42, "CAMPAIGN");
+	LCD_WRITE_OPTION(88, 72, "ENDLESS");
+	LCD_WRITE_OPTION(98, 102, "SKILLS");
+	LCD_WRITE_OPTION(108, 132, "SETTING");
+}
+
+void LCD_DrawSkillMenu(void)
+{
+	LCD_WRITE_MENU(105, 8, "SKILLS");
+	LCD_WRITE_OPTION(98, 48, "FREEZE");
+	LCD_WRITE_OPTION(98, 78, "COUNTER");
+	LCD_WRITE_OPTION(105, 126, "BACK");
+}
+
+void LCD_SelectSkill(uint8_t select_skill)
+{
+	switch(select_skill)
+	{
+		case 1:
+			LCD_WRITE_SELECT(98, 48, "FREEZE");
+			break;
+		case 2:
+			LCD_WRITE_SELECT(98, 78, "COUNTER");
+			break;
+		case 3:
+			LCD_WRITE_SELECT(105, 126, "BACK");
+			break;
+	}
+}
+
+void LCD_DeselectSkill(uint8_t deselect_skill)
+{
+	switch(deselect_skill)
+	{
+		case 1:
+			LCD_WRITE_DESELECT(98, 48, "FREEZE");
+			break;
+		case 2:
+			LCD_WRITE_DESELECT(98, 78, "COUNTER");
+			break;
+		case 3:
+			LCD_WRITE_DESELECT(105, 126, "BACK");
+			break;
+	}
 }
 
 void LCD_DrawWaitingDisplay(void)
@@ -166,13 +207,16 @@ void LCD_SelectMode(uint8_t select_mode)
 	switch(select_mode)
 	{
 		case 1:
-			LCD_WRITE_SELECT(85, 60, "CAMPAIGN");
+			LCD_WRITE_SELECT(78, 42, "CAMPAIGN");
 			break;
 		case 2:
-			LCD_WRITE_SELECT(85, 100, "ENDLESS");
+			LCD_WRITE_SELECT(88, 72, "ENDLESS");
 			break;
 		case 3:
-			LCD_WRITE_SELECT(85, 140, "SETTING");
+			LCD_WRITE_SELECT(98, 102, "SKILLS");
+			break;
+		case 4:
+			LCD_WRITE_SELECT(108, 132, "SETTING");
 			break;
 	}
 }
@@ -182,13 +226,16 @@ void LCD_DeselectMode(uint8_t deselect_mode)
 	switch(deselect_mode)
 	{
 		case 1:
-			LCD_WRITE_DESELECT(85, 60, "CAMPAIGN");
+			LCD_WRITE_DESELECT(78, 42, "CAMPAIGN");
 			break;
 		case 2:
-			LCD_WRITE_DESELECT(85, 100, "ENDLESS");
+			LCD_WRITE_DESELECT(88, 72, "ENDLESS");
 			break;
 		case 3:
-			LCD_WRITE_DESELECT(85, 140, "SETTING");
+			LCD_WRITE_DESELECT(98, 102, "SKILLS");
+			break;
+		case 4:
+			LCD_WRITE_DESELECT(108, 132, "SETTING");
 			break;
 	}
 }

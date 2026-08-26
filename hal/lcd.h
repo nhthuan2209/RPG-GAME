@@ -12,6 +12,9 @@
 #define FONT_STATS								Font_7x10
 
 void LCD_DrawMenuGame(void);
+void LCD_DrawSkillMenu(void);
+void LCD_SelectSkill(uint8_t select_skill);
+void LCD_DeselectSkill(uint8_t deselect_skill);
 void LCD_DrawWaitingDisplay(void);
 void LCD_Action(void);
 void LCD_DrawMonsterAppearance(void);

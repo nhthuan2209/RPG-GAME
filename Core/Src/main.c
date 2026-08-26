@@ -127,6 +127,11 @@ int main(void)
     {
       UI_GameOverPage();
     }
+    else if (ui_page == UI_PAGE_SKILLS)
+    {
+      UI_ConfirmSkill(select_skill);
+      UI_MoveSkill(&select_skill);
+    }
     if (ui_page != UI_PAGE_WAITING && ui_page != UI_PAGE_GAME_OVER)
 		{
       UI_BackMenuGame();
