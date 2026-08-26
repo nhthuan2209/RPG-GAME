@@ -49,7 +49,7 @@ void UI_HandleWaitingForRfidCard(void)
 
 void UI_Move_Action(uint8_t *sl_action)
 {
-	if(Button_Down())
+	if(HAL_Buttondown())
 	{
 		HAL_Delay(100);
 		LCD_Deselect_Action(*sl_action);
@@ -59,7 +59,7 @@ void UI_Move_Action(uint8_t *sl_action)
 		}
 		LCD_Select_Action(*sl_action);
 	}
-	if(Button_Up())
+	if(HAL_Buttonup())
 	{
 		HAL_Delay(100);
 		LCD_Deselect_Action(*sl_action);
@@ -82,6 +82,7 @@ void UI_Player_Stats(Player *player)
 	
 	sprintf(save, "%3d/%3d", player->hp, player->max_hp);
 	UI_WRITE_STAT(35, 130, save);
+	LCD_Draw_HealthBar(10, 122, 90, player->hp, player->max_hp, GREEN);
 	
 	sprintf(save, "%3d", player->attack);
 	UI_WRITE_STAT(35, 140, save);
@@ -96,6 +97,7 @@ void UI_Monster_Stats(Monster *monster)
 	
 	sprintf(save, "%3d/%3d", monster->hp, monster->max_hp);
 	UI_WRITE_STAT(260, 130, save);
+	LCD_Draw_HealthBar(220, 122, 90, monster->hp, monster->max_hp, RED);
 	
 	sprintf(save, "%3d", monster->attack);
 	UI_WRITE_STAT(270, 140, save);
@@ -196,7 +198,7 @@ void UI_Reset_Stat(void)
 		RESET_DISPLAY;
 		UI_Show_Setting(&campaign_players[current_player], &endless_players[current_player]);
 	}
-	if (!Button_Select())
+	if (!HAL_Buttonselect())
 	{
 		return;
 	}
@@ -313,7 +315,7 @@ void UI_Battle_Page(void)
 	}
 	LCD_Select_Action(select_action);
 	UI_Move_Action(&select_action);
-	if(!Button_Select())
+	if(!HAL_Buttonselect())
 	{
 		select_locked = 0;   
 	}
@@ -388,7 +390,7 @@ void UI_Battle_Page(void)
 
 void UI_Confirm_Mode(uint8_t mode)
 {
-	if(Button_Select())
+	if(HAL_Buttonselect())
 	{
 		switch(mode)
 		{
@@ -412,7 +414,7 @@ void UI_Confirm_Mode(uint8_t mode)
 
 void UI_Move_Mode(uint8_t *sl_mode)
 {
-	if(Button_Down())
+	if(HAL_Buttondown())
 	{
 		HAL_Delay(100);
 		LCD_Deselect_Mode(*sl_mode);
@@ -422,7 +424,7 @@ void UI_Move_Mode(uint8_t *sl_mode)
 		}
 		LCD_Select_Mode(*sl_mode);
 	}
-	if(Button_Up())
+	if(HAL_Buttonup())
 	{
 		HAL_Delay(100);
 		LCD_Deselect_Mode(*sl_mode);
@@ -436,7 +438,7 @@ void UI_Move_Mode(uint8_t *sl_mode)
 
 void UI_Back_MenuGame(void)
 {
-	if(Button_Back())
+	if(HAL_Buttonback())
 	{
 		RESET_DISPLAY;
 		ui_page = UI_PAGE_MENU;

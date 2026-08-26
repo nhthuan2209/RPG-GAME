@@ -18,6 +18,7 @@ void LCD_Draw_Monster_Appearance(void);
 void LCD_Draw_Player_Appearance(void);
 void LCD_AttackEffect(uint8_t player_attacks);
 void LCD_Draw_Stats(void);
+void LCD_Draw_HealthBar(uint16_t x, uint16_t y, uint16_t width, int32_t hp, int32_t max_hp, uint16_t color);
 void LCD_Draw_Endless_Map(void);
 void LCD_Select_Mode(uint8_t select_mode);
 void LCD_Deselect_Mode(uint8_t deselect_mode);

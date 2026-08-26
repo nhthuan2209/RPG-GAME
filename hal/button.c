@@ -57,28 +57,28 @@ void HAL_ScanButtons(void)
 	}
 }
 
-bool Button_Up(void)
+bool HAL_Buttonup(void)
 {
 	bool pressed = button_state.up;
 	button_state.up = false;
 	return pressed;
 }
 
-bool Button_Down(void)
+bool HAL_Buttondown(void)
 {
 	bool pressed = button_state.down;
 	button_state.down = false;
 	return pressed;
 }
 
-bool Button_Select(void)
+bool HAL_Buttonselect(void)
 {
 	bool pressed = button_state.select;
 	button_state.select = false;
 	return pressed;
 }
 
-bool Button_Back(void)
+bool HAL_Buttonback(void)
 {
 	bool pressed = button_state.back;
 	button_state.back = false;

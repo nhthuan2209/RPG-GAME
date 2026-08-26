@@ -94,6 +94,8 @@ void LCD_AttackEffect(uint8_t attacker_is_player)
 		LCD_DrawHit(target_x, 75, radius, color);
 		HAL_Delay(70);
 	}
+
+	LCD_RedrawCombat(!attacker_is_player);
 }
 
 void LCD_Draw_Stats(void)
@@ -108,6 +110,32 @@ void LCD_Draw_Stats(void)
 	LCD_WRITE_STAT(250, 130, "HP: ");
 	LCD_WRITE_STAT(250, 140, "ATK: ");
 	LCD_WRITE_STAT(250, 150, "EXP: ");
+}
+
+void LCD_Draw_HealthBar(uint16_t x, uint16_t y, uint16_t width, int32_t hp, int32_t max_hp, uint16_t color)
+{
+	uint16_t health_bar = 0;
+
+	if (max_hp > 0)
+	{
+		if (hp < 0)
+		{
+			hp = 0;
+		}
+		else if (hp > max_hp)
+		{
+			hp = max_hp;
+		}
+
+		health_bar = (width * hp) / max_hp;
+	}
+
+	ST7789_DrawFilledRectangle(x, y, width, 6, BLACK);
+	ST7789_DrawRectangle(x, y, x + width, y + 6, WHITE);
+	if (health_bar > 0)
+	{
+		ST7789_DrawFilledRectangle(x + 1, y + 1, health_bar - 1, 4, color);
+	}
 }
 
 void LCD_Draw_Endless_Map(void)
