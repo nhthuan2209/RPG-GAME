@@ -368,9 +368,24 @@ void UI_BattlePage(void)
 				UI_BattleEnd(1);
 				return;
 			}
+				if (active_skill == 1)
+				{
+					active_skill = 0;
+					Battle_Freeze();
+					UI_UpdateStats(battle_player, battle_monster);
+					return;
+				}
 			HAL_Delay(1000);
 			LCD_AttackEffect(0);
-			Battle_Attack_Player();
+				if (active_skill == 2)
+				{
+					Battle_Counter();
+					active_skill = 0;
+				}
+				else
+				{
+					Battle_Attack_Player();
+				}
 			UI_UpdateStats(battle_player, battle_monster);
 			
 			if(Battle_GetState() == BATTLE_DEFEAT)

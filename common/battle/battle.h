@@ -31,6 +31,8 @@ void Battle_Start(Player *player, Monster *monster);
 void Battle_Defending(void);
 void Battle_Attack_Monster();
 void Battle_Attack_Player();
+void Battle_Freeze(void);
+void Battle_Counter(void);
 void Battle_Update(void);
 void Battle_Heal(void);
 uint8_t Battle_Count_HealPotion();

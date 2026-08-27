@@ -81,6 +81,48 @@ void Battle_Attack_Player()
 	}
 }
 
+void Battle_Freeze(void)
+{
+	if (current_battle.state == BATTLE_MONSTER_TURN)
+	{
+		current_battle.state = BATTLE_PLAYER_TURN;
+	}
+}
+
+void Battle_Counter(void)
+{
+	int16_t dmg = current_battle.monster->attack - current_battle.player->defense;
+
+	if (dmg < 1)
+	{
+		dmg = 1;
+	}
+	if (current_battle.player_defending)
+	{
+		dmg = dmg / 2;
+		current_battle.player_defending = 0;
+	}
+
+	current_battle.player->hp = current_battle.player->hp - dmg;
+	if (current_battle.player->hp <= 0)
+	{
+		current_battle.player->hp = 0;
+		current_battle.state = BATTLE_DEFEAT;
+		return;
+	}
+
+	current_battle.monster->hp = current_battle.monster->hp - dmg;
+	if (current_battle.monster->hp <= 0)
+	{
+		current_battle.monster->hp = 0;
+		current_battle.state = BATTLE_VICTORY;
+	}
+	else
+	{
+		current_battle.state = BATTLE_PLAYER_TURN;
+	}
+}
+
 void Battle_Update(void)
 {
     if(current_battle.state == BATTLE_MONSTER_TURN)
