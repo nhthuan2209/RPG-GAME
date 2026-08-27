@@ -10,6 +10,7 @@
 #include "battle.h"
 #include "campaign.h"
 #include "skill.h"
+#include "potion.h"
 #include "rfid.h"
 #include "lcd.h"
 
@@ -18,6 +19,7 @@ uint8_t select_mode = 1;
 uint8_t select_skill = 1;
 uint8_t active_skill = 0;
 uint8_t select_action = 1;
+uint8_t select_potion = POTION_HEAL;
 
 #define PLAYER_MODE_COUNT 2
 
@@ -419,28 +421,11 @@ void UI_BattlePage(void)
 		}
 		else if (select_action == 4)
 		{
-			if(Battle_Count_HealPotion() == 0)
-			{
-				UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF POTION");
-				HAL_Delay(550);
-				RESET_DISPLAY;
-				UI_DisplayBattleStat();
-			}
-			else
-			{
-				Battle_Heal();
-				UI_UpdateStats(battle_player, battle_monster);
-				
-				HAL_Delay(400);
-				LCD_AttackEffect(0);
-				Battle_Attack_Player();        
-				UI_UpdateStats(battle_player, battle_monster);
-				if(Battle_GetState() == BATTLE_DEFEAT)
-				{
-					UI_BattleEnd(0);
-					return;
-				}			
-			}
+			RESET_DISPLAY;
+			ui_page = UI_PAGE_POTIONS;
+			select_potion = POTION_HEAL;
+			LCD_DrawPotionMenu();
+			LCD_SelectPotion(select_potion);
 		}
 	}
 }
@@ -555,6 +540,78 @@ void UI_MoveBattleSkill(uint8_t *sl_skill)
 		}
 		LCD_SelectBattleSkill(*sl_skill);
 	}
+}
+
+void UI_MovePotionMenu(uint8_t *potion)
+{
+	if (HAL_Buttondown())
+	{
+		LCD_DeselectPotion(*potion);
+		if (*potion < 3)
+		{
+			(*potion)++;
+		}
+		LCD_SelectPotion(*potion);
+	}
+	if (HAL_Buttonup())
+	{
+		LCD_DeselectPotion(*potion);
+		if (*potion > 1)
+		{
+			(*potion)--;
+		}
+		LCD_SelectPotion(*potion);
+	}
+}
+
+void UI_ConfirmPotion(PotionType potion)
+{
+	if (!HAL_Buttonselect())
+	{
+		return;
+	}
+
+	if (!Battle_UsePotion(potion))
+	{
+		UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF POTION");
+		HAL_Delay(550);
+		RESET_DISPLAY;
+		LCD_DrawPotionMenu();
+		LCD_SelectPotion(select_potion);
+		return;
+	}
+
+	ui_page = UI_PAGE_BATTLE;
+	RESET_DISPLAY;
+	UI_DisplayBattleStat();
+	LCD_SelectAction(select_action);
+	HAL_Delay(400);
+	LCD_AttackEffect(0);
+	Battle_Attack_Player();
+	UI_UpdateStats(battle_player, battle_monster);
+	if (Battle_GetState() == BATTLE_DEFEAT)
+	{
+		UI_BattleEnd(0);
+		return;
+	}
+	if (Battle_GetState() == BATTLE_VICTORY)
+	{
+		Player_GainExp(battle_player, battle_monster->exp_reward);
+		UI_BattleEnd(1);
+	}
+}
+
+uint8_t UI_BackPotionMenu(void)
+{
+	if (HAL_Buttonback())
+	{
+		RESET_DISPLAY;
+		ui_page = UI_PAGE_BATTLE;
+		UI_DisplayBattleStat();
+		LCD_SelectAction(select_action);
+		return 1;
+	}
+	return 0;
 }
 
 void UI_ConfirmSkillMenu(uint8_t skill)

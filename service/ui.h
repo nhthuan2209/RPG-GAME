@@ -3,6 +3,7 @@
 
 #include "stdint.h"
 #include "player.h"
+#include "potion.h"
 
 typedef enum {
 	UI_PAGE_WAITING = 0,
@@ -13,6 +14,7 @@ typedef enum {
 	UI_PAGE_GAME_OVER,
 	UI_PAGE_SKILLS,
 	UI_PAGE_BATTLE_SKILLS,
+	UI_PAGE_POTIONS,
 } UiPage;
 
 extern uint8_t uid[4];
@@ -20,6 +22,7 @@ extern UiPage  ui_page;
 extern int8_t  current_player;
 extern uint8_t select_mode;
 extern uint8_t select_skill;
+extern uint8_t select_potion;
 extern uint8_t active_skill;
 
 void UI_HandleWaitingForRfidCard(void);
@@ -35,6 +38,9 @@ void UI_ConfirmSkillMenu(uint8_t skill);
 void UI_ConfirmBattleSkill(uint8_t skill);
 uint8_t UI_BackSkillMenu(void);
 uint8_t UI_BackBattleSkillMenu(void);
+void UI_MovePotionMenu(uint8_t *potion);
+void UI_ConfirmPotion(PotionType potion);
+uint8_t UI_BackPotionMenu(void);
 void UI_ShowSetting(Player *campaign_player, Player *endless_player);
 void UI_ResetStat(void);
 void UI_BackMenuGame(void);

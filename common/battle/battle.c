@@ -10,6 +10,11 @@ void Battle_Start(Player *player, Monster *monster)
 	current_battle.state = BATTLE_PLAYER_TURN;
 	current_battle.player_defending = 0;
 	current_battle.player_usedheal = 0;
+	current_battle.potion_count[POTION_HEAL - 1] = POTION_MAX_COUNT;
+	current_battle.potion_count[POTION_PROTECT - 1] = POTION_MAX_COUNT;
+	current_battle.potion_count[POTION_FIRE - 1] = POTION_MAX_COUNT;
+	current_battle.protect_active = 0;
+	current_battle.fire_active = 0;
 	monster->hp = monster->max_hp;
 }
 
@@ -19,20 +24,28 @@ void Battle_Defending()
 	current_battle.state = BATTLE_MONSTER_TURN;
 }
 
-void Battle_Heal()
-{
-	if(current_battle.player_usedheal >= BATTLE_MAX_POTION_HEAL)
-	{
-		return;
-	}
-	current_battle.player_usedheal++;
-	current_battle.player->hp = current_battle.player->max_hp;
-	current_battle.state = BATTLE_MONSTER_TURN;
-}
-
 uint8_t Battle_Count_HealPotion()
 {
-	return BATTLE_MAX_POTION_HEAL - current_battle.player_usedheal;
+	return current_battle.potion_count[POTION_HEAL - 1];
+}
+
+uint8_t Battle_UsePotion(PotionType potion)
+{
+	current_battle.potion_count[potion - 1]--;
+	if (potion == POTION_HEAL)
+	{
+		current_battle.player->hp = current_battle.player->max_hp;
+	}
+	else if (potion == POTION_PROTECT)
+	{
+		current_battle.protect_active = 1;
+	}
+	else
+	{
+		current_battle.fire_active = 1;
+	}
+	current_battle.state = BATTLE_MONSTER_TURN;
+	return 1;
 }
 
 void Battle_Attack_Monster()
@@ -60,11 +73,13 @@ void Battle_Attack_Monster()
 void Battle_Attack_Player()
 {
 	int16_t dmg = current_battle.monster->attack - current_battle.player->defense;
-	if (dmg < 1)
+	
+	if (current_battle.protect_active)
 	{
-		dmg = 1;
+		dmg = 0;
+		current_battle.protect_active = 0;
 	}
-	if(current_battle.player_defending)
+	else if(current_battle.player_defending)
 	{
 		dmg = dmg / 2;
 		current_battle.player_defending = 0;
@@ -77,6 +92,17 @@ void Battle_Attack_Player()
 	}
 	else
 	{
+		if (current_battle.fire_active)
+		{
+			current_battle.monster->hp -= POTION_FIRE_DAMAGE;
+			current_battle.fire_active = 0;
+			if (current_battle.monster->hp <= 0)
+			{
+				current_battle.monster->hp = 0;
+				current_battle.state = BATTLE_VICTORY;
+				return;
+			}
+		}
 		current_battle.state = BATTLE_PLAYER_TURN;
 	}
 }
@@ -93,10 +119,6 @@ void Battle_Counter(void)
 {
 	int16_t dmg = current_battle.monster->attack - current_battle.player->defense;
 
-	if (dmg < 1)
-	{
-		dmg = 1;
-	}
 	if (current_battle.player_defending)
 	{
 		dmg = dmg / 2;

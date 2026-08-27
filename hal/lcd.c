@@ -310,6 +310,45 @@ void LCD_DeselectAction(uint8_t deselect_action)
 	}	
 }
 
+void LCD_DrawPotionMenu(void)
+{
+	LCD_WRITE_OPTION(100, 50, "[HEAL]");
+	LCD_WRITE_OPTION(100, 80, "[PROTECT]");
+	LCD_WRITE_OPTION(100, 110, "[FIRE]");
+}
+
+void LCD_SelectPotion(uint8_t potion)
+{
+	switch (potion)
+	{
+		case 1:
+			LCD_WRITE_SELECT(100, 50, "[HEAL]");
+			break;
+		case 2:
+			LCD_WRITE_SELECT(100, 80, "[PROTECT]");
+			break;
+		case 3:
+			LCD_WRITE_SELECT(100, 110, "[FIRE]");
+			break;
+	}
+}
+
+void LCD_DeselectPotion(uint8_t potion)
+{
+	switch (potion)
+	{
+		case 1:
+			LCD_WRITE_DESELECT(100, 50, "[HEAL]");
+			break;
+		case 2:
+			LCD_WRITE_DESELECT(100, 80, "[PROTECT]");
+			break;
+		case 3:
+			LCD_WRITE_DESELECT(100, 110, "[FIRE]");
+			break;
+	}
+}
+
 void LCD_DrawEndPage(void)
 {
 	LCD_WRITE_MENU(88, 8, "GAME OVER");

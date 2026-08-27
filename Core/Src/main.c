@@ -139,6 +139,12 @@ int main(void)
       UI_MoveBattleSkill(&select_skill);
       UI_BackBattleSkillMenu();
     }
+    else if (ui_page == UI_PAGE_POTIONS)
+    {
+      UI_ConfirmPotion(select_potion);
+      UI_MovePotionMenu(&select_potion);
+      UI_BackPotionMenu();
+    }
 
     if (ui_page == UI_PAGE_MENU || ui_page == UI_PAGE_BATTLE ||
         ui_page == UI_PAGE_SETTING)
