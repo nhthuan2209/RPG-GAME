@@ -8,7 +8,7 @@ typedef enum
 	POTION_FIRE
 } PotionType;
 
-#define POTION_MAX_COUNT    3
+#define POTION_MAX_COUNT    1
 #define POTION_FIRE_DAMAGE  15
 
 

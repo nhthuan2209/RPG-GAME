@@ -31,6 +31,11 @@ uint8_t Battle_Count_HealPotion()
 
 uint8_t Battle_UsePotion(PotionType potion)
 {
+	if(current_battle.potion_count[potion - 1] == 0)
+	{
+		return 0;
+	}
+
 	current_battle.potion_count[potion - 1]--;
 	if (potion == POTION_HEAL)
 	{
@@ -73,7 +78,7 @@ void Battle_Attack_Monster()
 void Battle_Attack_Player()
 {
 	int16_t dmg = current_battle.monster->attack - current_battle.player->defense;
-	
+
 	if (current_battle.protect_active)
 	{
 		dmg = 0;
