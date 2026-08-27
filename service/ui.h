@@ -16,7 +16,6 @@ typedef enum {
 } UiPage;
 
 extern uint8_t uid[4];
-extern uint8_t card;
 extern UiPage  ui_page;
 extern int8_t  current_player;
 extern uint8_t select_mode;

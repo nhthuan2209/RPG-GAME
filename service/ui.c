@@ -29,7 +29,6 @@ static Player *battle_player = 0;
 static Monster *battle_monster = 0;
 static uint8_t select_option = 1;
 static uint8_t gameover_select_locked = 1;
-static uint8_t battle_screen_refresh = 0;
 
 UiPage ui_page = UI_PAGE_WAITING;
 
@@ -282,18 +281,21 @@ static void UI_BattleEnd(uint8_t win)
 
 void UI_GameOverPage(void)
 {
+	if (gameover_select_locked)
+	{
+		if (!HAL_Buttonselect())
+		{
+			gameover_select_locked = 0;
+		}
+		return;
+	}
+
 	UI_MoveOption(&select_option);
 
 	if (!HAL_Buttonselect())
 	{
-		gameover_select_locked = 0;
 		return;
 	}
-	if (gameover_select_locked)
-	{
-		return;
-	}
-	gameover_select_locked = 1;
 
 	if (select_option == 1)
 	{
@@ -344,12 +346,6 @@ void UI_BattlePage(void)
 	if(Battle_GetState() == BATTLE_VICTORY || Battle_GetState() == BATTLE_DEFEAT)
 	{
 		return;
-	}
-	if (battle_screen_refresh)
-	{
-		battle_screen_refresh = 0;
-		RESET_DISPLAY;
-		UI_DisplayBattleStat();
 	}
 	LCD_SelectAction(select_action);
 	UI_MoveAction(&select_action);
@@ -618,7 +614,7 @@ void UI_ConfirmBattleSkill(uint8_t skill)
 					HAL_Delay(700);
 					RESET_DISPLAY;
 					ui_page = UI_PAGE_BATTLE;
-					battle_screen_refresh = 1;
+					select_locked = 1;
 					UI_DisplayBattleStat();
 					LCD_SelectAction(select_action);
 				}
@@ -627,7 +623,8 @@ void UI_ConfirmBattleSkill(uint8_t skill)
 					UI_WRITE_ANNOUNCEMENT(65, 70, "NEED LEVEL 3");
 					HAL_Delay(700);
 					RESET_DISPLAY;
-					battle_screen_refresh = 1;
+					ui_page = UI_PAGE_BATTLE;
+					select_locked = 1;
 					UI_DisplayBattleStat();
 					LCD_SelectAction(select_action);
 				}
@@ -641,7 +638,7 @@ void UI_ConfirmBattleSkill(uint8_t skill)
 					HAL_Delay(700);
 					RESET_DISPLAY;
 					ui_page = UI_PAGE_BATTLE;
-					battle_screen_refresh = 1;
+					select_locked = 1;
 					UI_DisplayBattleStat();
 					LCD_SelectAction(select_action);
 				}
@@ -650,7 +647,8 @@ void UI_ConfirmBattleSkill(uint8_t skill)
 					UI_WRITE_ANNOUNCEMENT(65, 70, "NEED LEVEL 6");
 					HAL_Delay(700);
 					RESET_DISPLAY;
-					battle_screen_refresh = 1;
+					ui_page = UI_PAGE_BATTLE;
+					select_locked = 1;
 					UI_DisplayBattleStat();
 					LCD_SelectAction(select_action);
 				}

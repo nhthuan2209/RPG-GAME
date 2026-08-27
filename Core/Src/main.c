@@ -129,10 +129,19 @@ int main(void)
     }
     else if (ui_page == UI_PAGE_SKILLS)
     {
-      UI_ConfirmSkill(select_skill);
-      UI_MoveSkill(&select_skill);
+      UI_ConfirmSkillMenu(select_skill);
+      UI_MoveSkillMenu(&select_skill);
+      UI_BackSkillMenu();
     }
-    if (ui_page != UI_PAGE_WAITING && ui_page != UI_PAGE_GAME_OVER)
+    else if (ui_page == UI_PAGE_BATTLE_SKILLS)
+    {
+      UI_ConfirmBattleSkill(select_skill);
+      UI_MoveBattleSkill(&select_skill);
+      UI_BackBattleSkillMenu();
+    }
+
+    if (ui_page == UI_PAGE_MENU || ui_page == UI_PAGE_BATTLE ||
+        ui_page == UI_PAGE_SETTING)
 		{
       UI_BackMenuGame();
 		}
