@@ -9,10 +9,10 @@
 #include "monster.h"
 #include "battle.h"
 #include "campaign.h"
+#include "skill.h"
 #include "rfid.h"
 #include "lcd.h"
 
-uint8_t card = 0;
 int8_t current_player = -1;
 uint8_t select_mode = 1;
 uint8_t select_skill = 1;
@@ -28,6 +28,8 @@ static Player endless_players[PLAYER_MODE_COUNT];
 static Player *battle_player = 0;
 static Monster *battle_monster = 0;
 static uint8_t select_option = 1;
+static uint8_t gameover_select_locked = 1;
+static uint8_t battle_screen_refresh = 0;
 
 UiPage ui_page = UI_PAGE_WAITING;
 
@@ -195,32 +197,34 @@ void UI_ResetStat(void)
 {
 	uint32_t now = HAL_GetTick();
 
-	if (setting_confirm && (int32_t)(now - setting_confirm_wait) >= 0)
-	{
-		setting_confirm = 0;
-		RESET_DISPLAY;
-		UI_ShowSetting(&campaign_players[current_player], &endless_players[current_player]);
-	}
 	if (!HAL_Buttonselect())
 	{
 		return;
 	}
-	if(setting_confirm == 0)
+
+	if (select_option == 1)
 	{
 		RESET_DISPLAY;
-		UI_WRITE_ANNOUNCEMENT(40, 60, "PRESS AGAIN TO");
-		UI_WRITE_ANNOUNCEMENT(40, 85, " RESET STATS");
-		setting_confirm_wait = now + 3000;
-		setting_confirm = 1;
+		if (battle_mode == 1)
+		{
+			map_endless = 0;
+			endless_players[current_player].hp = endless_players[current_player].max_hp;
+			UI_ShowEndless();
+		}
+		else
+		{
+			Campaign_Reset();
+			campaign_players[current_player].hp = campaign_players[current_player].max_hp;
+			UI_ShowCampaign();
+		}
 	}
 	else
 	{
-		setting_confirm = 0;
-		Player_Reset(&player_list[current_player]);
-		campaign_players[current_player] = player_list[current_player];
-		endless_players[current_player] = player_list[current_player];
-	
+		map_endless = 0;
+		Campaign_Reset();
+		ui_page = UI_PAGE_MENU;
 		RESET_DISPLAY;
+		LCD_DrawMenuGame();
 		UI_WRITE_ANNOUNCEMENT(48, 70, "RESET COMPLETE");
 		HAL_Delay(1000);
 		RESET_DISPLAY;
@@ -245,7 +249,6 @@ static void UI_BattleEnd(uint8_t win)
 		if(battle_mode == 1)
 		{
 			map_endless++;
-			RESET_DISPLAY;
 			UI_ShowEndless();
 			return;
 		}
@@ -270,6 +273,7 @@ static void UI_BattleEnd(uint8_t win)
 	{
 		select_option = 1;
 		ui_page = UI_PAGE_GAME_OVER;
+		gameover_select_locked = 1;
 		RESET_DISPLAY;
 		LCD_DrawEndPage();
 		LCD_SelectOption(select_option);
@@ -280,33 +284,40 @@ void UI_GameOverPage(void)
 {
 	UI_MoveOption(&select_option);
 
-	if (HAL_Buttonselect())
+	if (!HAL_Buttonselect())
 	{
-		if (select_option == 1)
+		gameover_select_locked = 0;
+		return;
+	}
+	if (gameover_select_locked)
+	{
+		return;
+	}
+	gameover_select_locked = 1;
+
+	if (select_option == 1)
+	{
+		RESET_DISPLAY;
+		if (battle_mode == 1)
 		{
-			if (battle_mode == 1)
-			{
-				map_endless = 0;
-				endless_players[current_player].hp = endless_players[current_player].max_hp;
-				RESET_DISPLAY;
-				UI_ShowEndless();
-			}
-			else
-			{
-				Campaign_Reset();
-				campaign_players[current_player].hp = campaign_players[current_player].max_hp;
-				RESET_DISPLAY;
-				UI_ShowCampaign();
-			}
+			map_endless = 0;
+			endless_players[current_player].hp = endless_players[current_player].max_hp;
+			UI_ShowEndless();
 		}
 		else
 		{
-			map_endless = 0;
 			Campaign_Reset();
-			ui_page = UI_PAGE_MENU;
-			RESET_DISPLAY;
-			LCD_DrawMenuGame();
+			campaign_players[current_player].hp = campaign_players[current_player].max_hp;
+			UI_ShowCampaign();
 		}
+	}
+	else
+	{
+		map_endless = 0;
+		Campaign_Reset();
+		ui_page = UI_PAGE_MENU;
+		RESET_DISPLAY;
+		LCD_DrawMenuGame();
 	}
 }
 
@@ -333,6 +344,12 @@ void UI_BattlePage(void)
 	if(Battle_GetState() == BATTLE_VICTORY || Battle_GetState() == BATTLE_DEFEAT)
 	{
 		return;
+	}
+	if (battle_screen_refresh)
+	{
+		battle_screen_refresh = 0;
+		RESET_DISPLAY;
+		UI_DisplayBattleStat();
 	}
 	LCD_SelectAction(select_action);
 	UI_MoveAction(&select_action);
@@ -473,6 +490,11 @@ void UI_MoveMode(uint8_t *sl_mode)
 
 void UI_MoveSkillMenu(uint8_t *sl_skill)
 {
+	if (ui_page != UI_PAGE_SKILLS)
+	{
+		return;
+	}
+
 	if(HAL_Buttondown())
 	{
 		HAL_Delay(100);
@@ -497,6 +519,11 @@ void UI_MoveSkillMenu(uint8_t *sl_skill)
 
 void UI_MoveBattleSkill(uint8_t *sl_skill)
 {
+	if (ui_page != UI_PAGE_BATTLE_SKILLS)
+	{
+		return;
+	}
+
 	if(HAL_Buttondown())
 	{
 		HAL_Delay(100);
@@ -526,22 +553,46 @@ void UI_ConfirmSkillMenu(uint8_t skill)
 		switch(skill)
 		{
 			case 1:
-				active_skill = 1;
-				RESET_DISPLAY;
-				UI_WRITE_ANNOUNCEMENT(90, 70, "FREEZE SET");
-				HAL_Delay(700);
-				RESET_DISPLAY;
-				LCD_DrawSkillMenu();
-				LCD_SelectSkill(select_skill);
+				if ((select_mode == 1 && Skill_Unlocked(&campaign_players[current_player], SKILL_FREEZE)) ||
+					(select_mode == 2 && Skill_Unlocked(&endless_players[current_player], SKILL_FREEZE)))
+				{
+					active_skill = 1;
+					RESET_DISPLAY;
+					UI_WRITE_ANNOUNCEMENT(90, 70, "FREEZE SET");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					LCD_DrawSkillMenu();
+					LCD_SelectSkill(select_skill);
+				}
+				else
+				{
+					UI_WRITE_ANNOUNCEMENT(65, 70, "NEED LEVEL 3");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					LCD_DrawSkillMenu();
+					LCD_SelectSkill(select_skill);
+				}
 				break;
 			case 2:
-				active_skill = 2;
-				RESET_DISPLAY;
-				UI_WRITE_ANNOUNCEMENT(78, 70, "COUNTER SET");
-				HAL_Delay(700);
-				RESET_DISPLAY;
-				LCD_DrawSkillMenu();
-				LCD_SelectSkill(select_skill);
+				if ((select_mode == 1 && Skill_Unlocked(&campaign_players[current_player], SKILL_COUNTER)) ||
+					(select_mode == 2 && Skill_Unlocked(&endless_players[current_player], SKILL_COUNTER)))
+				{
+					active_skill = 2;
+					RESET_DISPLAY;
+					UI_WRITE_ANNOUNCEMENT(78, 70, "COUNTER SET");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					LCD_DrawSkillMenu();
+					LCD_SelectSkill(select_skill);
+				}
+				else
+				{
+					UI_WRITE_ANNOUNCEMENT(65, 70, "NEED LEVEL 6");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					LCD_DrawSkillMenu();
+					LCD_SelectSkill(select_skill);
+				}
 				break;
 			case 3:
 				RESET_DISPLAY;
@@ -559,24 +610,50 @@ void UI_ConfirmBattleSkill(uint8_t skill)
 		switch(skill)
 		{
 			case 1:
-				active_skill = 1;
-				RESET_DISPLAY;
-				UI_WRITE_ANNOUNCEMENT(90, 70, "FREEZE READY");
-				HAL_Delay(700);
-				RESET_DISPLAY;
-				ui_page = UI_PAGE_BATTLE;
-				UI_DisplayBattleStat();
-				LCD_SelectAction(select_action);
+				if (Skill_Unlocked(battle_player, SKILL_FREEZE))
+				{
+					active_skill = 1;
+					RESET_DISPLAY;
+					UI_WRITE_ANNOUNCEMENT(90, 70, "FREEZE READY");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					ui_page = UI_PAGE_BATTLE;
+					battle_screen_refresh = 1;
+					UI_DisplayBattleStat();
+					LCD_SelectAction(select_action);
+				}
+				else
+				{
+					UI_WRITE_ANNOUNCEMENT(65, 70, "NEED LEVEL 3");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					battle_screen_refresh = 1;
+					UI_DisplayBattleStat();
+					LCD_SelectAction(select_action);
+				}
 				break;
 			case 2:
-				active_skill = 2;
-				RESET_DISPLAY;
-				UI_WRITE_ANNOUNCEMENT(78, 70, "COUNTER READY");
-				HAL_Delay(700);
-				RESET_DISPLAY;
-				ui_page = UI_PAGE_BATTLE;
-				UI_DisplayBattleStat();
-				LCD_SelectAction(select_action);
+				if (Skill_Unlocked(battle_player, SKILL_COUNTER))
+				{
+					active_skill = 2;
+					RESET_DISPLAY;
+					UI_WRITE_ANNOUNCEMENT(78, 70, "COUNTER READY");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					ui_page = UI_PAGE_BATTLE;
+					battle_screen_refresh = 1;
+					UI_DisplayBattleStat();
+					LCD_SelectAction(select_action);
+				}
+				else
+				{
+					UI_WRITE_ANNOUNCEMENT(65, 70, "NEED LEVEL 6");
+					HAL_Delay(700);
+					RESET_DISPLAY;
+					battle_screen_refresh = 1;
+					UI_DisplayBattleStat();
+					LCD_SelectAction(select_action);
+				}
 				break;
 		}
 	}
