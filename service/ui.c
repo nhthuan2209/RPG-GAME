@@ -191,47 +191,36 @@ void UI_ShowSetting(Player *campaign_player, Player *endless_player)
 	UI_WRITE_STAT(170, 155, "BACK:EXIT");
 }
 
-static uint8_t setting_confirm = 0;
-static uint32_t setting_confirm_wait = 0;
+static uint8_t setting_confirm = 1;
 
 void UI_ResetStat(void)
 {
-	uint32_t now = HAL_GetTick();
-
 	if (!HAL_Buttonselect())
 	{
+		setting_confirm = 1;
 		return;
-	}
-
-	if (select_option == 1)
-	{
-		RESET_DISPLAY;
-		if (battle_mode == 1)
-		{
-			map_endless = 0;
-			endless_players[current_player].hp = endless_players[current_player].max_hp;
-			UI_ShowEndless();
-		}
-		else
-		{
-			Campaign_Reset();
-			campaign_players[current_player].hp = campaign_players[current_player].max_hp;
-			UI_ShowCampaign();
-		}
 	}
 	else
 	{
-		map_endless = 0;
-		Campaign_Reset();
-		ui_page = UI_PAGE_MENU;
-		RESET_DISPLAY;
-		LCD_DrawMenuGame();
-		UI_WRITE_ANNOUNCEMENT(48, 70, "RESET COMPLETE");
-		HAL_Delay(1000);
-		RESET_DISPLAY;
-		ui_page = UI_PAGE_MENU;
-		LCD_DrawMenuGame();
+		setting_confirm = 0;
 	}
+	RESET_DISPLAY;
+	if (battle_mode == 1)
+	{
+		map_endless = 0;
+		endless_players[current_player].hp = endless_players[current_player].max_hp;
+	}
+	else
+	{
+		Campaign_Reset();
+		campaign_players[current_player].hp = campaign_players[current_player].max_hp;
+	}
+	RESET_DISPLAY;
+	UI_WRITE_ANNOUNCEMENT(48, 70, "RESET COMPLETE");
+	HAL_Delay(800);
+
+	RESET_DISPLAY;
+	UI_ShowSetting(&campaign_players[current_player], &endless_players[current_player]);
 }
 
 #define UI_WRITE_RESULT(x, y, text) 							ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR);
