@@ -25,9 +25,10 @@ typedef struct
     BattleState state;
 		uint16_t player_defending;
 		uint16_t player_usedheal;
-		uint8_t potion_count[3];
+		uint8_t potion_count[POTION_COUNT - 1];
 		uint8_t protect_active;
 		uint8_t fire_active;
+		uint8_t power_active;
 
 }Battle;
 

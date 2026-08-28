@@ -413,8 +413,8 @@ void UI_BattlePage(void)
 			RESET_DISPLAY;
 			ui_page = UI_PAGE_POTIONS;
 			select_potion = POTION_HEAL;
-			LCD_DrawPotionMenu();
-			LCD_SelectPotion(select_potion);
+			LCD_DrawPotionMenu(Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
+			LCD_SelectPotion(select_potion, Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
 		}
 	}
 }
@@ -535,21 +535,21 @@ void UI_MovePotionMenu(uint8_t *potion)
 {
 	if (HAL_Buttondown())
 	{
-		LCD_DeselectPotion(*potion);
-		if (*potion < 3)
+		LCD_DeselectPotion(*potion, Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
+		if (*potion < POTION_COUNT - 1)
 		{
 			(*potion)++;
 		}
-		LCD_SelectPotion(*potion);
+		LCD_SelectPotion(*potion, Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
 	}
 	if (HAL_Buttonup())
 	{
-		LCD_DeselectPotion(*potion);
+		LCD_DeselectPotion(*potion, Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
 		if (*potion > 1)
 		{
 			(*potion)--;
 		}
-		LCD_SelectPotion(*potion);
+		LCD_SelectPotion(*potion, Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
 	}
 }
 
@@ -565,8 +565,8 @@ void UI_ConfirmPotion(PotionType potion)
 		UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF POTION");
 		HAL_Delay(550);
 		RESET_DISPLAY;
-		LCD_DrawPotionMenu();
-		LCD_SelectPotion(select_potion);
+		LCD_DrawPotionMenu(Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
+		LCD_SelectPotion(select_potion, Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
 		return;
 	}
 

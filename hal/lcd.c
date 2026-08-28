@@ -1,4 +1,7 @@
 #include "lcd.h"
+#include "stdio.h"
+#include "potion.h"
+#include "stdio.h"
 
 
 #define LCD_WRITE_MENU(x, y, text) 			ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
@@ -310,41 +313,65 @@ void LCD_DeselectAction(uint8_t deselect_action)
 	}	
 }
 
-void LCD_DrawPotionMenu(void)
+void LCD_DrawPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count)
 {
-	LCD_WRITE_OPTION(100, 50, "[HEAL]");
-	LCD_WRITE_OPTION(100, 80, "[PROTECT]");
-	LCD_WRITE_OPTION(100, 110, "[FIRE]");
+	char item[24];
+
+	LCD_WRITE_MENU(92, 8, "POTIONS");
+	sprintf(item, "  HP Potion     x%d", hp_count);
+	LCD_WRITE_OPTION(45, 42, item);
+	sprintf(item, "  Protect Potionx%d", prt_count);
+	LCD_WRITE_OPTION(45, 72, item);
+	sprintf(item, "  Fire Potion   x%d", fire_count);
+	LCD_WRITE_OPTION(45, 102, item);
+	sprintf(item, "  Power Potion  x%d", power_count);
+	LCD_WRITE_OPTION(45, 132, item);
 }
 
-void LCD_SelectPotion(uint8_t potion)
+void LCD_SelectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count)
 {
 	switch (potion)
 	{
-		case 1:
-			LCD_WRITE_SELECT(100, 50, "[HEAL]");
+		char item[24];
+		case POTION_HEAL:
+			sprintf(item, "> HP Potion     x%d", hp_count);
+			LCD_WRITE_SELECT(45, 42, item);
 			break;
-		case 2:
-			LCD_WRITE_SELECT(100, 80, "[PROTECT]");
+		case POTION_PROTECT:
+			sprintf(item, "> Protect Potionx%d", prt_count);
+			LCD_WRITE_SELECT(45, 72, item);
 			break;
-		case 3:
-			LCD_WRITE_SELECT(100, 110, "[FIRE]");
+		case POTION_FIRE:
+			sprintf(item, "> Fire Potion   x%d", fire_count);
+			LCD_WRITE_SELECT(45, 102, item);
+			break;
+		case POTION_POWER:
+			sprintf(item, "> Power Potion  x%d", power_count);
+			LCD_WRITE_SELECT(45, 132, item);
 			break;
 	}
 }
 
-void LCD_DeselectPotion(uint8_t potion)
+void LCD_DeselectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count)
 {
 	switch (potion)
 	{
-		case 1:
-			LCD_WRITE_DESELECT(100, 50, "[HEAL]");
+		char item[24];
+		case POTION_HEAL:
+			sprintf(item, "  HP Potion     x%d", hp_count);
+			LCD_WRITE_DESELECT(45, 42, item);
 			break;
-		case 2:
-			LCD_WRITE_DESELECT(100, 80, "[PROTECT]");
+		case POTION_PROTECT:
+			sprintf(item, "  Protect Potionx%d", prt_count);
+			LCD_WRITE_DESELECT(45, 72, item);
 			break;
-		case 3:
-			LCD_WRITE_DESELECT(100, 110, "[FIRE]");
+		case POTION_FIRE:
+			sprintf(item, "  Fire Potion   x%d", fire_count);
+			LCD_WRITE_DESELECT(45, 102, item);
+			break;
+		case POTION_POWER:
+			sprintf(item, "  Power Potion  x%d", power_count);
+			LCD_WRITE_DESELECT(45, 132, item);
 			break;
 	}
 }
