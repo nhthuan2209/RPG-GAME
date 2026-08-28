@@ -37,7 +37,7 @@ void LCD_SelectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8
 void LCD_DeselectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count);
 void LCD_SelectShopPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
 void LCD_DeselectShopPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
-void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
+void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, int32_t gold, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
 void LCD_DrawEndPage(void);
 void LCD_SelectOption(uint8_t select_option);
 void LCD_DeselectOption(uint8_t deselect_option);

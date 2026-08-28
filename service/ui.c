@@ -240,11 +240,11 @@ static void UI_BattleEnd(uint8_t win)
 		battle_monster = 0;
 
 		RESET_DISPLAY;
-		UI_WRITE_RESULT(104, 75, "VICTORY!");
-		sprintf(save, "GOLD:%d", gold_reward);
-		UI_WRITE_RESULT(88, 100, save);
-		sprintf(save, "EXP:%d", exp_reward);
-		UI_WRITE_RESULT(88, 125, save);
+		UI_WRITE_RESULT(80, 40, "VICTORY!");
+		sprintf(save, "GOLD: %d", gold_reward);
+		UI_WRITE_RESULT(80, 80, save);
+		sprintf(save, "EXP: %d", exp_reward);
+		UI_WRITE_RESULT(80, 120, save);
 		HAL_Delay(1500);
 		if(battle_mode == 1)
 		{
@@ -367,6 +367,7 @@ void UI_BattlePage(void)
 	 
 			if(Battle_GetState() == BATTLE_VICTORY)
 			{
+				Player_GainGold(battle_player, battle_monster->gold_reward);
 				Player_GainExp(battle_player, battle_monster->exp_reward);
 				UI_BattleEnd(1);
 				return;
@@ -527,7 +528,7 @@ void UI_ConfirmShopMenu(uint8_t shop)
 				ui_page = UI_PAGE_BUYING_POTION;
 				buying_potion = 1;
 				select_potion = POTION_HEAL;
-				LCD_DrawShopPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+				LCD_DrawShopPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], battle_mode == 0 ? campaign_players[current_player].gold : endless_players[current_player].gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 				LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 				break;
 			case 2:
@@ -586,7 +587,7 @@ void UI_BuyPotion(PotionType potion)
 		return;
 	}
 
-	if (select_mode == 1)
+	if (battle_mode == 0)
 	{
 		shop_player = &campaign_players[current_player];
 	}
@@ -608,7 +609,7 @@ void UI_BuyPotion(PotionType potion)
 		UI_WRITE_ANNOUNCEMENT(50, 75, "NOT ENOUGH GOLD");
 		HAL_Delay(550);
 		RESET_DISPLAY;
-		Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+		Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], shop_player->gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 		LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 		return;
 	}
@@ -617,7 +618,7 @@ void UI_BuyPotion(PotionType potion)
 	shop_player->potion_count[potion - 1]++;
 	shop_potion_stock[potion - 1] = 0;
 	RESET_DISPLAY;
-	Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+	Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], shop_player->gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 	LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 }
 
@@ -705,6 +706,7 @@ void UI_ConfirmPotion(PotionType potion)
 	if (Battle_GetState() == BATTLE_VICTORY)
 	{
 		Player_GainExp(battle_player, battle_monster->exp_reward);
+		Player_GainGold(battle_player, battle_monster->gold_reward);
 		UI_BattleEnd(1);
 	}
 }

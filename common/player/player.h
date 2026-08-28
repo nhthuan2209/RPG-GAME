@@ -27,6 +27,7 @@ typedef struct
 extern Player player_list[];
 extern uint8_t player_count;
 
+void Player_GainGold(Player *player, int16_t gold);
 void Player_GainExp(Player *player, int16_t exp);
 void Player_Reset(Player *player);
 #endif // _PLAYER_H_

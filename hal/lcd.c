@@ -1,7 +1,7 @@
 #include "lcd.h"
 #include "stdio.h"
 #include "potion.h"
-#include "stdio.h"
+#include "player.h"
 
 
 #define LCD_WRITE_MENU(x, y, text) 			ST7789_WriteString(x, y, text, FONT_MENU_GAME, LETTER_MENU_GAME_COLOR, BACKGROUND_MENU_GAME_COLOR)
@@ -69,11 +69,13 @@ void LCD_DeselectShop(uint8_t deselect_shop)
 	}
 }
 
-void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price)
+void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, int32_t gold_value, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price)
 {
 	char save [32];
 	char price[16];
 	LCD_WRITE_MENU(105, 8, "SHOP");
+	sprintf(save, "GOLD: %d", gold_value);
+	LCD_WRITE_OPTION(10, 120, save);
 	sprintf(save, "HEAL POTION: %d", hp_count);
 	sprintf(price, "PRICE: %d", hp_price);
 	LCD_WRITE_OPTION(10, 40, save);
@@ -93,8 +95,6 @@ void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_co
 	sprintf(price, "PRICE: %d", power_price);
 	LCD_WRITE_OPTION(10, 100, save);
 	LCD_WRITE_OPTION(200, 100, price);
-
-	LCD_WRITE_OPTION(110, 150, "BACK");
 }
 
 

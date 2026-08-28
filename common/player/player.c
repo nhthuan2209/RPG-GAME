@@ -38,6 +38,11 @@ void Player_GainExp(Player *player, int16_t exp)
 	}
 }
 
+void Player_GainGold(Player *player, int16_t gold)
+{
+	player->gold = player->gold + gold;
+}
+
 void Player_Reset(Player *player)
 {
     uint8_t i;
