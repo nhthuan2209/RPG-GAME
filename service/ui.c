@@ -452,7 +452,7 @@ void UI_ConfirmMode(uint8_t mode)
 				RESET_DISPLAY;
 				ui_page = UI_PAGE_SHOP;
 				select_shop = 1;
-				LCD_DrawShopMenu();
+				LCD_DrawShopMenu(battle_mode == 0 ? campaign_players[current_player].gold : endless_players[current_player].gold);
 				LCD_SelectShop(select_shop);
 				break;
 			case 4:
@@ -517,6 +517,7 @@ void UI_MoveShopMenu(uint8_t *sl_shop)
 	}
 }
 
+
 void UI_ConfirmShopMenu(uint8_t shop)
 {
 	if(HAL_Buttonselect())
@@ -533,10 +534,17 @@ void UI_ConfirmShopMenu(uint8_t shop)
 				break;
 			case 2:
 				RESET_DISPLAY;
-				ui_page = UI_PAGE_SHOP;
+				ui_page = UI_PAGE_BUYING_STATS;
 				select_shop = 1;
-				LCD_DrawShopMenu();
-				LCD_SelectShop(select_shop);
+				if (battle_mode == 0)
+				{
+					LCD_DrawShopStats(campaign_players[current_player].max_hp, campaign_players[current_player].attack, campaign_players[current_player].defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+				}
+				else
+				{
+					LCD_DrawShopStats(endless_players[current_player].max_hp, endless_players[current_player].attack, endless_players[current_player].defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+				}
+				LCD_SelectShopStats(select_shop, battle_mode == 0 ? campaign_players[current_player].max_hp : endless_players[current_player].max_hp, battle_mode == 0 ? campaign_players[current_player].attack : endless_players[current_player].attack, battle_mode == 0 ? campaign_players[current_player].defense : endless_players[current_player].defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
 				break;
 			case 3:
 				RESET_DISPLAY;
@@ -575,6 +583,141 @@ void UI_MoveBuyPotion(uint8_t *potion)
 		LCD_SelectShopPotion(*potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 	}
 }
+
+void UI_MoveBuyStats(uint8_t *sl_shop)
+{
+	Player *shop_player;
+
+	if (ui_page != UI_PAGE_BUYING_STATS)
+	{
+		return;
+	}
+
+	if (battle_mode == 0)
+	{
+		shop_player = &campaign_players[current_player];
+	}
+	else
+	{
+		shop_player = &endless_players[current_player];
+	}
+
+	if(HAL_Buttondown())
+	{
+		HAL_Delay(100);
+		LCD_DeselectShopStats(*sl_shop, shop_player->max_hp, shop_player->attack, shop_player->defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+		if (*sl_shop < 3)
+		{
+			(*sl_shop)++;
+		}
+		LCD_SelectShopStats(*sl_shop, shop_player->max_hp, shop_player->attack, shop_player->defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+	}
+	if(HAL_Buttonup())
+	{
+		HAL_Delay(100);
+		LCD_DeselectShopStats(*sl_shop, shop_player->max_hp, shop_player->attack, shop_player->defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+		if (*sl_shop > 1)
+		{
+			(*sl_shop)--;
+		}
+		LCD_SelectShopStats(*sl_shop, shop_player->max_hp, shop_player->attack, shop_player->defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+	}
+}
+
+void UI_EffectBuyStats(uint8_t shop)
+{
+	if (ui_page != UI_PAGE_BUYING_STATS)
+	{
+		return;
+	}
+	if (!HAL_Buttonselect())
+	{
+		return;
+	}
+	if (shop == 1)
+	{
+		campaign_players[current_player].hp += 10;
+		endless_players[current_player].hp += 10;
+		LCD_BuyMaxHpEffect();
+	}
+	else if (shop == 2)
+	{
+		campaign_players[current_player].attack += 5;
+		endless_players[current_player].attack += 5;
+		LCD_BuyAttackEffect();
+	}
+	else if (shop == 3)
+	{
+		campaign_players[current_player].defense += 5;
+		endless_players[current_player].defense += 5;
+		LCD_BuyDefenseEffect();
+	}
+}
+
+void UI_ConfirmBuyStats(uint8_t shop)
+{
+	Player *shop_player;
+
+	if (battle_mode == 0)
+	{
+		shop_player = &campaign_players[current_player];
+	}
+	else
+	{
+		shop_player = &endless_players[current_player];
+	}
+
+	if (!HAL_Buttonselect())
+	{
+		return;
+	}
+
+	switch(shop)
+	{
+		case 1:
+			if (shop_player->gold >= SHOP_MAX_HP_PRICE)
+			{
+				shop_player->gold -= SHOP_MAX_HP_PRICE;
+				shop_player->max_hp += 10;
+				shop_player->hp += 10;
+			}
+			else
+			{
+				UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF GOLD");
+				HAL_Delay(550);
+			}
+			break;
+		case 2:
+			if (shop_player->gold >= SHOP_ATTACK_PRICE)
+			{
+				shop_player->gold -= SHOP_ATTACK_PRICE;
+				shop_player->attack += 5;
+			}
+			else
+			{
+				UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF GOLD");
+				HAL_Delay(550);
+			}
+			break;
+		case 3:
+			if (shop_player->gold >= SHOP_DEFENSE_PRICE)
+			{
+				shop_player->gold -= SHOP_DEFENSE_PRICE;
+				shop_player->defense += 5;
+			}
+			else
+			{
+				UI_WRITE_ANNOUNCEMENT(80, 75, "OUT OF GOLD");
+				HAL_Delay(550);
+			}
+			break;
+	}
+
+	RESET_DISPLAY;
+	LCD_DrawShopStats(shop_player->max_hp, shop_player->attack, shop_player->defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+	LCD_SelectShopStats(select_shop, shop_player->max_hp, shop_player->attack, shop_player->defense, SHOP_MAX_HP_PRICE, SHOP_ATTACK_PRICE, SHOP_DEFENSE_PRICE);
+}
+
 
 void UI_BuyPotion(PotionType potion)
 {
@@ -791,7 +934,7 @@ uint8_t UI_BackShopMenu(void)
 		{
 			ui_page = UI_PAGE_SHOP;
 			select_shop = 1;
-			LCD_DrawShopMenu();
+			LCD_DrawShopMenu(battle_mode == 0 ? campaign_players[current_player].gold : endless_players[current_player].gold);
 			LCD_SelectShop(select_shop);
 		}
 		else

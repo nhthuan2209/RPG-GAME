@@ -24,16 +24,20 @@ void LCD_DrawMenuGame(void)
 void LCD_DrawSkillMenu(void)
 {
 	LCD_WRITE_MENU(105, 8, "SKILLS");
-	LCD_WRITE_OPTION(98, 48, "FREEZE");
-	LCD_WRITE_OPTION(98, 78, "COUNTER");
+	LCD_WRITE_OPTION(98, 60, "FREEZE");
+	LCD_WRITE_OPTION(98, 100, "COUNTER");
 	LCD_WRITE_OPTION(105, 126, "BACK");
 }
 
-void LCD_DrawShopMenu(void)
+void LCD_DrawShopMenu(int32_t gold)
 {
+	char save[24];
+
 	LCD_WRITE_MENU(105, 8, "SHOP");
+	sprintf(save, "GOLD: %ld", (long)gold);
+	LCD_WRITE_OPTION(10, 25, save);
 	LCD_WRITE_OPTION(98, 60, "BUY POTION");
-	LCD_WRITE_OPTION(98, 100, "SELL ITEMS");
+	LCD_WRITE_OPTION(98, 100, "BUY STATS");
 	LCD_WRITE_OPTION(110, 140, "BACK");
 }
 
@@ -45,7 +49,7 @@ void LCD_SelectShop(uint8_t select_shop)
 			LCD_WRITE_SELECT(98, 60, "BUY POTION");
 			break;
 		case 2:
-			LCD_WRITE_SELECT(98, 100, "SELL ITEMS");
+			LCD_WRITE_SELECT(98, 100, "BUY STATS");
 			break;
 		case 3:
 			LCD_WRITE_SELECT(110, 140, "BACK");
@@ -61,10 +65,100 @@ void LCD_DeselectShop(uint8_t deselect_shop)
 			LCD_WRITE_DESELECT(98, 60, "BUY POTION");
 			break;
 		case 2:
-			LCD_WRITE_DESELECT(98, 100, "SELL ITEMS");
+			LCD_WRITE_DESELECT(98, 100, "BUY STATS");
 			break;
 		case 3:
 			LCD_WRITE_DESELECT(110, 140, "BACK");
+			break;
+	}
+}
+
+void LCD_BuyMaxHpEffect()
+{
+	LCD_WRITE_MENU(65, 70, "MAX HP + 10");
+}
+
+void LCD_BuyAttackEffect()
+{
+	LCD_WRITE_MENU(65, 70, "ATTACK + 5");
+}
+
+void LCD_BuyDefenseEffect()
+{
+	LCD_WRITE_MENU(65, 70, "DEFENSE + 5");
+}
+
+void LCD_DrawShopStats(uint16_t max_hp, uint16_t attack, uint16_t defense, uint16_t max_hp_price, uint16_t attack_price, uint16_t defense_price)
+{
+	char save[32];
+	char price[16];
+	LCD_WRITE_MENU(105, 8, "SHOP");
+	sprintf(save, "MAX HP: %d", max_hp);
+	sprintf(price, "PRICE: %d", max_hp_price);
+	LCD_WRITE_STAT(10, 40, save);
+	LCD_WRITE_STAT(200, 40, price);
+
+	sprintf(save, "ATTACK: %d", attack);
+	sprintf(price, "PRICE: %d", attack_price);
+	LCD_WRITE_STAT(10, 80, save);
+	LCD_WRITE_STAT(200, 80, price);
+
+	sprintf(save, "DEFENSE: %d", defense);
+	sprintf(price, "PRICE: %d", defense_price);
+	LCD_WRITE_STAT(10, 100, save);
+	LCD_WRITE_STAT(200, 100, price);
+}
+
+void LCD_SelectShopStats(uint8_t select_shop, uint16_t max_hp, uint16_t attack, uint16_t defense, uint16_t max_hp_price, uint16_t attack_price, uint16_t defense_price)
+{
+	char save[32];
+	char price[16];
+	switch (select_shop)
+	{
+		case 1:
+			sprintf(save, "MAX HP: %d", max_hp);
+			sprintf(price, "PRICE: %d", max_hp_price);
+			LCD_WRITE_SELECT(10, 40, save);
+			LCD_WRITE_SELECT(200, 40, price);
+			break;
+		case 2:
+			sprintf(save, "ATTACK: %d", attack);
+			sprintf(price, "PRICE: %d", attack_price);
+			LCD_WRITE_SELECT(10, 80, save);
+			LCD_WRITE_SELECT(200, 80, price);
+			break;
+		case 3:
+			sprintf(save, "DEFENSE: %d", defense);
+			sprintf(price, "PRICE: %d", defense_price);
+			LCD_WRITE_SELECT(10, 100, save);
+			LCD_WRITE_SELECT(200, 100, price);
+			break;
+	}
+}
+
+void LCD_DeselectShopStats(uint8_t deselect_shop, uint16_t max_hp, uint16_t attack, uint16_t defense, uint16_t max_hp_price, uint16_t attack_price, uint16_t defense_price)
+{
+	char save[32];
+	char price[16];
+	switch (deselect_shop)
+	{
+		case 1:
+			sprintf(save, "MAX HP: %d", max_hp);
+			sprintf(price, "PRICE: %d", max_hp_price);
+			LCD_WRITE_DESELECT(10, 40, save);
+			LCD_WRITE_DESELECT(200, 40, price);
+			break;
+		case 2:
+			sprintf(save, "ATTACK: %d", attack);
+			sprintf(price, "PRICE: %d", attack_price);
+			LCD_WRITE_DESELECT(10, 80, save);
+			LCD_WRITE_DESELECT(200, 80, price);
+			break;
+		case 3:
+			sprintf(save, "DEFENSE: %d", defense);
+			sprintf(price, "PRICE: %d", defense_price);
+			LCD_WRITE_DESELECT(10, 100, save);
+			LCD_WRITE_DESELECT(200, 100, price);
 			break;
 	}
 }
@@ -74,7 +168,7 @@ void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_co
 	char save [32];
 	char price[16];
 	LCD_WRITE_MENU(105, 8, "SHOP");
-	sprintf(save, "GOLD: %d", gold_value);
+	sprintf(save, "GOLD: %ld", (long)gold_value);
 	LCD_WRITE_OPTION(10, 120, save);
 	sprintf(save, "HEAL POTION: %d", hp_count);
 	sprintf(price, "PRICE: %d", hp_price);
@@ -195,10 +289,10 @@ void LCD_SelectSkill(uint8_t select_skill)
 	switch(select_skill)
 	{
 		case 1:
-			LCD_WRITE_SELECT(98, 48, "FREEZE");
+			LCD_WRITE_SELECT(98, 60, "FREEZE");
 			break;
 		case 2:
-			LCD_WRITE_SELECT(98, 78, "COUNTER");
+			LCD_WRITE_SELECT(98, 100, "COUNTER");
 			break;
 		case 3:
 			LCD_WRITE_SELECT(105, 126, "BACK");
@@ -211,10 +305,10 @@ void LCD_DeselectSkill(uint8_t deselect_skill)
 	switch(deselect_skill)
 	{
 		case 1:
-			LCD_WRITE_DESELECT(98, 48, "FREEZE");
+			LCD_WRITE_DESELECT(98, 60, "FREEZE");
 			break;
 		case 2:
-			LCD_WRITE_DESELECT(98, 78, "COUNTER");
+			LCD_WRITE_DESELECT(98, 100, "COUNTER");
 			break;
 		case 3:
 			LCD_WRITE_DESELECT(105, 126, "BACK");

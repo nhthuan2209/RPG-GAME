@@ -134,6 +134,12 @@ int main(void)
       UI_MoveShopMenu(&select_shop);
       UI_BackShopMenu();
     }
+    else if (ui_page == UI_PAGE_BUYING_STATS)
+    {
+      UI_ConfirmBuyStats(select_shop);
+      UI_MoveBuyStats(&select_shop);
+      UI_BackShopMenu();
+    }
     else if (ui_page == UI_PAGE_BATTLE_SKILLS)
     {
       UI_ConfirmBattleSkill(select_skill);

@@ -15,7 +15,8 @@ typedef enum {
 	UI_PAGE_SHOP,
 	UI_PAGE_BATTLE_SKILLS,
 	UI_PAGE_POTIONS,
-	UI_PAGE_BUYING_POTION
+	UI_PAGE_BUYING_POTION,
+	UI_PAGE_BUYING_STATS
 } UiPage;
 
 extern uint8_t uid[4];
@@ -45,6 +46,8 @@ uint8_t UI_BackBattleSkillMenu(void);
 void UI_MovePotionMenu(uint8_t *potion);
 void UI_MoveBuyPotion(uint8_t *potion);
 void UI_BuyPotion(PotionType potion);
+void UI_MoveBuyStats(uint8_t *sl_shop);
+void UI_ConfirmBuyStats(uint8_t shop);
 void UI_ConfirmPotion(PotionType potion);
 uint8_t UI_BackPotionMenu(void);
 void UI_ShowSetting(Player *campaign_player, Player *endless_player);

@@ -13,7 +13,7 @@
 
 void LCD_DrawMenuGame(void);
 void LCD_DrawSkillMenu(void);
-void LCD_DrawShopMenu(void);
+void LCD_DrawShopMenu(int32_t gold);
 void LCD_SelectShop(uint8_t select_shop);
 void LCD_DeselectShop(uint8_t deselect_shop);
 void LCD_SelectBattleSkill(uint8_t select_skill);
@@ -37,6 +37,12 @@ void LCD_SelectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8
 void LCD_DeselectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count);
 void LCD_SelectShopPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
 void LCD_DeselectShopPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
+void LCD_BuyMaxHpEffect();
+void LCD_BuyAttackEffect();
+void LCD_BuyDefenseEffect();
+void LCD_DrawShopStats(uint16_t max_hp, uint16_t attack, uint16_t defense, uint16_t max_hp_price, uint16_t attack_price, uint16_t defense_price);
+void LCD_SelectShopStats(uint8_t select_shop, uint16_t max_hp, uint16_t attack, uint16_t defense, uint16_t max_hp_price, uint16_t attack_price, uint16_t defense_price);
+void LCD_DeselectShopStats(uint8_t deselect_shop, uint16_t max_hp, uint16_t attack, uint16_t defense, uint16_t max_hp_price, uint16_t attack_price, uint16_t defense_price);
 void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, int32_t gold, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
 void LCD_DrawEndPage(void);
 void LCD_SelectOption(uint8_t select_option);
