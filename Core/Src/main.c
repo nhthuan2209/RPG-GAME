@@ -31,6 +31,7 @@
 #include "user.h"
 #include "ui.h"
 #include "battle.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -127,11 +128,11 @@ int main(void)
     {
       UI_GameOverPage();
     }
-    else if (ui_page == UI_PAGE_SKILLS)
+    else if (ui_page == UI_PAGE_SHOP)
     {
-      UI_ConfirmSkillMenu(select_skill);
-      UI_MoveSkillMenu(&select_skill);
-      UI_BackSkillMenu();
+      UI_ConfirmShopMenu(select_shop);
+      UI_MoveShopMenu(&select_shop);
+      UI_BackShopMenu();
     }
     else if (ui_page == UI_PAGE_BATTLE_SKILLS)
     {
@@ -139,11 +140,20 @@ int main(void)
       UI_MoveBattleSkill(&select_skill);
       UI_BackBattleSkillMenu();
     }
-    else if (ui_page == UI_PAGE_POTIONS)
+    else if (ui_page == UI_PAGE_POTIONS || ui_page == UI_PAGE_BUYING_POTION)
     {
-      UI_ConfirmPotion(select_potion);
-      UI_MovePotionMenu(&select_potion);
-      UI_BackPotionMenu();
+      if (buying_potion && ui_page == UI_PAGE_BUYING_POTION)
+      {
+        UI_BuyPotion(select_potion);
+        UI_MoveBuyPotion(&select_potion);
+        UI_BackShopMenu();
+      }
+      else
+      {
+        UI_ConfirmPotion(select_potion);
+        UI_MovePotionMenu(&select_potion);
+        UI_BackPotionMenu();
+      }
     }
 
     if (ui_page == UI_PAGE_MENU || ui_page == UI_PAGE_BATTLE ||

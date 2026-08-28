@@ -10,10 +10,10 @@ void Battle_Start(Player *player, Monster *monster)
 	current_battle.state = BATTLE_PLAYER_TURN;
 	current_battle.player_defending = 0;
 	current_battle.player_usedheal = 0;
-	current_battle.potion_count[POTION_HEAL - 1] = POTION_HEAL_COUNT;
-	current_battle.potion_count[POTION_PROTECT - 1] = POTION_PROTECT_COUNT;
-	current_battle.potion_count[POTION_FIRE - 1] = POTION_FIRE_COUNT;
-	current_battle.potion_count[POTION_POWER - 1] = POTION_POWER_COUNT;
+	current_battle.potion_count[POTION_HEAL - 1] = player->potion_count[POTION_HEAL - 1];
+	current_battle.potion_count[POTION_PROTECT - 1] = player->potion_count[POTION_PROTECT - 1];
+	current_battle.potion_count[POTION_FIRE - 1] = player->potion_count[POTION_FIRE - 1];
+	current_battle.potion_count[POTION_POWER - 1] = player->potion_count[POTION_POWER - 1];
 	current_battle.protect_active = 0;
 	current_battle.fire_active = 0;
 	current_battle.power_active = 0;
@@ -31,6 +31,15 @@ uint8_t Battle_CountPotion(PotionType potion)
 	return current_battle.potion_count[potion - 1];
 }
 
+void Battle_AddPotion(PotionType potion)
+{
+	if (potion >= POTION_HEAL && potion < POTION_COUNT)
+	{
+		current_battle.player->potion_count[potion - 1]++;
+		current_battle.potion_count[potion - 1]++;
+	}
+}
+
 uint8_t Battle_UsePotion(PotionType potion)
 {
 	if (potion < POTION_HEAL || potion >= POTION_COUNT ||
@@ -40,6 +49,7 @@ uint8_t Battle_UsePotion(PotionType potion)
 	}
 
 	current_battle.potion_count[potion - 1]--;
+	current_battle.player->potion_count[potion - 1]--;
 	if (potion == POTION_HEAL)
 	{
 		current_battle.player->hp = current_battle.player->max_hp;

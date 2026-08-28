@@ -2,6 +2,7 @@
 #define _PLAYER_H_
 
 #include <stdint.h>
+#include "potion.h"
 
 #define EXP_UP_LEVEL					40
 
@@ -17,6 +18,9 @@ typedef struct
 	
 	int32_t level;
 	int32_t exp;
+
+	int32_t gold;
+	uint8_t potion_count[POTION_COUNT - 1];
 	
 }Player;
 

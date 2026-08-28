@@ -43,6 +43,7 @@ void Battle_Heal(void);
 uint8_t Battle_Count_HealPotion();
 uint8_t Battle_UsePotion(PotionType potion);
 uint8_t Battle_CountPotion(PotionType potion);
+void Battle_AddPotion(PotionType potion);
 BattleState Battle_GetState(void);
 
 

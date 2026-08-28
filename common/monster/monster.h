@@ -14,6 +14,7 @@ typedef struct
     int16_t defense;
 
     int16_t exp_reward;
+    int32_t gold_reward;
 
 } Monster;
 

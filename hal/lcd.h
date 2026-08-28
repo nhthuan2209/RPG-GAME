@@ -13,7 +13,9 @@
 
 void LCD_DrawMenuGame(void);
 void LCD_DrawSkillMenu(void);
-void LCD_DrawBattleSkillMenu(void);
+void LCD_DrawShopMenu(void);
+void LCD_SelectShop(uint8_t select_shop);
+void LCD_DeselectShop(uint8_t deselect_shop);
 void LCD_SelectBattleSkill(uint8_t select_skill);
 void LCD_DeselectBattleSkill(uint8_t deselect_skill);
 void LCD_SelectSkill(uint8_t select_skill);
@@ -33,6 +35,9 @@ void LCD_DeselectAction(uint8_t deselect_action);
 void LCD_DrawPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count);
 void LCD_SelectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count);
 void LCD_DeselectPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count);
+void LCD_SelectShopPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
+void LCD_DeselectShopPotion(uint8_t potion, uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
+void LCD_DrawShopPotionMenu(uint8_t hp_count, uint8_t prt_count, uint8_t fire_count, uint8_t power_count, uint16_t hp_price, uint16_t prt_price, uint16_t fire_price, uint16_t power_price);
 void LCD_DrawEndPage(void);
 void LCD_SelectOption(uint8_t select_option);
 void LCD_DeselectOption(uint8_t deselect_option);
