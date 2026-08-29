@@ -22,14 +22,16 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "st7789.h"
+#include "lcd.h"
 #include "rc522.h"
 #include "fonts.h"
-#include "string.h"
+#include <string.h>
 #include "definition.h"
 #include "button.h"
 #include "user.h"
 #include "ui.h"
 #include "battle.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,7 +54,6 @@ SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
 /* USER CODE BEGIN PV */
-uint8_t uid[4];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,7 +105,7 @@ int main(void)
 	RESET_DISPLAY;
 	ST7789_Init();
 	MFRC522_Init();
-	Waiting_Display();
+  LCD_DrawWaitingDisplay();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,16 +113,63 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-		Check_Card();
-		if (game_page == 1)
+    UI_HandleWaitingForRfidCard();
+		if (ui_page == UI_PAGE_MENU)
 		{
-			Ui_Select_Mode(select_mode);
-			Ui_Confirm_Mode(select_mode);
-			Ui_Move_Mode(&select_mode);
+      LCD_SelectMode(select_mode);
+      UI_ConfirmMode(select_mode);
+      UI_MoveMode(&select_mode);
 		}
-		else if (game_page == 2)
+		else if (ui_page == UI_PAGE_BATTLE)
 		{
-			Ui_Battle_Page();
+      UI_BattlePage();
+		}
+    else if (ui_page == UI_PAGE_GAME_OVER)
+    {
+      UI_GameOverPage();
+    }
+    else if (ui_page == UI_PAGE_SHOP)
+    {
+      UI_ConfirmShopMenu(select_shop);
+      UI_MoveShopMenu(&select_shop);
+      UI_BackShopMenu();
+    }
+    else if (ui_page == UI_PAGE_BUYING_STATS)
+    {
+      UI_ConfirmBuyStats(select_shop);
+      UI_MoveBuyStats(&select_shop);
+      UI_BackShopMenu();
+    }
+    else if (ui_page == UI_PAGE_BATTLE_SKILLS)
+    {
+      UI_ConfirmBattleSkill(select_skill);
+      UI_MoveBattleSkill(&select_skill);
+      UI_BackBattleSkillMenu();
+    }
+    else if (ui_page == UI_PAGE_POTIONS || ui_page == UI_PAGE_BUYING_POTION)
+    {
+      if (buying_potion && ui_page == UI_PAGE_BUYING_POTION)
+      {
+        UI_BuyPotion(select_potion);
+        UI_MoveBuyPotion(&select_potion);
+        UI_BackShopMenu();
+      }
+      else
+      {
+        UI_ConfirmPotion(select_potion);
+        UI_MovePotionMenu(&select_potion);
+        UI_BackPotionMenu();
+      }
+    }
+
+    if (ui_page == UI_PAGE_MENU || ui_page == UI_PAGE_BATTLE ||
+        ui_page == UI_PAGE_SETTING)
+		{
+      UI_BackMenuGame();
+		}
+		if (ui_page == UI_PAGE_SETTING)
+		{
+      UI_ResetStat();
 		}
     /* USER CODE BEGIN 3 */
   }
@@ -283,13 +331,13 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : PA10 PA11 PA15 */
   GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB3 */
   GPIO_InitStruct.Pin = GPIO_PIN_3;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */

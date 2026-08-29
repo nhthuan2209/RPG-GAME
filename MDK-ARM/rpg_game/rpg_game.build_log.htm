@@ -22,115 +22,12 @@ Dialog DLL:      TCM.DLL V1.56.6.0
  
 <h2>Project:</h2>
 C:\Users\DELL\Desktop\1\test\MDK-ARM\rpg_game.uvprojx
-Project File Date:  08/22/2026
+Project File Date:  08/23/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.24', folder: 'C:\Users\DELL\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'rpg_game'
-../service/ui.c(64): error: call to undeclared function 'User_FindUid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-   64 |                         current_player = User_FindUid(uid);
-      |                                          ^
-../service/ui.c(114): error: call to undeclared function 'Ui_Update_Stats'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  114 |                         Ui_Update_Stats(battle_player, battle_monster);
-      |                         ^
-../service/ui.c(172): error: conflicting types for 'Ui_Update_Stats'
-  172 | void Ui_Update_Stats(Character *player, Monster *monster)
-      |      ^
-../service/ui.c(114): note: previous implicit declaration is here
-  114 |                         Ui_Update_Stats(battle_player, battle_monster);
-      |                         ^
-3 errors generated.
-compiling ui.c...
-../hal/button.c(2): warning: In file included from...
-../hal\button.h(6): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_gpio.h(28): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_def.h(29): warning: In file included from...
-../Drivers/CMSIS/Device/ST/STM32F1xx/Include\stm32f1xx.h(254): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal.h(29): warning: In file included from...
-../Core/Inc\stm32f1xx_hal_conf.h(238): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_rcc.h(1142): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_rcc_ex.h(1857): error: unknown type name 'HAL_StatusTypeDef'
- 1857 | HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
-      | ^
-../hal/button.c(2): warning: In file included from...
-../hal\button.h(6): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_gpio.h(28): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_def.h(29): warning: In file included from...
-../Drivers/CMSIS/Device/ST/STM32F1xx/Include\stm32f1xx.h(254): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal.h(29): warning: In file included from...
-../Core/Inc\stm32f1xx_hal_conf.h(238): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_rcc.h(1154): error: unknown type name 'HAL_StatusTypeDef'
- 1154 | HAL_StatusTypeDef HAL_RCC_DeInit(void);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_rcc.h(1155): error: unknown type name 'HAL_StatusTypeDef'
- 1155 | HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_rcc.h(1156): error: unknown type name 'HAL_StatusTypeDef'
- 1156 | HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, uint32_t FLatency);
-      | ^
-../hal/button.c(2): warning: In file included from...
-../hal\button.h(6): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_gpio.h(28): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_def.h(29): warning: In file included from...
-../Drivers/CMSIS/Device/ST/STM32F1xx/Include\stm32f1xx.h(254): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal.h(29): warning: In file included from...
-../Core/Inc\stm32f1xx_hal_conf.h(246): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_exti.h(278): error: unknown type name 'HAL_StatusTypeDef'
-  278 | HAL_StatusTypeDef HAL_EXTI_SetConfigLine(EXTI_HandleTypeDef *hexti, EXTI_ConfigTypeDef *pExtiConfig);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_exti.h(279): error: unknown type name 'HAL_StatusTypeDef'
-  279 | HAL_StatusTypeDef HAL_EXTI_GetConfigLine(EXTI_HandleTypeDef *hexti, EXTI_ConfigTypeDef *pExtiConfig);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_exti.h(280): error: unknown type name 'HAL_StatusTypeDef'
-  280 | HAL_StatusTypeDef HAL_EXTI_ClearConfigLine(EXTI_HandleTypeDef *hexti);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_exti.h(281): error: unknown type name 'HAL_StatusTypeDef'
-  281 | HAL_StatusTypeDef HAL_EXTI_RegisterCallback(EXTI_HandleTypeDef *hexti, EXTI_CallbackIDTypeDef CallbackID, void (*pPendingCbfn)(void));
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_exti.h(282): error: unknown type name 'HAL_StatusTypeDef'
-  282 | HAL_StatusTypeDef HAL_EXTI_GetHandle(EXTI_HandleTypeDef *hexti, uint32_t ExtiLine);
-      | ^
-../hal/button.c(2): warning: In file included from...
-../hal\button.h(6): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_gpio.h(28): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_def.h(29): warning: In file included from...
-../Drivers/CMSIS/Device/ST/STM32F1xx/Include\stm32f1xx.h(254): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal.h(29): warning: In file included from...
-../Core/Inc\stm32f1xx_hal_conf.h(250): warning: In file included from...
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(116): error: unknown type name 'HAL_LockTypeDef'
-  116 |   HAL_LockTypeDef            Lock;                                                         /*!< DMA locking object                     */
-      |   ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(366): error: unknown type name 'HAL_StatusTypeDef'
-  366 | HAL_StatusTypeDef HAL_DMA_Init(DMA_HandleTypeDef *hdma);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(367): error: unknown type name 'HAL_StatusTypeDef'
-  367 | HAL_StatusTypeDef HAL_DMA_DeInit (DMA_HandleTypeDef *hdma);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(376): error: unknown type name 'HAL_StatusTypeDef'
-  376 | HAL_StatusTypeDef HAL_DMA_Start (DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(377): error: unknown type name 'HAL_StatusTypeDef'
-  377 | HAL_StatusTypeDef HAL_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(378): error: unknown type name 'HAL_StatusTypeDef'
-  378 | HAL_StatusTypeDef HAL_DMA_Abort(DMA_HandleTypeDef *hdma);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(379): error: unknown type name 'HAL_StatusTypeDef'
-  379 | HAL_StatusTypeDef HAL_DMA_Abort_IT(DMA_HandleTypeDef *hdma);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(380): error: unknown type name 'HAL_StatusTypeDef'
-  380 | HAL_StatusTypeDef HAL_DMA_PollForTransfer(DMA_HandleTypeDef *hdma, uint32_t CompleteLevel, uint32_t Timeout);
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(382): error: unknown type name 'HAL_StatusTypeDef'
-  382 | HAL_StatusTypeDef HAL_DMA_RegisterCallback(DMA_HandleTypeDef *hdma, HAL_DMA_CallbackIDTypeDef CallbackID, void (* pCallback)( DMA_HandleTypeDef * _hdma));
-      | ^
-../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h(383): error: unknown type name 'HAL_StatusTypeDef'
-  383 | HAL_StatusTypeDef HAL_DMA_UnRegisterCallback(DMA_HandleTypeDef *hdma, HAL_DMA_CallbackIDTypeDef CallbackID);
-      | ^
-fatal error: too many errors emitted, stopping now [-ferror-limit=]
-20 errors generated.
-compiling button.c...
-"rpg_game\rpg_game.axf" - 22 Error(s), 0 Warning(s).
+"rpg_game\rpg_game.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -153,8 +50,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE@6.2.0
-Target not created.
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

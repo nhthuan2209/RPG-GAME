@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stm32f1xx_hal_gpio.h>
 
 typedef struct {
     bool up;
@@ -12,10 +11,10 @@ typedef struct {
     bool back;
 } ButtonState;
 
-ButtonState HAL_ReadButtons(void);
-bool Button_Up(void);
-bool Button_Down(void);
-bool Button_Select(void);
-bool Button_Back(void);
+void HAL_ScanButtons(void);
+bool HAL_Buttonup(void);
+bool HAL_Buttondown(void);
+bool HAL_Buttonselect(void);
+bool HAL_Buttonback(void);
 
 #endif // _BUTTON_H_

@@ -530,14 +530,14 @@
               <FilePath>..\hal\button_config.h</FilePath>
             </File>
             <File>
-              <FileName>tft.c</FileName>
+              <FileName>lcd.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\hal\tft.c</FilePath>
+              <FilePath>..\hal\lcd.c</FilePath>
             </File>
             <File>
-              <FileName>tft.h</FileName>
+              <FileName>lcd.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\hal\tft.h</FilePath>
+              <FilePath>..\hal\lcd.h</FilePath>
             </File>
             <File>
               <FileName>rfid.c</FileName>
@@ -555,34 +555,9 @@
           <GroupName>common</GroupName>
           <Files>
             <File>
-              <FileName>add_monster.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\add_monster.h</FilePath>
-            </File>
-            <File>
-              <FileName>battle.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\battle.h</FilePath>
-            </File>
-            <File>
-              <FileName>campaign.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\campaign.h</FilePath>
-            </File>
-            <File>
-              <FileName>character.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\character.h</FilePath>
-            </File>
-            <File>
               <FileName>definition.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\common\definition.h</FilePath>
-            </File>
-            <File>
-              <FileName>user.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\user.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -590,24 +565,44 @@
           <GroupName>service</GroupName>
           <Files>
             <File>
-              <FileName>add_monster.c</FileName>
+              <FileName>monster.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\service\add_monster.c</FilePath>
+              <FilePath>..\common\monster\monster.c</FilePath>
+            </File>
+            <File>
+              <FileName>monster.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\monster\monster.h</FilePath>
             </File>
             <File>
               <FileName>campaign.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\service\campaign.c</FilePath>
+              <FilePath>..\common\campaign\campaign.c</FilePath>
             </File>
             <File>
-              <FileName>character.c</FileName>
+              <FileName>campaign.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\campaign\campaign.h</FilePath>
+            </File>
+            <File>
+              <FileName>player.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\service\character.c</FilePath>
+              <FilePath>..\common\player\player.c</FilePath>
+            </File>
+            <File>
+              <FileName>player.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\player\player.h</FilePath>
             </File>
             <File>
               <FileName>ui.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\service\ui.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\service\ui.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -615,14 +610,24 @@
           <GroupName>app</GroupName>
           <Files>
             <File>
+              <FileName>battle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\common\battle\battle.c</FilePath>
+            </File>
+            <File>
+              <FileName>battle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\battle\battle.h</FilePath>
+            </File>
+            <File>
               <FileName>user.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\app\user.c</FilePath>
             </File>
             <File>
-              <FileName>battle.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\app\battle.c</FilePath>
+              <FileName>user.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\user.h</FilePath>
             </File>
           </Files>
         </Group>

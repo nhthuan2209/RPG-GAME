@@ -3,6 +3,10 @@
 
 #include "stdint.h"
 
+#ifndef ARRAY_COUNT
+#define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
+#endif
+
 typedef struct 
 {
 	uint8_t uid[4];

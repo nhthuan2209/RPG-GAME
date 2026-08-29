@@ -10,7 +10,7 @@ CampaignStage campaign[] =
 	{"STAGE 4", "CAVE", 3},
 	{"STAGE 5", "CASTLE", 4},
 };
-uint8_t campaign_state_count = sizeof(campaign) / sizeof(campaign[0]);
+uint8_t campaign_state_count = ARRAY_COUNT(campaign);
 
 void Campaign_NextStage(void)
 {
