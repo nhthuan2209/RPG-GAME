@@ -1,4 +1,5 @@
 #include "monster.h"
+#include "battle.h"
 
 Monster monster_list[] =
 {
@@ -36,5 +37,44 @@ Monster monster_list[] =
     {"Dragon King", 550, 550, 68, 30, 350, 200}
 };
 
-uint8_t monster_count =
-    sizeof(monster_list) / sizeof(monster_list[0]);
+uint8_t monster_count = ARRAY_COUNT(monster_list);
+
+static int16_t monster_attack_temp_damage = 0;
+
+int16_t Monster_GetAttackDamage(Monster *monster)
+{
+	if (monster == 0)
+	{
+		return 0;
+	}
+
+	return monster->attack;
+}
+
+void Monster_TakeDamage(Monster *monster, int16_t damage)
+{
+	if (monster == 0)
+	{
+		return;
+	}
+
+	monster->hp -= damage;
+	if (monster->hp < 0)
+	{
+		monster->hp = 0;
+	}
+}
+
+void Monster_AttackPlayer(Monster *monster)
+{
+	int16_t dmg;
+
+	if (monster == 0)
+	{
+		monster_attack_temp_damage = 0;
+		return;
+	}
+
+	dmg = Monster_GetAttackDamage(monster);
+	monster_attack_temp_damage = dmg;
+}

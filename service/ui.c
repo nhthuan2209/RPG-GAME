@@ -34,7 +34,7 @@ static Monster *battle_monster = 0;
 static uint8_t select_option = 1;
 static uint8_t gameover_select_locked = 1;
 uint8_t buying_potion = 0;
-static uint8_t shop_potion_stock[POTION_COUNT - 1] = {1, 1, 1, 1};
+static uint8_t shop_potion_stock[POTION_COUNT] = {1, 1, 1, 1};
 
 UiPage ui_page = UI_PAGE_WAITING;
 
@@ -529,8 +529,8 @@ void UI_ConfirmShopMenu(uint8_t shop)
 				ui_page = UI_PAGE_BUYING_POTION;
 				buying_potion = 1;
 				select_potion = POTION_HEAL;
-				LCD_DrawShopPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], battle_mode == 0 ? campaign_players[current_player].gold : endless_players[current_player].gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
-				LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+				LCD_DrawShopPotionMenu(shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], battle_mode == 0 ? campaign_players[current_player].gold : endless_players[current_player].gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+				LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 				break;
 			case 2:
 				RESET_DISPLAY;
@@ -565,22 +565,22 @@ void UI_MoveBuyPotion(uint8_t *potion)
 	if(HAL_Buttondown())
 	{
 		HAL_Delay(100);
-		LCD_DeselectShopPotion(*potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+		LCD_DeselectShopPotion(*potion, shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 		if (*potion < POTION_COUNT - 1)
 		{
 			(*potion)++;
 		}
-		LCD_SelectShopPotion(*potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+		LCD_SelectShopPotion(*potion, shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 	}
 	if(HAL_Buttonup())
 	{
 		HAL_Delay(100);
-		LCD_DeselectShopPotion(*potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
-		if (*potion > 1)
+		LCD_DeselectShopPotion(*potion, shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+		if (*potion > POTION_HEAL)
 		{
 			(*potion)--;
 		}
-		LCD_SelectShopPotion(*potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+		LCD_SelectShopPotion(*potion, shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 	}
 }
 
@@ -740,7 +740,7 @@ void UI_BuyPotion(PotionType potion)
 	}
 	potion_price = Shop_GetPotionPrice(potion);
 
-	if (shop_potion_stock[potion - 1] == 0)
+	if (shop_potion_stock[potion] == 0)
 	{
 		UI_WRITE_ANNOUNCEMENT(50, 75, "SOLD OUT");
 		HAL_Delay(550);
@@ -752,17 +752,17 @@ void UI_BuyPotion(PotionType potion)
 		UI_WRITE_ANNOUNCEMENT(50, 75, "NOT ENOUGH GOLD");
 		HAL_Delay(550);
 		RESET_DISPLAY;
-		Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], shop_player->gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
-		LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+		Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], shop_player->gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+		LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 		return;
 	}
 
 	shop_player->gold -= potion_price;
-	shop_player->potion_count[potion - 1]++;
-	shop_potion_stock[potion - 1] = 0;
+	shop_player->potion_count[potion]++;
+	shop_potion_stock[potion] = 0;
 	RESET_DISPLAY;
-	Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], shop_player->gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
-	LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL - 1], shop_potion_stock[POTION_PROTECT - 1], shop_potion_stock[POTION_FIRE - 1], shop_potion_stock[POTION_POWER - 1], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+	Shop_DisplayPotionMenu(shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], shop_player->gold, SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
+	LCD_SelectShopPotion(select_potion, shop_potion_stock[POTION_HEAL], shop_potion_stock[POTION_PROTECT], shop_potion_stock[POTION_FIRE], shop_potion_stock[POTION_POWER], SHOP_POTION_HEAL_PRICE, SHOP_POTION_PROTECT_PRICE, SHOP_POTION_FIRE_PRICE, SHOP_POTION_POWER_PRICE);
 }
 
 void UI_MoveBattleSkill(uint8_t *sl_skill)
@@ -808,7 +808,7 @@ void UI_MovePotionMenu(uint8_t *potion)
 	if (HAL_Buttonup())
 	{
 		LCD_DeselectPotion(*potion, Battle_CountPotion(POTION_HEAL), Battle_CountPotion(POTION_PROTECT), Battle_CountPotion(POTION_FIRE), Battle_CountPotion(POTION_POWER));
-		if (*potion > 1)
+		if (*potion > POTION_HEAL)
 		{
 			(*potion)--;
 		}

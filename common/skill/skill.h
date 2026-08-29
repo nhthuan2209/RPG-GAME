@@ -2,7 +2,8 @@
 #define _SKILL_H_
 
 #include <stdint.h>
-#include "player.h"
+
+struct Player;
 
 typedef enum
 {
@@ -14,6 +15,6 @@ typedef enum
 #define SKILL_FREEZE_LEVEL			3
 #define SKILL_COUNTER_LEVEL			6
 
-uint8_t Skill_Unlocked(Player *player, Skill skill);
+uint8_t Skill_Unlocked(struct Player *player, Skill skill);
 
 #endif // _SKILL_H_
